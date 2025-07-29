@@ -1,7 +1,28 @@
 #include "CommandParser.h"
+#include <sstream>
+using namespace std;
 
 int CommandParser::runCommand(const string cmd) {
-	return getCommandType(cmd);
+	// Precondition
+	vector<string> cmdParms = getCommandParams(cmd);
+	if (invalidCommandCheck(cmdParms[0]) == false)
+		return CMD_NOT_SUPPORTED;
+	if (checkParamNum(cmdParms) == false)
+		return CMD_NOT_SUPPORTED;
+	// TODO : Run command and Print Log
+	return getCommandType(cmdParms[0]);
+}
+
+vector<string> CommandParser::getCommandParams(const string& cmd)
+{
+	stringstream stream(cmd);
+	string word;
+	vector<string> tokens;
+
+	while (stream >> word) {
+		tokens.push_back(word);
+	}
+	return tokens;
 }
 
 int CommandParser::getCommandType(const string cmd)

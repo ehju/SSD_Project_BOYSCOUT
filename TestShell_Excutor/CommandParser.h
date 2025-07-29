@@ -36,6 +36,7 @@ public:
 		{"fullread",0,false,false} };
 
 	int runCommand(const string cmd);
+	vector<string> getCommandParams(const std::string& cmd);
 	int getCommandType(const string cmd);
 	bool invalidCommandCheck(string str);
 	bool checkParamNum(vector<string> str);
