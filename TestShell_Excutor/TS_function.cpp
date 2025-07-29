@@ -1,3 +1,4 @@
+#include <iostream>
 
 class DummySSD {
 public:
@@ -10,6 +11,9 @@ public:
 	TS_function(DummySSD* ssd) : ssd { ssd } {}
 
 	unsigned int read(int lba) {
+		if (lba < 0 || lba > 99) {
+			throw std::exception("invalid LBA");
+		}
 		return  ssd->read(lba);
 	}
 private:
