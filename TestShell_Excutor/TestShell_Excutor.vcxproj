@@ -128,11 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CommandParser.cpp" />
+    <ClCompile Include="CommandParser_test.cpp" />
     <ClCompile Include="InvalidCmd_test.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TS_function.cpp" />
     <ClCompile Include="test.cpp" />
-    <ClCompile Include="TS_function_test.cpp" />
+    <ClCompile Include="TS_function_test.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"> %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
