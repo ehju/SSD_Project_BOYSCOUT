@@ -22,3 +22,19 @@ TEST(TS_function, ReadMockTest) {
 	
 	shell.read(lba);
 }
+
+// if invalid LBA range -> throw exception
+TEST(TS_function, ReadMockTestLbaException1) {
+	MockSSD ssd;
+	TS_function shell{ &ssd };
+	int lba = -1;
+
+	EXPECT_THROW(shell.read(lba), std::exception);
+}
+TEST(TS_function, ReadMockTestLbaException2) {
+	MockSSD ssd;
+	TS_function shell{ &ssd };
+	int lba = 100;
+
+	EXPECT_THROW(shell.read(lba), std::exception);
+}
