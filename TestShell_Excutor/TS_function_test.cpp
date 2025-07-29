@@ -77,3 +77,12 @@ TEST_F(SSDFixture, NoWriteOutOfRangeLBA2) {
 	shell.write(lba, data);
 }
 
+
+TEST(TS_function, ReadFullReadTest) {
+	MockSSD ssd;
+	TS_function shell{ &ssd };
+	EXPECT_CALL(ssd, read(_))
+		.Times(100);
+
+	shell.fullread();
+}
