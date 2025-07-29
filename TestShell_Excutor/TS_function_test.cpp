@@ -11,7 +11,6 @@ TEST(TS_function, TC1) {
 
 }
 
-
 // SSD Read function should be called
 TEST(TS_function, ReadMockTest) {
 	MockSSD ssd;
@@ -19,8 +18,8 @@ TEST(TS_function, ReadMockTest) {
 	int lba = 0;
 	EXPECT_CALL(ssd, read(lba))
 	    .Times(1);
-	
-	shell.read(lba);
+
+	unsigned int ret = shell.read(lba);
 }
 
 // if invalid LBA range -> throw exception
@@ -37,4 +36,19 @@ TEST(TS_function, ReadMockTestLbaException2) {
 	int lba = 100;
 
 	EXPECT_THROW(shell.read(lba), std::exception);
+}
+
+// Read Test state test
+TEST(TS_function, ReadMockResultTest) {
+	MockSSD ssd;
+	TS_function shell{ &ssd };
+	int lba = 10;
+
+	EXPECT_CALL(ssd, read(lba))
+		.Times(1)
+		.WillOnce(testing::Return(1000));
+
+	unsigned int ret = shell.read(lba);
+
+	EXPECT_EQ(ret, 1000);
 }
