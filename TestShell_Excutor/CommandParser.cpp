@@ -1,5 +1,10 @@
 #include "CommandParser.h"
 
+int CommandParser::getCommandType(const string cmd)
+{
+	return -1;
+}
+
 bool CommandParser::invalidCommandCheck(string str)
 {
 	for (CommandFormat cmddata : commandlist)

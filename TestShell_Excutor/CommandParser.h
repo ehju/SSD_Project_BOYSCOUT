@@ -23,6 +23,7 @@ public:
 		{"fullwrite",1,false,true},
 		{"fullread",0,false,false} };
 
+	int getCommandType(const string cmd);
 	bool invalidCommandCheck(string str);
 	bool checkParamNum(vector<string> str);
 
