@@ -1,10 +1,30 @@
 #pragma once
 #include <vector>
+#include <iostream>
+#include <string>
 using std::string;
 using std::vector;
+
+struct CommandFormat
+{
+	string cmd;
+	int paramnum;
+	bool isUseLBA;
+	bool isUseValue;
+};
+
 class CommandParser {
 public:
-	vector<string> commandlist = { "write","read","exit","help","fullwrite","fullread" };
-	bool invalidCheck(string str);
-	bool checkParamNum(string str);
+	vector<CommandFormat> commandlist = {
+		{"write",2,true,true},
+		{"read",1,true,false},
+		{ "exit",0,false,false },
+		{"help",0,false,false},
+		{"fullwrite",1,false,true},
+		{"fullread",0,false,false} };
+
+	bool invalidCommandCheck(string str);
+	bool checkParamNum(vector<string> str);
+
+
 };
