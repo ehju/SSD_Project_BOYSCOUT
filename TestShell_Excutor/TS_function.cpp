@@ -22,6 +22,13 @@ public:
 		return ssd->write(lba, data);
 	}
 
+	void fullread() {
+		unsigned int data;
+		for (int i = 0; i < 100;i++) {
+			data= ssd->read(i);
+		}
+	}
+
 private:
 	DummySSD *ssd;
 };
