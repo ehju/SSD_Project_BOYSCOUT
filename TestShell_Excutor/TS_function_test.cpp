@@ -10,3 +10,15 @@ public:
 TEST(TS_function, TC1) {
 
 }
+
+
+// SSD Read function should be called
+TEST(TS_function, ReadMockTest) {
+	MockSSD ssd;
+	TS_function shell{&ssd};
+	int lba = 0;
+	EXPECT_CALL(ssd, read(lba))
+	    .Times(1);
+	
+	shell.read(lba);
+}
