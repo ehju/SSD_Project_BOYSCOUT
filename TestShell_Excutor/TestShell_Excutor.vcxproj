@@ -127,6 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CommandParser.cpp" />
+    <ClCompile Include="InvalidCmd_test.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TS_function.cpp" />
     <ClCompile Include="test.cpp" />
@@ -134,6 +136,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CommandParser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
