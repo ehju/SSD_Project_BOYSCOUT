@@ -23,3 +23,9 @@ TEST_F(CPFixture, BasicValidCommand) {
 	EXPECT_EQ(CMD_BASIC_FULLWRITE, checkCommandType("fullwrite"));
 	EXPECT_EQ(CMD_BASIC_FULLREAD, checkCommandType("fullread"));
 }
+
+TEST(CPTest, RunCommandCallExit) {
+	CommandParser cp;
+	const string cmdline = "exit";
+	EXPECT_EQ(CMD_BASIC_EXIT, cp.runCommand(cmdline));
+}
