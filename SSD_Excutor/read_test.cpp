@@ -1,7 +1,7 @@
 #include "gmock/gmock.h"
 #include <iostream>
 
-#include "read.cpp"
+#include "ssd.cpp"
 using namespace testing;
 
 class FileChecker {
@@ -22,18 +22,18 @@ public:
 // if 1 read command issued, exist ssd_output.txt
 // read 명령 실행했다면, ssd_output.txt가 존재해야한다.
 TEST_F(ReadTestFixture, ReadCommandLeavesOutputfile) {
-    Read read;
+    SSD ssd;
     int address = 0x0;
-    read.execute(address);
+    ssd.readCommand.execute(address);
     EXPECT_THAT(fileChecker.isFileExist("ssd_output.txt"), Eq(true));
 }
 
 // if don't exist nand.txt, read command output will be 
 // write된적이 없는 한 번도 없는 ssd를 read하더라도 output file에 0x0000000이 찍혀야 한다.
 TEST_F(ReadTestFixture, NeverWrittenReadReturnZero) {
-    Read read;
+    SSD ssd;
     int address = 0x1;
-    read.execute(address);
+    ssd.readCommand.execute(address);
     EXPECT_THAT(fileChecker.fileAddressRead(address), "0x0000000");
 }
 
