@@ -3,7 +3,7 @@
 
 
 
-bool CommandParser::InvalidCheck(string str)
+bool CommandParser::invalidCheck(string str)
 {
 	for (string cmd : commandlist)
 	{

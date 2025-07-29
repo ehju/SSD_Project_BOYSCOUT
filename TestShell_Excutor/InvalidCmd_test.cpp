@@ -11,7 +11,7 @@ TEST(INVALIDCMD, ISVALIDCOMMAND)
 	string command[] = {"write","read","exit","help","fullwrite","fullread"};
 	for (string cmd : command)
 	{
-		bool returnval = parser.InvalidCheck(cmd);
+		bool returnval = parser.invalidCheck(cmd);
 		EXPECT_EQ(true, returnval);
 	}
 
