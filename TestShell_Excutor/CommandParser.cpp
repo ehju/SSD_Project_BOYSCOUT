@@ -1,14 +1,31 @@
-#include <iostream>
 #include "CommandParser.h"
 
-
-
-bool CommandParser::InvalidCheck(string str)
+bool CommandParser::invalidCommandCheck(string str)
 {
-	for (string cmd : commandlist)
+	for (CommandFormat cmddata : commandlist)
 	{
-		if (cmd == str)
+		if (cmddata.cmd == str)
 			return true;
 	}
 	return false;
 }
+
+bool CommandParser::checkParamNum(vector<string> cmdSplits)
+{
+
+	for (CommandFormat cmddata : commandlist)
+	{
+		if (cmddata.cmd == cmdSplits.front())
+		{
+			if (cmddata.paramnum == cmdSplits.size() - 1)
+				return true;
+			else
+				return false;
+		}
+			
+	}
+	return false;
+}
+
+
+

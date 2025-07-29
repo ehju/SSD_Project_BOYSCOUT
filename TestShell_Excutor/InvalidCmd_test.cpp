@@ -6,13 +6,27 @@ using namespace testing;
 
 TEST(INVALIDCMD, ISVALIDCOMMAND)
 {
-	//지정된 command인지
+
 	CommandParser parser;
-	string command[] = { "write","read","exit","help","fullwrite","fullread"};
+	string command[] = {"write","read","exit","help","fullwrite","fullread"};
 	for (string cmd : command)
 	{
-		bool returnval = parser.InvalidCheck(cmd);
+		bool returnval = parser.invalidCommandCheck(cmd);
 		EXPECT_EQ(true, returnval);
 	}
+}
+TEST(INVALIDCMD,CHECKREADPARAMNUM_PASS)
+{	
+	CommandParser parser;
+	vector<string> cmd = {"read","3" };
+	bool returnval = parser.checkParamNum(cmd);
+	EXPECT_EQ(true, returnval);	
+}
+TEST(INVALIDCMD, CHECKREADPARAMNUM_FAIL)
+{
+	CommandParser parser;
+	vector<string> cmd = { "read","3","0x1234"};
+	bool returnval = parser.checkParamNum(cmd);
+	EXPECT_EQ(false, returnval);
 
 }
