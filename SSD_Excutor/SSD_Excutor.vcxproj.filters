@@ -21,13 +21,28 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>테스트파일</Filter>
-    </ClCompile>
     <ClCompile Include="read_test.cpp">
       <Filter>테스트파일</Filter>
     </ClCompile>
     <ClCompile Include="read.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="write_test.cpp">
+      <Filter>테스트파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ssd.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="command_parser.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="write.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
