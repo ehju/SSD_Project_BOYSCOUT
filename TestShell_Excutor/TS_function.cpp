@@ -18,6 +18,7 @@ public:
 	}
 
 	bool write(int lba, unsigned int data) {
+		if (lba > 99 || lba < 0) return false;
 		return ssd->write(lba, data);
 	}
 
