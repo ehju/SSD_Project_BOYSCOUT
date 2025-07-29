@@ -24,8 +24,8 @@ public:
 
 	void fullread() {
 		unsigned int data;
-		for (int i = 0; i < 100;i++) {
-			data= ssd->read(i);
+		for (int lba = 0; lba < 100;lba++) {
+			data= ssd->read(lba);
 		}
 	}
 
