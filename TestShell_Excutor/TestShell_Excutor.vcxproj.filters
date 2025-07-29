@@ -24,6 +24,12 @@
     <ClCompile Include="test.cpp">
       <Filter>테스트파일</Filter>
     </ClCompile>
+    <ClCompile Include="TS_function.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TS_function_test.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
