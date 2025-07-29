@@ -15,6 +15,14 @@ TEST(INVALIDCMD, ISVALIDCOMMAND)
 		EXPECT_EQ(true, returnval);
 	}
 }
+TEST(INVALIDCMD, ISInVALIDCOMMAND)
+{
+
+	CommandParser parser;
+	bool returnval = parser.invalidCommandCheck("test");
+	EXPECT_EQ(false, returnval);
+}
+
 TEST(INVALIDCMD,CHECKREADPARAMNUM_PASS)
 {	
 	CommandParser parser;
