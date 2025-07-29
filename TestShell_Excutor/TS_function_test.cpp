@@ -1,14 +1,26 @@
 #include "gmock/gmock.h"
 #include "TS_function.cpp"
 
+using namespace testing;
+
 class MockSSD : public DummySSD {
 public:
 	MOCK_METHOD(unsigned int, read, (int lba), (override));
-	MOCK_METHOD(void, write, (int lba, unsigned int data), (override));
+	MOCK_METHOD(bool, write, (int lba, unsigned int data), (override));
 };
 
-TEST(TS_function, TC1) {
+TEST(TS_function, WriteBasic) {
+	MockSSD mock;
+	TS_function tsf{ &mock };
+	int lba = 99;
+	unsigned int data = 0x12345678;
 
+	EXPECT_CALL(mock, write(lba, data))
+		.Times(1)
+		.WillOnce(Return(true));
+		
+
+	EXPECT_EQ(true, tsf.write(lba,data));
 }
 
 // SSD Read function should be called
@@ -52,3 +64,24 @@ TEST(TS_function, ReadMockResultTest) {
 
 	EXPECT_EQ(ret, 1000);
 }
+TEST(TS_function, NoWriteOutOfRangeLBA1) {
+	MockSSD mock;
+	TS_function tsf{ &mock };
+	int lba = 100;
+	unsigned int data = 0x12345678;
+
+	EXPECT_CALL(mock, write(lba, data))
+		.Times(0);
+	tsf.write(lba, data);
+}
+TEST(TS_function, NoWriteOutOfRangeLBA2) {
+	MockSSD mock;
+	TS_function tsf{ &mock };
+	int lba = -2;
+	unsigned int data = 0x12345678;
+
+	EXPECT_CALL(mock, write(lba, data))
+		.Times(0);
+	tsf.write(lba, data);
+}
+

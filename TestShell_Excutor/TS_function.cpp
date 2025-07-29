@@ -3,7 +3,7 @@
 class DummySSD {
 public:
 	virtual unsigned int read(int lba)=0;
-	virtual void write(int lba , unsigned int data) = 0;
+	virtual bool write(int lba , unsigned int data) = 0;
 };
 
 class TS_function {
@@ -16,6 +16,12 @@ public:
 		}
 		return  ssd->read(lba);
 	}
+
+	bool write(int lba, unsigned int data) {
+		if (lba > 99 || lba < 0) return false;
+		return ssd->write(lba, data);
+	}
+
 private:
-	DummySSD* ssd;
+	DummySSD *ssd;
 };
