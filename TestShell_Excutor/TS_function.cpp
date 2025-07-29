@@ -17,8 +17,8 @@ public:
 		return  ssd->read(lba);
 	}
 
-	bool write(int lab, unsigned int data) {
-		return 1;
+	bool write(int lba, unsigned int data) {
+		return ssd->write(lba, data);
 	}
 
 private:
