@@ -64,3 +64,24 @@ TEST(TS_function, ReadMockResultTest) {
 
 	EXPECT_EQ(ret, 1000);
 }
+TEST(TS_function, NoWriteOutOfRangeLBA1) {
+	MockSSD mock;
+	TS_function tsf{ &mock };
+	int lba = 100;
+	unsigned int data = 0x12345678;
+
+	EXPECT_CALL(mock, write(lba, data))
+		.Times(0);
+	tsf.write(lba, data);
+}
+TEST(TS_function, NoWriteOutOfRangeLBA2) {
+	MockSSD mock;
+	TS_function tsf{ &mock };
+	int lba = -2;
+	unsigned int data = 0x12345678;
+
+	EXPECT_CALL(mock, write(lba, data))
+		.Times(0);
+	tsf.write(lba, data);
+}
+
