@@ -128,7 +128,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TS_function.cpp" />
     <ClCompile Include="test.cpp" />
+    <ClCompile Include="TS_function_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
