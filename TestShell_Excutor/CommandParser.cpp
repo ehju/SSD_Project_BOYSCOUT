@@ -1,5 +1,17 @@
 #include "CommandParser.h"
 
+int CommandParser::runCommand(const string cmd) {
+	return getCommandType(cmd);
+}
+
+int CommandParser::getCommandType(const string cmd)
+{
+	auto it = this->cmdMap.find(cmd);
+	if (it == this->cmdMap.end())
+		return CMD_NOT_SUPPORTED;
+	return this->cmdMap[cmd];
+}
+
 bool CommandParser::invalidCommandCheck(string str)
 {
 	for (CommandFormat cmddata : commandlist)
