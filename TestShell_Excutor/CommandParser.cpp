@@ -2,7 +2,10 @@
 
 int CommandParser::getCommandType(const string cmd)
 {
-	return -1;
+	auto it = this->cmdMap.find(cmd);
+	if (it == this->cmdMap.end())
+		return CMD_NOT_SUPPORTED;
+	return this->cmdMap[cmd];
 }
 
 bool CommandParser::invalidCommandCheck(string str)
