@@ -12,3 +12,8 @@ bool CommandParser::InvalidCheck(string str)
 	}
 	return false;
 }
+
+bool CommandParser::checkParamNum(string str)
+{
+	return false;
+}

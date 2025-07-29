@@ -6,5 +6,5 @@ class CommandParser {
 public:
 	vector<string> commandlist = { "write","read","exit","help","fullwrite","fullread" };
 	bool InvalidCheck(string str);
-
+	bool checkParamNum(string str);
 };
