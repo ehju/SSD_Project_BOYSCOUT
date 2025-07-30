@@ -53,7 +53,11 @@
     </ClCompile>
     <ClCompile Include="SSDHelper.cpp">
       <Filter>테스트파일</Filter>
-    </ClCompile>    <ClCompile Include="command_interface.cpp">
+    </ClCompile>
+    <ClCompile Include="command_interface.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FileUtil.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
