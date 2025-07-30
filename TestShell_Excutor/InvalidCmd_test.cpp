@@ -127,7 +127,7 @@ TEST(INVALIDCMD, CHECKLBA_NOTNUMBER)
 	bool returnval = parser.checkValidLBA(wrcmd);
 	EXPECT_EQ(false, returnval);
 }
-TEST(INVALIDCMD, CHECKWRITELBA_FAIL)
+TEST(INVALIDCMD, CHECKLBA_FAIL)
 {
 	CommandParser parser;
 	vector<string> wrcmd = { "write","200","0x12345678" };
@@ -136,7 +136,7 @@ TEST(INVALIDCMD, CHECKWRITELBA_FAIL)
 	returnval = parser.checkValidLBA(rdcmd);
 	EXPECT_EQ(false, returnval);
 }
-TEST(INVALIDCMD, CHECKWRITELBA_PASS)
+TEST(INVALIDCMD, CHECKLBA_PASS)
 {
 	CommandParser parser;
 	vector<string> wrcmd = { "write","93","0x12345678" };
@@ -144,4 +144,31 @@ TEST(INVALIDCMD, CHECKWRITELBA_PASS)
 	vector<string> rdcmd = { "read","93" };
 	returnval = parser.checkValidLBA(rdcmd);
 	EXPECT_EQ(true, returnval);
+}
+
+TEST(INVALIDCMD, CHECKVALUE_FAIL)
+{
+	CommandParser parser;
+	vector<vector<string>> invalidcmdlist = {
+		{ "write","93","0x1234" },
+		{ "write","93","0x12345678AAA" },
+		{ "write","93","qwertyuiop" },
+		{ "write","93","01234567x0" },
+		{ "write","93","0x1234abcd" },		
+		{ "fullwrite","0x1234" },
+		{ "fullwrite","0x12345678AAA" },
+		{ "fullwrite","qwertyuiop" },
+		{ "fullwrite","01234567x0" },
+		{ "fullwrite","0x1234abcd" },	
+
+	};
+	int passIndex = 0;
+	for (vector<string> cmd : invalidcmdlist)
+	{
+		if (parser.checkValidValue(cmd) == true)
+			break;
+		passIndex++;
+	}
+	
+	EXPECT_EQ(10, passIndex);
 }
