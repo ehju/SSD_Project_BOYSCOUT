@@ -111,7 +111,24 @@ TEST(CPTest, FullWriteAndReadCompareShot) {
 
 	EXPECT_EQ(expected, actual);
 }
+TEST(CPTest, PartialLBAWriteLong) {
+	CommandParser cp;
+	const string cmdline = "2_PartialLBAWrite";
 
+	int expected = CMD_TS_PartialLBAWrite;
+	int actual = cp.runCommand(cmdline);
+
+	EXPECT_EQ(expected, actual);
+}
+TEST(CPTest, WriteReadAgingLong) {
+	CommandParser cp;
+	const string cmdline = "3_WriteReadAging";
+
+	int expected = CMD_TS_WriteReadAging;
+	int actual = cp.runCommand(cmdline);
+
+	EXPECT_EQ(expected, actual);
+}
 TEST(CPTest, RunHelpCommand) {
 	CommandParser cp;
 	const string cmdline = "help";
@@ -138,5 +155,4 @@ TEST(CPTest, RunHelpCommand) {
 		int index = output.find(str);
 		EXPECT_THAT(index, Ne(-1));
 	}		
-
 }
