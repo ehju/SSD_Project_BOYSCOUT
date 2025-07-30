@@ -16,5 +16,7 @@ int main(int argc, char* argv[])
     SSD ssd(&commandParser, &writeCommand, &readCommand);
 
     ssd.run(argc, argv);
+
+    return 1;
 }
 #endif
