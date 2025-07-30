@@ -37,36 +37,21 @@ CommandInfo CommandParser::MakeCommandInfo(std::vector<std::string> cmdSplits)
 		if (cmddata.cmd == cmdSplits[CMDINDEX])
 		{
 			ret.command = cmddata.cmdIndex;		
-			ret.lba=getLBAValue(cmddata,  cmdSplits[LBAINDEX]);
-
-			if (cmddata.isUseValue)
-			{
-				try {
-					ret.value = std::stoul(cmdSplits[VALUEINDEX], nullptr, 16);
-				}
-				catch (const std::invalid_argument& e) {
-					std::cerr << "Invalid argument: " << e.what() << std::endl;
-				}
-				catch (const std::out_of_range& e) {
-					std::cerr << "Out of range: " << e.what() << std::endl;
-				}
-			}
-			else
-				ret.value = 0xFFFFFFFF;
-		
+			ret.lba=getLBA(cmddata, cmdSplits);
+			ret.value = getValue(cmddata, cmdSplits);
 		}
 	}
 
 	return ret;
 }
 
-unsigned int CommandParser::getLBAValue(const CommandFormat& cmddata, std::string lbaStr)
+unsigned int CommandParser::getLBA(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
 {
 	
 	if (cmddata.isUseLBA)
 	{
 		try {
-			return stoul(lbaStr);
+			return stoul(cmdSplits[LBAINDEX]);
 		}
 		catch (const std::invalid_argument& e) {
 			std::cerr << "Invalid argument: " << e.what() << std::endl;
@@ -75,8 +60,27 @@ unsigned int CommandParser::getLBAValue(const CommandFormat& cmddata, std::strin
 			std::cerr << "Out of range: " << e.what() << std::endl;
 		}
 	}
-	else
-		return 0xFFFFFFFF;
+
+	return 0xFFFFFFFF;
+}
+unsigned int CommandParser::getValue(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
+{
+
+	if (cmddata.isUseValue)
+	{
+		try {
+
+			return std::stoul(cmdSplits[VALUEINDEX], nullptr, 16);
+		}
+		catch (const std::invalid_argument& e) {
+			std::cerr << "Invalid argument: " << e.what() << std::endl;
+		}
+		catch (const std::out_of_range& e) {
+			std::cerr << "Out of range: " << e.what() << std::endl;
+		}
+	}
+		
+	return 0xFFFFFFFF;
 }
 
 bool CommandParser::checkCommand(vector<string> cmdSplits)
@@ -101,7 +105,6 @@ bool CommandParser::checkParamNum(vector<string> cmdSplits)
 			else
 				return false;
 		}
-
 	}
 	return false;
 }
@@ -114,7 +117,6 @@ bool CommandParser::checkValidLBA(vector<string> cmdSplits)
 		{
 			if (cmddata.isUseLBA)
 			{
-
 				string lbastr = cmdSplits[LBAINDEX];
 				if (lbastr.size() <= 0 || lbastr.size() > LBAMAXLENGTH)
 					return false;
