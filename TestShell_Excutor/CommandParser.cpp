@@ -183,7 +183,15 @@ void CommandParser::printReadResult(int lba, unsigned int value)
 
 void CommandParser::runCommandHelp(void)
 {
+	std::cout <<"* TEAM_NAME: " << teamName << std::endl;
+	std::cout << "* TEAM_LEADER: " << teamLeader << std::endl;
+	std::cout << "* TEAM_MEMBER: " << teamMemberName << std::endl;
+	for (HelpData data : commandUsage)
+	{
+		std::cout << data.command << data.usage << std::endl;
+	}
 }
+
 
 bool CommandParser::runCommandFullWrite(const string value)
 {

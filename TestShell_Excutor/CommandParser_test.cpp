@@ -74,6 +74,7 @@ TEST(CPTest, RunCommandReadPassDefault) {
 	EXPECT_EQ(expected, actual);
 	EXPECT_EQ(output, "[Read] LBA 3 : 0x00000000\n");
 }
+
 TEST(CPTest, RunCommandFullReadPassDefault) {
 	CommandParser cp;
 	const string cmdline = "fullread";
@@ -109,4 +110,33 @@ TEST(CPTest, FullWriteAndReadCompareShot) {
 	int actual = cp.runCommand(cmdline);
 
 	EXPECT_EQ(expected, actual);
+}
+
+TEST(CPTest, RunHelpCommand) {
+	CommandParser cp;
+	const string cmdline = "help";
+	
+	vector<string> containsString = {"BOYSCOUT",
+		"¹Ú¼¼¿î",
+		"ÀÌ½ÂÇö/ÁÖÀºÇý/Á¤Áø¼·/ÇãÈÆ/Á¤ÇýÁø",
+		"write","read","fullwrite","fullread" ,"exit","help",
+		"1_FullWriteAndReadCompare",
+		"2_PartialLBAWrite",
+		"3_WriteReadAging", };
+
+	std::stringstream buffer;
+	std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
+	int expected = CMD_BASIC_HELP;
+	int actual = cp.runCommand(cmdline);
+
+	std::cout.rdbuf(old);
+	string output = buffer.str();
+
+	EXPECT_EQ(expected, actual);
+	for (string str : containsString)
+	{
+		int index = output.find(str);
+		EXPECT_THAT(index, Ne(-1));
+	}		
+
 }
