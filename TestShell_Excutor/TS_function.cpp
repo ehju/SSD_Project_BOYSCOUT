@@ -25,11 +25,9 @@ public:
 	};
 	bool fullWriteAndReadCompare() { 
 		unsigned int writeData = 0x12345678;
-		unsigned int readData;
-		bool writepass;
 		for (int lba = 0; lba < 100; lba++) {
-			writepass = ssd->write(lba, writeData);
-			readData = (ssd->read(lba));
+			if (!ssd->write(lba, writeData)) return false;
+			if (!readCompare(lba, writeData)) return false;
 		}
 		return true;
 	}
