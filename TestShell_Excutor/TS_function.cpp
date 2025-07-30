@@ -100,7 +100,24 @@ public:
 		}
 		return true;
 	}
-	bool partialLBAWrite() { return true; }
+	bool partialLBAWrite() {
+		unsigned int writeData = 0x12345678;
+		queue <WrittenData> datas;
+		int loopcount = 30;
+		for (int i = 0; i < loopcount;i++) {
+
+			if (!ssd->write(4, writeData)) return false;
+			if (!ssd->write(0, writeData)) return false;
+			if (!ssd->write(3, writeData)) return false;
+			if (!ssd->write(1, writeData)) return false;
+			if (!ssd->write(2, writeData)) return false;
+			
+			for (int i = 0; i < 5; i++) {
+				if (!readCompare(i, writeData)) return false;
+			}
+		}
+		return true;
+	}
 	bool writeReadAging() { return true; }
 
 	unsigned int read(int lba) {

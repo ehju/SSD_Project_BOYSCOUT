@@ -191,6 +191,47 @@ TEST_F(SSDFixture, FullWriteAndReadCompare_ReadFail) {
 	EXPECT_EQ(false, shell.fullWriteAndReadCompare());
 }
 
+TEST_F(SSDFixture, PartialWriteLBA_behaviorTest) {
+	unsigned int writtenData = 0x12345678;
+	unsigned int readData = writtenData;
+	EXPECT_CALL(ssd, write(_, writtenData))
+		.Times(150)
+		.WillRepeatedly(Return(true));
+
+	EXPECT_CALL(ssd, read(_))
+		.Times(150)
+		.WillRepeatedly(Return(readData));
+
+	EXPECT_EQ(true, shell.partialLBAWrite());
+}
+
+TEST_F(SSDFixture, PartialWriteLBA_WriteFail) {
+	unsigned int writtenData = 0x12345678;
+	unsigned int readData = writtenData;
+
+	EXPECT_CALL(ssd, write(_, _))
+		.WillOnce(Return(true))
+		.WillOnce(Return(true))
+		.WillRepeatedly(Return(false));
+
+	EXPECT_CALL(ssd, read(_))
+		.WillRepeatedly(Return(writtenData));
+	EXPECT_EQ(false, shell.partialLBAWrite());
+}
+
+TEST_F(SSDFixture, PartialWriteLBA_ReadFail) {
+	unsigned int writtenData = 0x12345678;
+	unsigned int readData = 0x87654321;
+
+	EXPECT_CALL(ssd, write(_, _))
+		.WillRepeatedly(Return(true));
+
+	EXPECT_CALL(ssd, read(_))
+		.WillOnce(Return(writtenData))
+		.WillRepeatedly(Return(readData));
+	EXPECT_EQ(false, shell.partialLBAWrite());
+}
+
 #if REAL_DEBUG
 TEST_F(SSDFixture, SSDExWrite_Normal) {
 	SSDExecutor ssde;
