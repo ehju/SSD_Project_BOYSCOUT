@@ -29,3 +29,14 @@ TEST(CPTest, RunCommandCallExit) {
 	const string cmdline = "exit";
 	EXPECT_EQ(CMD_BASIC_EXIT, cp.runCommand(cmdline));
 }
+
+TEST(CPTest, RunCommandCallWrite) {
+	CommandParser cp;
+	const string cmdline = "write 3 0xAAAABBBB";
+	EXPECT_EQ(CMD_BASIC_WRITE, cp.runCommand(cmdline));
+}
+TEST(CPTest, RunCommandCallRed) {
+	CommandParser cp;
+	const string cmdline = "read 0";
+	EXPECT_EQ(CMD_BASIC_READ, cp.runCommand(cmdline));
+}
