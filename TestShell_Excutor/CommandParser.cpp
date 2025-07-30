@@ -5,10 +5,9 @@ using namespace std;
 int CommandParser::runCommand(const string cmd) {
 	// Precondition
 	vector<string> cmdParms = getCommandParams(cmd);
-	if (invalidCommandCheck(cmdParms[0]) == false)
+	if (isInvalidCommand(cmdParms) == false)
 		return CMD_NOT_SUPPORTED;
-	if (checkParamNum(cmdParms) == false)
-		return CMD_NOT_SUPPORTED;
+
 	// TODO : Run command and Print Log
 	return getCommandType(cmdParms[0]);
 }
@@ -33,11 +32,24 @@ int CommandParser::getCommandType(const string cmd)
 	return this->cmdMap[cmd];
 }
 
-bool CommandParser::invalidCommandCheck(string str)
+bool CommandParser::isInvalidCommand(vector<string> cmdSplits)
+{
+	if (!checkCommand(cmdSplits))
+		return false;
+	if (!checkParamNum(cmdSplits))
+		return false;
+	if (!checkValidLBA(cmdSplits))
+		return false;
+	if (!checkValidValue(cmdSplits))
+		return false;
+	return true;
+}
+
+bool CommandParser::checkCommand(vector<string> cmdSplits)
 {
 	for (CommandFormat cmddata : commandlist)
 	{
-		if (cmddata.cmd == str)
+		if (cmddata.cmd == cmdSplits[CMDINDEX])
 			return true;
 	}
 	return false;
@@ -48,14 +60,14 @@ bool CommandParser::checkParamNum(vector<string> cmdSplits)
 
 	for (CommandFormat cmddata : commandlist)
 	{
-		if (cmddata.cmd == cmdSplits.front())
+		if (cmddata.cmd == cmdSplits[CMDINDEX])
 		{
 			if (cmddata.paramnum == cmdSplits.size() - 1)
 				return true;
 			else
 				return false;
 		}
-			
+
 	}
 	return false;
 }
@@ -64,21 +76,21 @@ bool CommandParser::checkValidLBA(vector<string> cmdSplits)
 {
 	for (CommandFormat cmddata : commandlist)
 	{
-		if (cmddata.cmd == cmdSplits[0])
+		if (cmddata.cmd == cmdSplits[CMDINDEX])
 		{
 			if (cmddata.isUseLBA)
 			{
 
-				string lbastr = cmdSplits[1];
+				string lbastr = cmdSplits[LBAINDEX];
 				if (lbastr.size() <= 0 || lbastr.size() > LBAMAXLENGTH)
 					return false;
-				
+
 				for (char lbach : lbastr)
 				{
 					if (lbach < '0' || lbach > '9')
-						return false;				
-				
-				}		
+						return false;
+
+				}
 				return true;
 			}
 			else
@@ -92,11 +104,11 @@ bool CommandParser::checkValidValue(vector<string> cmdSplits)
 {
 	for (CommandFormat cmddata : commandlist)
 	{
-		if (cmddata.cmd == cmdSplits[0])
+		if (cmddata.cmd == cmdSplits[CMDINDEX])
 		{
 			if (cmddata.isUseValue)
 			{
-				int valueIndex = cmddata.paramnum-1; //value is lastindex
+				int valueIndex = cmddata.paramnum; //value is lastindex
 				string valueStr = cmdSplits[valueIndex];
 				if (valueStr.size() != VALUELENGTH)
 					return false;
@@ -111,7 +123,7 @@ bool CommandParser::checkValidValue(vector<string> cmdSplits)
 						continue;
 					else
 						return false;
-				}	
+				}
 				return true;
 			}
 			else

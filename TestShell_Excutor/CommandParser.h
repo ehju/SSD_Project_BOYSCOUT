@@ -38,11 +38,12 @@ public:
 	int runCommand(const string cmd);
 	vector<string> getCommandParams(const std::string& cmd);
 	int getCommandType(const string cmd);
-	bool invalidCommandCheck(string str);
-	bool checkParamNum(vector<string> str);
-	bool checkValidLBA(vector<string> str);
-	bool checkValidValue(vector<string> str);
+	bool isInvalidCommand(vector<string> str);
+	
 private:
+	const int CMDINDEX = 0;
+	const int LBAINDEX =1;
+	const int VALUEINDEX = 2;
 	const int LBAMAXLENGTH = 2;
 	const int VALUESTART = 2;
 	const int VALUELENGTH = 10;
@@ -55,4 +56,10 @@ private:
 		{"fullwrite", CMD_BASIC_FULLWRITE },
 		{"fullread", CMD_BASIC_FULLREAD },
 	};
+
+	bool checkCommand(vector<string> str);
+	bool checkParamNum(vector<string> str);
+	bool checkValidLBA(vector<string> str);
+	bool checkValidValue(vector<string> str);
+	
 };
