@@ -41,7 +41,7 @@ public:
 	bool invalidCommandCheck(string str);
 	bool checkParamNum(vector<string> str);
 	bool checkValidLBA(vector<string> str);
-
+	bool checkValidValue(vector<string> str);
 private:
 	std::unordered_map<string, int> cmdMap = {
 		{"write", CMD_BASIC_WRITE },

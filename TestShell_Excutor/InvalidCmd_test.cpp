@@ -154,14 +154,21 @@ TEST(INVALIDCMD, CHECKVALUE_FAIL)
 		{ "write","93","0x12345678AAA" },
 		{ "write","93","qwertyuiop" },
 		{ "write","93","01234567x0" },
+		{ "write","93","0x1234abcd" },		
+		{ "fullwrite","0x1234" },
+		{ "fullwrite","0x12345678AAA" },
+		{ "fullwrite","qwertyuiop" },
+		{ "fullwrite","01234567x0" },
+		{ "fullwrite","0x1234abcd" },	
+
 	};
-	bool returnval = true;
+	int passIndex = 0;
 	for (vector<string> cmd : invalidcmdlist)
 	{
-		returnval = parser.checkValidLBA(cmd);
-		if (returnval == true)
+		if (parser.checkValidValue(cmd) == true)
 			break;
+		passIndex++;
 	}
 	
-	EXPECT_EQ(false, returnval);
+	EXPECT_EQ(10, passIndex);
 }

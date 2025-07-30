@@ -88,5 +88,38 @@ bool CommandParser::checkValidLBA(vector<string> cmdSplits)
 	return false;
 }
 
+bool CommandParser::checkValidValue(vector<string> cmdSplits)
+{
+	for (CommandFormat cmddata : commandlist)
+	{
+		if (cmddata.cmd == cmdSplits[0])
+		{
+			if (cmddata.isUseValue)
+			{
+				int valueIndex = cmddata.paramnum-1; //value is lastindex
+				string valueStr = cmdSplits[valueIndex];
+				if (valueStr.size() != 10)
+					return false;
+				else if (valueStr[0] != '0' || valueStr[1] != 'x')
+					return false;
+				bool result = true;
+				for (int i = 2; i < 10; i++)
+				{
+					if (valueStr[i] >= '0' && valueStr[i] <= '9')
+						continue;
+					else if (valueStr[i] >= 'A' && valueStr[i] <= 'F')
+						continue;
+					else
+						return false;
+				}	
+				return true;
+			}
+			else
+				return true;
+		}
+	}
+	return false;
+}
+
 
 
