@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+using std::vector;
 
 class DummySSD {
 public:
@@ -22,11 +24,14 @@ public:
 		return ssd->write(lba, data);
 	}
 
-	void fullread() {
+	vector<unsigned int> fullread() {
 		unsigned int data;
+		vector<unsigned int> result;
 		for (int lba = 0; lba < 100;lba++) {
-			data= ssd->read(lba);
+			data = (ssd->read(lba));
+			result.push_back(data);
 		}
+		return result;
 	}
 
 private:
