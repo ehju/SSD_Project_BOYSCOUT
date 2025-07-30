@@ -12,7 +12,15 @@ class TS_function {
 public:
 	TS_function(DummySSD* ssd) : ssd { ssd } {}
 
-	bool readCompare(int lba, unsigned int writtenData) { return true; };
+	bool readCompare(int lba, unsigned int writtenData) { 
+		unsigned int readData = ssd->read(lba);
+		if (readData == writtenData) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	};
 	bool fullWriteAndReadCompare() { return true; }
 	bool partialLBAWrite() { return true; }
 	bool writeReadAging() { return true; }
