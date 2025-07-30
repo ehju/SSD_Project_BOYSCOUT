@@ -128,3 +128,11 @@ TEST_F(SSDFixture, FullWriteFail) {
 	EXPECT_EQ(false, shell.fullwrite(data));
 }
 
+
+TEST_F(SSDFixture, ReadCompareCallSSDRead) {
+	EXPECT_CALL(ssd, read(lba))
+		.Times(1)
+		.WillRepeatedly(Return(data));
+
+	EXPECT_EQ(true, shell.readCompare(lba, data));
+}
