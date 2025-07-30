@@ -3,7 +3,7 @@
 
 TEST(CommandParserTS, InvalidCommandTC1)
 {
-	SSD ssd;
+	CommandParser commandParser;
 
 	int argumentNum = 2;
 	char* argumentPointer[10];
@@ -13,13 +13,16 @@ TEST(CommandParserTS, InvalidCommandTC1)
 	argumentPointer[0] = argu1;
 
 	CommandInfo expected = { 0xFFFFFFFF, 0xFFFFFFFF , 0xFFFFFFFF };
-	CommandInfo actual = ssd.commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected, actual);
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	EXPECT_EQ(expected.command, actual.command);
+	EXPECT_EQ(expected.lba, actual.lba);
+	EXPECT_EQ(expected.value, actual.value);
+
 }
 
 TEST(CommandParserTS, WriteTC1)
 {
-	SSD ssd;
+	CommandParser commandParser;
 
 	int argumentNum = 4;
 	char* argumentPointer[10];
@@ -35,13 +38,15 @@ TEST(CommandParserTS, WriteTC1)
 
 
 	CommandInfo expected = { 0, 0 , 0xFF23001D };
-	CommandInfo actual = ssd.commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected, actual);
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	EXPECT_EQ(expected.command, actual.command);
+	EXPECT_EQ(expected.lba, actual.lba);
+	EXPECT_EQ(expected.value, actual.value);
 }
 
 TEST(CommandParserTS, WriteTC2)
 {
-	SSD ssd;
+	CommandParser commandParser;
 
 	int argumentNum = 4;
 	char* argumentPointer[10];
@@ -57,13 +62,15 @@ TEST(CommandParserTS, WriteTC2)
 
 
 	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
-	CommandInfo actual = ssd.commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected, actual);
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	EXPECT_EQ(expected.command, actual.command);
+	EXPECT_EQ(expected.lba, actual.lba);
+	EXPECT_EQ(expected.value, actual.value);
 }
 
 TEST(CommandParserTS, WriteTC3)
 {
-	SSD ssd;
+	CommandParser commandParser;
 
 	int argumentNum = 4;
 	char* argumentPointer[10];
@@ -79,13 +86,15 @@ TEST(CommandParserTS, WriteTC3)
 
 
 	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
-	CommandInfo actual = ssd.commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected, actual);
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	EXPECT_EQ(expected.command, actual.command);
+	EXPECT_EQ(expected.lba, actual.lba);
+	EXPECT_EQ(expected.value, actual.value);
 }
 
 TEST(CommandParserTS, WriteTC4)
 {
-	SSD ssd;
+	CommandParser commandParser;
 
 	int argumentNum = 4;
 	char* argumentPointer[10];
@@ -101,13 +110,15 @@ TEST(CommandParserTS, WriteTC4)
 
 
 	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
-	CommandInfo actual = ssd.commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected, actual);
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	EXPECT_EQ(expected.command, actual.command);
+	EXPECT_EQ(expected.lba, actual.lba);
+	EXPECT_EQ(expected.value, actual.value);
 }
 
 TEST(CommandParserTS, WriteTC5)
 {
-	SSD ssd;
+	CommandParser commandParser;
 
 	int argumentNum = 4;
 	char* argumentPointer[10];
@@ -123,13 +134,15 @@ TEST(CommandParserTS, WriteTC5)
 
 
 	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
-	CommandInfo actual = ssd.commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected, actual);
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	EXPECT_EQ(expected.command, actual.command);
+	EXPECT_EQ(expected.lba, actual.lba);
+	EXPECT_EQ(expected.value, actual.value);
 }
 
 TEST(CommandParserTS, WriteTC6)
 {
-	SSD ssd;
+	CommandParser commandParser;
 
 	int argumentNum = 4;
 	char* argumentPointer[10];
@@ -145,13 +158,15 @@ TEST(CommandParserTS, WriteTC6)
 
 
 	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
-	CommandInfo actual = ssd.commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected, actual);
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	EXPECT_EQ(expected.command, actual.command);
+	EXPECT_EQ(expected.lba, actual.lba);
+	EXPECT_EQ(expected.value, actual.value);
 }
 
 TEST(CommandParserTS, WriteTC7)
 {
-	SSD ssd;
+	CommandParser commandParser;
 
 	int argumentNum = 2;
 	char* argumentPointer[10];
@@ -161,13 +176,15 @@ TEST(CommandParserTS, WriteTC7)
 	argumentPointer[0] = argu1;
 
 	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
-	CommandInfo actual = ssd.commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected, actual);
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	EXPECT_EQ(expected.command, actual.command);
+	EXPECT_EQ(expected.lba, actual.lba);
+	EXPECT_EQ(expected.value, actual.value);
 }
 
 TEST(CommandParserTS, ReadTC1)
 {
-	SSD ssd;
+	CommandParser commandParser;
 
 	int argumentNum = 3;
 	char* argumentPointer[10];
@@ -181,13 +198,15 @@ TEST(CommandParserTS, ReadTC1)
 
 
 	CommandInfo expected = { 1, 0 , 0xFFFFFFFF };
-	CommandInfo actual = ssd.commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected, actual);
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	EXPECT_EQ(expected.command, actual.command);
+	EXPECT_EQ(expected.lba, actual.lba);
+	EXPECT_EQ(expected.value, actual.value);
 }
 
 TEST(CommandParserTS, ReadTC2)
 {
-	SSD ssd;
+	CommandParser commandParser;
 
 	int argumentNum = 4;
 	char* argumentPointer[10];
@@ -202,13 +221,15 @@ TEST(CommandParserTS, ReadTC2)
 	argumentPointer[2] = argu3;
 
 	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
-	CommandInfo actual = ssd.commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected, actual);
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	EXPECT_EQ(expected.command, actual.command);
+	EXPECT_EQ(expected.lba, actual.lba);
+	EXPECT_EQ(expected.value, actual.value);
 }
 
 TEST(CommandParserTS, ReadTC3)
 {
-	SSD ssd;
+	CommandParser commandParser;
 
 	int argumentNum = 2;
 	char* argumentPointer[10];
@@ -218,13 +239,15 @@ TEST(CommandParserTS, ReadTC3)
 	argumentPointer[0] = argu1;
 
 	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
-	CommandInfo actual = ssd.commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected, actual);
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	EXPECT_EQ(expected.command, actual.command);
+	EXPECT_EQ(expected.lba, actual.lba);
+	EXPECT_EQ(expected.value, actual.value);
 }
 
 TEST(CommandParserTS, ReadTC4)
 {
-	SSD ssd;
+	CommandParser commandParser;
 
 	int argumentNum = 3;
 	char* argumentPointer[10];
@@ -238,6 +261,8 @@ TEST(CommandParserTS, ReadTC4)
 
 
 	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
-	CommandInfo actual = ssd.commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected, actual);
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	EXPECT_EQ(expected.command, actual.command);
+	EXPECT_EQ(expected.lba, actual.lba);
+	EXPECT_EQ(expected.value, actual.value);
 }

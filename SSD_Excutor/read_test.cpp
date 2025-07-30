@@ -40,20 +40,22 @@ public:
 
 // if read command issued, there must be ssd_output.txt
 TEST_F(ReadTestFixture, ReadCommandLeavesOutputfile) {
-    unsigned int address = 0x0;
-    ssd.readCommand.execute(address);
+    Read readCommand;
+    int address = 0x0;
+    readCommand.execute(address);
 
     EXPECT_EQ(ssdHelper.isFileExist(OUTPUT_FILE_NAME), true);
 }
 
 // read command should return 0x00000000 even if ssd has never been used 
 TEST_F(ReadTestFixture, NeverWrittenReadReturnZero) {
-    unsigned int address = 0x0;
-    ssd.readCommand.execute(address);
+    Read readCommand;
+    int address = 0x0;
+    readCommand.execute(address);
 
     ssdHelper.resetSSD();
 
-    EXPECT_THAT(ssd.readCommand.execute(address), "0x00000000");
+    EXPECT_THAT(readCommand.execute(address), "0x00000000");
 }
 
 // if lba 1 is written with specific value, lba 1 read should return exactly same value.
