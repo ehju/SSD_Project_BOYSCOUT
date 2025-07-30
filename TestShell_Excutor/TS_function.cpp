@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 using std::vector;
+using std::queue;
 
 #define interface struct
 
@@ -8,6 +10,11 @@ interface iTS_SSD {
 public:
 	virtual unsigned int read(int lba)=0;
 	virtual bool write(int lba , unsigned int data) = 0;
+};
+
+struct WrittenData {
+	int lba;
+	unsigned int writtenData;
 };
 
 class TS_function {
@@ -23,11 +30,36 @@ public:
 			return false;
 		}
 	};
-	bool fullWriteAndReadCompare() { 
+	bool fullWriteAndReadCompare() {
 		unsigned int writeData = 0x12345678;
-		for (int lba = 0; lba < 100; lba++) {
-			if (!ssd->write(lba, writeData)) return false;
-			if (!readCompare(lba, writeData)) return false;
+		unsigned int readData = writeData;
+		int LBA_MAX = 99;
+		int LBA_MIN = 0;
+		int curWriteLBA = LBA_MIN;
+		int curReadLBA = LBA_MIN;
+		bool flag;
+		queue <WrittenData> datas;
+		WrittenData data;
+		
+		while (curReadLBA <= LBA_MAX)
+		{
+			for (int i = 0; i < 4; i++) {
+				data.lba = curWriteLBA;
+				data.writtenData = writeData;
+				if (curWriteLBA > LBA_MAX) break;
+				if (!ssd->write(data.lba, data.writtenData)) return false;
+				std::cout << "write" << data.lba << "  " << data.writtenData << "\n";
+				datas.push(data);
+				curWriteLBA++;
+			}
+			while (!datas.empty())
+			{
+				data = datas.front();
+				std::cout <<"read" << data.lba << "  " << data.writtenData << "\n";
+				if (!readCompare(data.lba, data.writtenData)) return false;
+				datas.pop();
+			}
+			if (curWriteLBA > LBA_MAX) break;
 		}
 		return true;
 	}
