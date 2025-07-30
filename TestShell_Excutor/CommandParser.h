@@ -38,7 +38,7 @@ public:
 	int runCommand(const string cmd);
 	vector<string> getCommandParams(const std::string& cmd);
 	int getCommandType(const string cmd);
-	bool isInvalidCommand(vector<string> str);
+	bool isValidCommand(vector<string> str);
 	
 private:
 	const int CMDINDEX = 0;

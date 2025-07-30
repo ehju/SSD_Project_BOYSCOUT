@@ -19,7 +19,7 @@ TEST(INVALIDCMD, ISVALIDCOMMAND)
 
 	for (vector<string> cmd : cmdList)
 	{
-		bool returnval = parser.isInvalidCommand(cmd);
+		bool returnval = parser.isValidCommand(cmd);
 		EXPECT_EQ(true, returnval);
 	}
 }
@@ -28,7 +28,7 @@ TEST(INVALIDCMD, ISInVALIDCOMMAND)
 
 	CommandParser parser;
 	vector<string > cmdList = { "test","93","0x1234" };
-	bool returnval = parser.isInvalidCommand(cmdList);
+	bool returnval = parser.isValidCommand(cmdList);
 	EXPECT_EQ(false, returnval);
 }
 
@@ -36,21 +36,21 @@ TEST(INVALIDCMD,CHECKREADPARAMNUM_PASS)
 {	
 	CommandParser parser;
 	vector<string> cmd = {"read","3" };
-	bool returnval = parser.isInvalidCommand(cmd);
+	bool returnval = parser.isValidCommand(cmd);
 	EXPECT_EQ(true, returnval);	
 }
 TEST(INVALIDCMD, CHECKREADPARAMNUM_FAIL)
 {
 	CommandParser parser;
 	vector<string> cmd = { "read","3","0x1234"};
-	bool returnval = parser.isInvalidCommand(cmd);
+	bool returnval = parser.isValidCommand(cmd);
 	EXPECT_EQ(false, returnval);
 }
 TEST(INVALIDCMD, CHECKWRITEPARAMNUM_PASS)
 {
 	CommandParser parser;
 	vector<string> cmd = { "write","3","0x12345678" };
-	bool returnval = parser.isInvalidCommand(cmd);
+	bool returnval = parser.isValidCommand(cmd);
 	EXPECT_EQ(true, returnval);
 
 }
@@ -58,7 +58,7 @@ TEST(INVALIDCMD, CHECKWRITEPARAMNUM_FAIL)
 {
 	CommandParser parser;
 	vector<string> cmd = { "write","3"};
-	bool returnval = parser.isInvalidCommand(cmd);
+	bool returnval = parser.isValidCommand(cmd);
 	EXPECT_EQ(false, returnval);
 
 }
@@ -66,7 +66,7 @@ TEST(INVALIDCMD, CHECKFULLWRITEPARAMNUM_PASS)
 {
 	CommandParser parser;
 	vector<string> cmd = { "fullwrite","0x12345678"};
-	bool returnval = parser.isInvalidCommand(cmd);
+	bool returnval = parser.isValidCommand(cmd);
 	EXPECT_EQ(true, returnval);
 
 }
@@ -74,7 +74,7 @@ TEST(INVALIDCMD, CHECKFULLWRITEPARAMNUM_FAIL)
 {
 	CommandParser parser;
 	vector<string> cmd = { "fullwrite","3","0x12345678" };
-	bool returnval = parser.isInvalidCommand(cmd);
+	bool returnval = parser.isValidCommand(cmd);
 	EXPECT_EQ(false, returnval);
 
 }
@@ -83,7 +83,7 @@ TEST(INVALIDCMD, CHECKFULLREADPARAMNUM_PASS)
 {
 	CommandParser parser;
 	vector<string> cmd = { "fullread"};
-	bool returnval = parser.isInvalidCommand(cmd);
+	bool returnval = parser.isValidCommand(cmd);
 	EXPECT_EQ(true, returnval);
 
 }
@@ -91,7 +91,7 @@ TEST(INVALIDCMD, CHECKFULLREADPARAMNUM_FAIL)
 {
 	CommandParser parser;
 	vector<string> cmd = { "fullread","3","0x12345678" };
-	bool returnval = parser.isInvalidCommand(cmd);
+	bool returnval = parser.isValidCommand(cmd);
 	EXPECT_EQ(false, returnval);
 
 }
@@ -100,7 +100,7 @@ TEST(INVALIDCMD, CHECKEXITPARAMNUM_PASS)
 {
 	CommandParser parser;
 	vector<string> cmd = { "exit" };
-	bool returnval = parser.isInvalidCommand(cmd);
+	bool returnval = parser.isValidCommand(cmd);
 	EXPECT_EQ(true, returnval);
 
 }
@@ -108,7 +108,7 @@ TEST(INVALIDCMD, CHECKEXITPARAMNUM_FAIL)
 {
 	CommandParser parser;
 	vector<string> cmd = { "exit","3","0x12345678" };
-	bool returnval = parser.isInvalidCommand(cmd);
+	bool returnval = parser.isValidCommand(cmd);
 	EXPECT_EQ(false, returnval);
 
 }
@@ -116,7 +116,7 @@ TEST(INVALIDCMD, CHECKHELPPARAMNUM_PASS)
 {
 	CommandParser parser;
 	vector<string> cmd = { "help" };
-	bool returnval = parser.isInvalidCommand(cmd);
+	bool returnval = parser.isValidCommand(cmd);
 	EXPECT_EQ(true, returnval);
 
 }
@@ -124,7 +124,7 @@ TEST(INVALIDCMD, CHECKHELPARAMNUM_FAIL)
 {
 	CommandParser parser;
 	vector<string> cmd = { "help","3","0x12345678" };
-	bool returnval = parser.isInvalidCommand(cmd);
+	bool returnval = parser.isValidCommand(cmd);
 	EXPECT_EQ(false, returnval);
 
 }
@@ -133,25 +133,25 @@ TEST(INVALIDCMD, CHECKLBA_NOTNUMBER)
 	CommandParser parser;
 	vector<string> wrcmd = { "write","ee","0x12345678" };
 	
-	bool returnval = parser.isInvalidCommand(wrcmd);
+	bool returnval = parser.isValidCommand(wrcmd);
 	EXPECT_EQ(false, returnval);
 }
 TEST(INVALIDCMD, CHECKLBA_FAIL)
 {
 	CommandParser parser;
 	vector<string> wrcmd = { "write","200","0x12345678" };
-	bool returnval = parser.isInvalidCommand(wrcmd);
+	bool returnval = parser.isValidCommand(wrcmd);
 	vector<string> rdcmd = { "read","200" };
-	returnval = parser.isInvalidCommand(rdcmd);
+	returnval = parser.isValidCommand(rdcmd);
 	EXPECT_EQ(false, returnval);
 }
 TEST(INVALIDCMD, CHECKLBA_PASS)
 {
 	CommandParser parser;
 	vector<string> wrcmd = { "write","93","0x12345678" };
-	bool returnval = parser.isInvalidCommand(wrcmd);
+	bool returnval = parser.isValidCommand(wrcmd);
 	vector<string> rdcmd = { "read","93" };
-	returnval = parser.isInvalidCommand(rdcmd);
+	returnval = parser.isValidCommand(rdcmd);
 	EXPECT_EQ(true, returnval);
 }
 
@@ -174,7 +174,7 @@ TEST(INVALIDCMD, CHECKVALUE_FAIL)
 	int passIndex = 0;
 	for (vector<string> cmd : invalidcmdlist)
 	{
-		if (parser.isInvalidCommand(cmd) == true)
+		if (parser.isValidCommand(cmd) == true)
 			break;
 		passIndex++;
 	}
