@@ -34,7 +34,7 @@ public:
             if (std::remove(SSD_FILE_NAME.c_str()) == 0) {
             }
             else {
-                std::cout << "파일 삭제 실패\n";
+                std::cout << "fail to delete " << SSD_FILE_NAME << std::endl;
             }
         }
         // clear OUTPUT_FILE_
@@ -42,7 +42,8 @@ public:
             if (std::remove(OUTPUT_FILE_NAME.c_str()) == 0) {
             }
             else {
-                std::cout << "파일 삭제 실패\n";
+                std::cout << "fail to delete " << OUTPUT_FILE_NAME << std::endl;
+
             }
         }
     }
@@ -74,7 +75,7 @@ TEST_F(ReadTestFixture, NeverWrittenReadReturnZero) {
     ssdHelper.resetSSD();
 
     unsigned int address = 0x0;
-    ssd.readCommand.execute(address);
+    readCommand.execute(address);
 
     unsigned int readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
 
