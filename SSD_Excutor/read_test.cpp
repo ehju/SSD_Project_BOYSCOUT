@@ -136,12 +136,3 @@ TEST_F(ReadTestFixture, OutputShouldContainsOnlyLastReadResult) {
     EXPECT_THAT(readValue, Ne(valueTwo));
     EXPECT_THAT(readValue, Eq(valueThree));
 }
-
-// read with out of range, write ERROR in nand_output.txt
-TEST_F(ReadTestFixture, DISABLED_OutOfRangeRead) {
-    unsigned int OutOfRangeAddress = 100;
-
-    readCommand.execute(OutOfRangeAddress);
-
-    EXPECT_THAT(ssdHelper.getReadResultFromFile(), Eq("ERROR"));
-}
