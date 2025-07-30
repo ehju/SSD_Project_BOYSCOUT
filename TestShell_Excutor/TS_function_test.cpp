@@ -1,7 +1,9 @@
 #include "gmock/gmock.h"
 #include "TS_function.cpp"
+#include <vector>
 
 using namespace testing;
+using std::vector;
 
 class MockSSD : public DummySSD {
 public:
@@ -81,8 +83,28 @@ TEST_F(SSDFixture, NoWriteOutOfRangeLBA2) {
 TEST(TS_function, ReadFullReadTest) {
 	MockSSD ssd;
 	TS_function shell{ &ssd };
+	vector<unsigned int> result;
 	EXPECT_CALL(ssd, read(_))
 		.Times(100);
 
-	shell.fullread();
+	result = shell.fullread();
+}
+
+TEST(TS_function, ReadFullReadTestExpectedReturn) {
+	MockSSD ssd;
+	TS_function shell{ &ssd };
+	unsigned int data = 0x00000000;
+	
+	vector<unsigned int> expected_result;
+	vector<unsigned int> result;
+	for (int lba = 0; lba < 100; lba++) {
+		expected_result.push_back(data);
+		EXPECT_CALL(ssd, read(lba))
+			.Times(1)
+			.WillRepeatedly(Return(data));
+		data++;
+	}
+
+	result = shell.fullread();
+	EXPECT_EQ(expected_result, result);
 }
