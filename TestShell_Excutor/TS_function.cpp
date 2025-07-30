@@ -158,7 +158,6 @@ public:
 		int loopcount = 200;
 		for (int i = 0; i < loopcount; i++) {
 			randvalue = getRandomUnsignedInt();
-			std::cout << i << "\n";
 			if (!ssd->write(0, randvalue)) return false;
 			if (!ssd->write(99, randvalue)) return false;
 			if (!readCompare(0, randvalue)) return false;
