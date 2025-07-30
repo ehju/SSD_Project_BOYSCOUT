@@ -1,6 +1,6 @@
 #include "gmock/gmock.h"
 #include "ssd.cpp"
-
+#include "SSDHelper.cpp"
 class CommandParserMock : public CommandParser
 {
 public:
@@ -28,6 +28,11 @@ public:
 	char** dummyArgv{ nullptr };
 	std::string nand{ "ssd_nand.txt" };
 	std::ifstream file;
+
+	const unsigned int WRITE_CMD = 0;
+	const unsigned int READ_CMD = 1;
+	const unsigned int INVALID_CMD = 3;
+	SSDHelper ssdHelper;
 
 	void checkData(unsigned int expectedLba, unsigned int expectedValue, std::string actual)
 	{
@@ -101,4 +106,28 @@ TEST_F(SSDTS, SsdWriteTC3)
 
 	actual = directAccessNand(5);
 	checkData(5, 2, actual);
+}
+
+TEST_F(SSDTS, SsdReadAfterWrite)
+{
+	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
+		.WillOnce(testing::Return(CommandInfo{ WRITE_CMD, 1, (unsigned int)0x1 }))
+		.WillOnce(testing::Return(CommandInfo{ WRITE_CMD, 2, (unsigned int)0x2 }))
+		.WillOnce(testing::Return(CommandInfo{ READ_CMD, 1, 0xFFFFFFFF }))
+		.WillOnce(testing::Return(CommandInfo{ READ_CMD, 2, 0xFFFFFFFF }));
+
+	ssd->run(dummyArgc, dummyArgv);
+	ssd->run(dummyArgc, dummyArgv);
+	ssd->run(dummyArgc, dummyArgv);
+	EXPECT_EQ(ssdHelper.getReadResultFromFile(), "0x00000001");
+	ssd->run(dummyArgc, dummyArgv);
+	EXPECT_EQ(ssdHelper.getReadResultFromFile(), "0x00000002");
+}
+
+TEST_F(SSDTS, SsdReadError)
+{
+	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
+		.WillOnce(testing::Return(CommandInfo{ INVALID_CMD, 0xFFFFFFFF, 0xFFFFFFFF }));
+	ssd->run(dummyArgc, dummyArgv);
+	EXPECT_EQ(ssdHelper.getReadResultFromFile(), "ERROR");
 }
