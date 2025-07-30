@@ -1,7 +1,11 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <string>
+
+
 using std::vector;
+using std::string;
 
 #define interface struct
 
@@ -9,6 +13,19 @@ interface iTS_SSD {
 public:
 	virtual unsigned int read(int lba)=0;
 	virtual bool write(int lba , unsigned int data) = 0;
+};
+
+class SSDExecutor : public iTS_SSD {
+public:
+	unsigned int read(int lba) override {
+		return 0;
+	}
+	bool write(int lba, unsigned int data) override {
+
+		return 0;
+	}
+
+private:
 };
 
 class TS_function {

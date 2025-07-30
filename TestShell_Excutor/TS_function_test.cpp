@@ -149,3 +149,19 @@ TEST_F(SSDFixture, ReadCompareDifferentDataFail) {
 
 	EXPECT_EQ(false, shell.readCompare(lba, writtenData));
 }
+
+TEST_F(SSDFixture, SSDExWrite_Normal) {
+	SSDExecutor ssde;
+	TS_function shell(&ssde);
+	bool expected = true;
+
+	EXPECT_EQ(expected, shell.write(lba,data));
+}
+
+TEST_F(SSDFixture, SSDExRead_Normal) {
+	SSDExecutor ssde;
+	TS_function shell(&ssde);
+	bool expected = 0;
+
+	EXPECT_EQ(expected, shell.read(lba));
+}
