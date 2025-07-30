@@ -128,6 +128,7 @@ public:
 				if (!readCompare(data.lba, data.writtenData)) return false;
 				datas.pop();
 			}
+			writeData++;
 			if (curWriteLBA > LBA_MAX) break;
 		}
 		return true;
