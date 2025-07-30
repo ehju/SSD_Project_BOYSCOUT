@@ -12,7 +12,6 @@ protected:
 	void SetUp() override
 	{
 		ssd = std::make_shared<SSD>(&commandParserMock, &writeCommand, &readCommand);
-		file.open(nand);
 	}
 
 	void TearDown() override
@@ -54,14 +53,15 @@ public:
 TEST_F(SSDTS, SsdWriteTC1)
 {
 	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
-		.WillOnce(testing::Return(CommandInfo{ 0, 2, 4 }));
+		.WillRepeatedly(testing::Return(CommandInfo{ 0, 1, 4 }));
 
 	ssd->run(dummyArgc, dummyArgv);
 
 	std::string actual;
 
-	actual = directAccessNand(2);
-	checkData(2, 4, actual);
+	file.open(nand);
+	actual = directAccessNand(1);
+	checkData(1, 4, actual);
 }
 
 TEST_F(SSDTS, SsdWriteTC2)
@@ -75,6 +75,7 @@ TEST_F(SSDTS, SsdWriteTC2)
 
 	std::string actual;
 
+	file.open(nand);
 	actual = directAccessNand(2);
 	checkData(2, 4, actual);
 
@@ -94,6 +95,7 @@ TEST_F(SSDTS, SsdWriteTC3)
 
 	std::string actual;
 
+	file.open(nand);
 	actual = directAccessNand(2);
 	checkData(2, 4, actual);
 
