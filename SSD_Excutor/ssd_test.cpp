@@ -122,7 +122,7 @@ TEST_F(SSDTS, SsdReadAfterWrite)
 	EXPECT_EQ(ssdHelper.getReadResultFromFile(), "0x00000002");
 }
 
-TEST_F(SSDTS, SsdReadError)
+TEST_F(SSDTS, SSDInavlidCommandShouldPrintOutputError)
 {
 	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
 		.WillOnce(testing::Return(CommandInfo{ INVALID_CMD, 0xFFFFFFFF, 0xFFFFFFFF }));
