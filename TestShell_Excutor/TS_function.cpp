@@ -48,14 +48,13 @@ public:
 				data.writtenData = writeData;
 				if (curWriteLBA > LBA_MAX) break;
 				if (!ssd->write(data.lba, data.writtenData)) return false;
-				std::cout << "write" << data.lba << "  " << data.writtenData << "\n";
 				datas.push(data);
 				curWriteLBA++;
 			}
 			while (!datas.empty())
 			{
 				data = datas.front();
-				std::cout <<"read" << data.lba << "  " << data.writtenData << "\n";
+
 				if (!readCompare(data.lba, data.writtenData)) return false;
 				datas.pop();
 			}
