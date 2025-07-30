@@ -22,6 +22,12 @@ TEST_F(CPFixture, BasicValidCommand) {
 	EXPECT_EQ(CMD_BASIC_HELP, checkCommandType("help"));
 	EXPECT_EQ(CMD_BASIC_FULLWRITE, checkCommandType("fullwrite"));
 	EXPECT_EQ(CMD_BASIC_FULLREAD, checkCommandType("fullread"));
+	EXPECT_EQ(CMD_TS_FullWriteAndReadCompare, checkCommandType("1_FullWriteAndReadCompare"));
+	EXPECT_EQ(CMD_TS_FullWriteAndReadCompare, checkCommandType("1_"));
+	EXPECT_EQ(CMD_TS_PartialLBAWrite, checkCommandType("2_PartialLBAWrite"));
+	EXPECT_EQ(CMD_TS_PartialLBAWrite, checkCommandType("2_"));
+	EXPECT_EQ(CMD_TS_WriteReadAging, checkCommandType("3_WriteReadAging"));
+	EXPECT_EQ(CMD_TS_WriteReadAging, checkCommandType("3_"));
 }
 
 TEST(CPTest, RunCommandCallExit) {
@@ -82,6 +88,24 @@ TEST(CPTest, RunCommandFullWritePassDefault) {
 	const string cmdline = "fullwrite 0xAAAABBBB";
 
 	int expected = CMD_BASIC_FULLWRITE;
+	int actual = cp.runCommand(cmdline);
+
+	EXPECT_EQ(expected, actual);
+}
+TEST(CPTest, FullWriteAndReadCompareLong) {
+	CommandParser cp;
+	const string cmdline = "1_FullWriteAndReadCompare";
+
+	int expected = CMD_TS_FullWriteAndReadCompare;
+	int actual = cp.runCommand(cmdline);
+
+	EXPECT_EQ(expected, actual);
+}
+TEST(CPTest, FullWriteAndReadCompareShot) {
+	CommandParser cp;
+	const string cmdline = "1_";
+
+	int expected = CMD_TS_FullWriteAndReadCompare;
 	int actual = cp.runCommand(cmdline);
 
 	EXPECT_EQ(expected, actual);
