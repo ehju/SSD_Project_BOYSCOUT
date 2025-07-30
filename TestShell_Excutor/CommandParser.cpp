@@ -9,6 +9,7 @@ int CommandParser::runCommand(const string cmd) {
 		return CMD_NOT_SUPPORTED;
 
 	int type = getCommandType(cmdParms[0]);
+	runSubCommands(cmdParms, type);
 	return type;
 }
 
@@ -133,8 +134,50 @@ bool CommandParser::checkValidValue(vector<string> cmdSplits)
 	return false;
 }
 
+int CommandParser::runSubCommands(vector<string> cmdParms, int type)
+{
+	if (type == CMD_BASIC_WRITE) {
+		return runCommandWrite(cmdParms[1], cmdParms[2]);
+	}
+	else if (type == CMD_BASIC_READ) {
+		return runCommandRead(cmdParms[1]);
+	}
+	else if (type == CMD_BASIC_HELP) {
+		runCommandHelp();
+		return CMD_BASIC_HELP;
+	}
+	else if (type == CMD_BASIC_FULLWRITE) {
+		return runCommandFullWrite(cmdParms[1]);
+	}
+	else if (type == CMD_BASIC_FULLREAD) {
+		return runCommandFullRead();
+	}
+	else
+		return CMD_NOT_SUPPORTED;
+}
+
 bool CommandParser::runCommandWrite(const string lba, const string value)
 {
 	std::cout << "[Write] Done\n";
 	return true;
+}
+
+int CommandParser::runCommandRead(const string lba)
+{
+	return 0;
+}
+
+void CommandParser::runCommandHelp(void)
+{
+}
+
+bool CommandParser::runCommandFullWrite(const string value)
+{
+	std::cout << "[Write] Done\n";
+	return true;
+}
+
+int CommandParser::runCommandFullRead(void)
+{
+	return 0;
 }

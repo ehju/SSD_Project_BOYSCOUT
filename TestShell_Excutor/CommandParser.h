@@ -40,7 +40,12 @@ public:
 	int getCommandType(const string cmd);
 	bool isInvalidCommand(vector<string> str);
 	
+	int runSubCommands(vector<string> cmdParms, int type);
 	bool runCommandWrite(const string lba, const string value);
+	int runCommandRead(const string lba);
+	void runCommandHelp(void);
+	bool runCommandFullWrite(const string value);
+	int runCommandFullRead(void);
 private:
 	const int CMDINDEX = 0;
 	const int LBAINDEX =1;
