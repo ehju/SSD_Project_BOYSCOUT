@@ -1,8 +1,13 @@
+#pragma once
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <string>
+#include <sstream>
+
 using std::vector;
 using std::queue;
+using std::string;
 
 #define interface struct
 
@@ -12,11 +17,44 @@ public:
 	virtual bool write(int lba , unsigned int data) = 0;
 };
 
+
+class SSDExecutor : public iTS_SSD {
+public:
+	unsigned int read(int lba) override {
+		cmd = SSDEXCUTE + " read " + std::to_string(lba);
+		int result = std::system(cmd.c_str());
+		if (result == 0) {
+			throw std::exception("Error System Call read");
+		}
+
+		return 0;
+	}
+	bool write(int lba, unsigned int data) override {
+		cmd = SSDEXCUTE + " write " + std::to_string(lba) + " " + (toHex(lba));
+		int result = std::system(cmd.c_str());
+		if (result == 0) {
+			return false;
+		}
+		return true;
+
+	}
+
+private:
+
+	std::string toHex(unsigned int value) {
+		std::stringstream ss;
+		ss << "0x" << std::hex << std::uppercase << value;
+		return ss.str();
+	}
+	string cmd = "";
+	string SSDEXCUTE = "\".\\SSD_Excutor.exe" ;
+
+};
+
 struct WrittenData {
 	int lba;
 	unsigned int writtenData;
 };
-
 class TS_function {
 public:
 	TS_function(iTS_SSD* ssd) : ssd { ssd } {}

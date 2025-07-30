@@ -83,7 +83,7 @@ TEST_F(ReadTestFixture, NeverWrittenReadReturnZero) {
 }
 
 // if lba 1 is written with specific value, lba 1 read should return exactly same value.
-TEST_F(ReadTestFixture, DISABLED_CompareReadResultWithWriteValue) {
+TEST_F(ReadTestFixture, CompareReadResultWithWriteValue) {
     unsigned int address = 0x0;
     unsigned int writeValue = 0x0;
 
@@ -97,10 +97,10 @@ TEST_F(ReadTestFixture, DISABLED_CompareReadResultWithWriteValue) {
 
 // read should return 0x00000000 if non-written lba being read
 // write 0x0 and then read 0x1 which has never been written
-TEST_F(ReadTestFixture, DISABLED_NonWrittenLBARead) {
+TEST_F(ReadTestFixture, NonWrittenLBARead) {
     unsigned int writeAddress = 0x0;
     unsigned int readAddress = 0x1;
-    unsigned int writeValue = 0x0;
+    unsigned int writeValue = 0x1;
 
     ssdHelper.resetSSD();
     writeCommand.execute(writeAddress, writeValue);
@@ -112,13 +112,13 @@ TEST_F(ReadTestFixture, DISABLED_NonWrittenLBARead) {
 }
 
 // output.txt should contains last read command output which means overwrite should work
-TEST_F(ReadTestFixture, DISABLED_OutputShouldContainsOnlyLastReadResult) {
+TEST_F(ReadTestFixture, OutputShouldContainsOnlyLastReadResult) {
     unsigned int addressOne = 0x1;
     unsigned int addressTwo = 0x2;
     unsigned int addressThree = 0x3;
     unsigned int valueOne = 0x1;
-    unsigned int valueTwo = 0x1;
-    unsigned int valueThree = 0x1;
+    unsigned int valueTwo = 0x2;
+    unsigned int valueThree = 0x3;
 
     ssdHelper.resetSSD();
 
@@ -132,9 +132,9 @@ TEST_F(ReadTestFixture, DISABLED_OutputShouldContainsOnlyLastReadResult) {
 
     unsigned int readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
 
-    EXPECT_THAT(readValue, Ne(addressOne));
-    EXPECT_THAT(readValue, Ne(addressTwo));
-    EXPECT_THAT(readValue, Eq(addressThree));
+    EXPECT_THAT(readValue, Ne(valueOne));
+    EXPECT_THAT(readValue, Ne(valueTwo));
+    EXPECT_THAT(readValue, Eq(valueThree));
 }
 
 // read with out of range, write ERROR in nand_output.txt

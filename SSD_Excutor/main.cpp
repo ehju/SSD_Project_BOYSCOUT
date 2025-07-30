@@ -9,7 +9,12 @@ int main() {
 #else
 int main(int argc, char* argv[])
 {
-    SSD ssd;
+    Write writeCommand;
+    Read readCommand;
+    CommandParser commandParser;
+
+    SSD ssd(&commandParser, &writeCommand, &readCommand);
+
     ssd.run(argc, argv);
 }
 #endif

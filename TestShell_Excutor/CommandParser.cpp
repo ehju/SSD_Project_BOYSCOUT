@@ -5,11 +5,12 @@ using namespace std;
 int CommandParser::runCommand(const string cmd) {
 	// Precondition
 	vector<string> cmdParms = getCommandParams(cmd);
-	if (isInvalidCommand(cmdParms) == false)
+	if (isValidCommand(cmdParms) == false)
 		return CMD_NOT_SUPPORTED;
 
-	// TODO : Run command and Print Log
-	return getCommandType(cmdParms[0]);
+	int type = getCommandType(cmdParms[0]);
+	runSubCommands(cmdParms, type);
+	return type;
 }
 
 vector<string> CommandParser::getCommandParams(const string& cmd)
@@ -32,7 +33,7 @@ int CommandParser::getCommandType(const string cmd)
 	return this->cmdMap[cmd];
 }
 
-bool CommandParser::isInvalidCommand(vector<string> cmdSplits)
+bool CommandParser::isValidCommand(vector<string> cmdSplits)
 {
 	if (!checkCommand(cmdSplits))
 		return false;
@@ -133,5 +134,64 @@ bool CommandParser::checkValidValue(vector<string> cmdSplits)
 	return false;
 }
 
+int CommandParser::runSubCommands(vector<string> cmdParms, int type)
+{
+	if (type == CMD_BASIC_WRITE) {
+		return runCommandWrite(cmdParms[1], cmdParms[2]);
+	}
+	else if (type == CMD_BASIC_READ) {
+		return runCommandRead(cmdParms[1]);
+	}
+	else if (type == CMD_BASIC_HELP) {
+		runCommandHelp();
+		return CMD_BASIC_HELP;
+	}
+	else if (type == CMD_BASIC_FULLWRITE) {
+		return runCommandFullWrite(cmdParms[1]);
+	}
+	else if (type == CMD_BASIC_FULLREAD) {
+		return runCommandFullRead();
+	}
+	else
+		return CMD_NOT_SUPPORTED;
+}
 
+bool CommandParser::runCommandWrite(const string lba, const string value)
+{
+	int iLba = stoi(lba);
+	unsigned int iValue = strtoul(value.c_str(), nullptr, 16);
+	bool result = this->shell.write(iLba, iValue);
+	if (1) // FIXME
+		std::cout << "[Write] Done\n";
+	return result;
+}
 
+int CommandParser::runCommandRead(const string lba)
+{
+	int iLba = stoi(lba);
+	unsigned int iValue = this->shell.read(iLba);
+	printReadResult(iLba, iValue);
+	return iValue;
+}
+
+void CommandParser::printReadResult(int lba, unsigned int value)
+{
+	std::stringstream ss;
+	ss << "0x" << uppercase << hex << setw(8) << setfill('0') << value;
+	std::cout << "[Read] LBA " << lba << " : " << ss.str() << std::endl;
+}
+
+void CommandParser::runCommandHelp(void)
+{
+}
+
+bool CommandParser::runCommandFullWrite(const string value)
+{
+	std::cout << "[Write] Done\n";
+	return true;
+}
+
+int CommandParser::runCommandFullRead(void)
+{
+	return 0;
+}

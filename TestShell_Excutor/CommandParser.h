@@ -1,10 +1,19 @@
 #pragma once
+#include "gmock/gmock.h"
+#include "TS_function.cpp"
+
 #include <vector>
 #include <iostream>
 #include <string>
 #include <unordered_map>
 using std::string;
 using std::vector;
+
+class MockSSD : public iTS_SSD {
+public:
+	MOCK_METHOD(unsigned int, read, (int lba), (override));
+	MOCK_METHOD(bool, write, (int lba, unsigned int data), (override));
+};
 
 enum CommandType {
 	CMD_NOT_SUPPORTED = -1,
@@ -38,8 +47,15 @@ public:
 	int runCommand(const string cmd);
 	vector<string> getCommandParams(const std::string& cmd);
 	int getCommandType(const string cmd);
-	bool isInvalidCommand(vector<string> str);
+	bool isValidCommand(vector<string> str);
 	
+	int runSubCommands(vector<string> cmdParms, int type);
+	bool runCommandWrite(const string lba, const string value);
+	int runCommandRead(const string lba);
+	void printReadResult(int lba, unsigned int value);
+	void runCommandHelp(void);
+	bool runCommandFullWrite(const string value);
+	int runCommandFullRead(void);
 private:
 	const int CMDINDEX = 0;
 	const int LBAINDEX =1;
@@ -62,4 +78,5 @@ private:
 	bool checkValidLBA(vector<string> str);
 	bool checkValidValue(vector<string> str);
 	
+	TS_function shell{ new testing::NiceMock<MockSSD>()};
 };

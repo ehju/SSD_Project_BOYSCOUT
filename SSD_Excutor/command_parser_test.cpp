@@ -12,7 +12,7 @@ TEST(CommandParserTS, InvalidCommandTC1)
 
 	argumentPointer[0] = argu1;
 
-	CommandInfo expected = { 0xFFFFFFFF, 0xFFFFFFFF , 0xFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFF , 0xFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	EXPECT_EQ(expected.command, actual.command);
 	EXPECT_EQ(expected.lba, actual.lba);
@@ -37,7 +37,7 @@ TEST(CommandParserTS, WriteTC1)
 	argumentPointer[2] = argu3;
 
 
-	CommandInfo expected = { 0, 0 , 0xFF23001D };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_WRITE, 0 , 0xFF23001D };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	EXPECT_EQ(expected.command, actual.command);
 	EXPECT_EQ(expected.lba, actual.lba);
@@ -61,7 +61,7 @@ TEST(CommandParserTS, WriteTC2)
 	argumentPointer[2] = argu3;
 
 
-	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = {(unsigned int) SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	EXPECT_EQ(expected.command, actual.command);
 	EXPECT_EQ(expected.lba, actual.lba);
@@ -85,7 +85,7 @@ TEST(CommandParserTS, WriteTC3)
 	argumentPointer[2] = argu3;
 
 
-	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	EXPECT_EQ(expected.command, actual.command);
 	EXPECT_EQ(expected.lba, actual.lba);
@@ -109,7 +109,7 @@ TEST(CommandParserTS, WriteTC4)
 	argumentPointer[2] = argu3;
 
 
-	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	EXPECT_EQ(expected.command, actual.command);
 	EXPECT_EQ(expected.lba, actual.lba);
@@ -133,7 +133,7 @@ TEST(CommandParserTS, WriteTC5)
 	argumentPointer[2] = argu3;
 
 
-	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	EXPECT_EQ(expected.command, actual.command);
 	EXPECT_EQ(expected.lba, actual.lba);
@@ -157,7 +157,7 @@ TEST(CommandParserTS, WriteTC6)
 	argumentPointer[2] = argu3;
 
 
-	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	EXPECT_EQ(expected.command, actual.command);
 	EXPECT_EQ(expected.lba, actual.lba);
@@ -175,7 +175,7 @@ TEST(CommandParserTS, WriteTC7)
 
 	argumentPointer[0] = argu1;
 
-	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	EXPECT_EQ(expected.command, actual.command);
 	EXPECT_EQ(expected.lba, actual.lba);
@@ -220,7 +220,7 @@ TEST(CommandParserTS, ReadTC2)
 	argumentPointer[1] = argu2;
 	argumentPointer[2] = argu3;
 
-	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	EXPECT_EQ(expected.command, actual.command);
 	EXPECT_EQ(expected.lba, actual.lba);
@@ -238,7 +238,7 @@ TEST(CommandParserTS, ReadTC3)
 
 	argumentPointer[0] = argu1;
 
-	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	EXPECT_EQ(expected.command, actual.command);
 	EXPECT_EQ(expected.lba, actual.lba);
@@ -260,7 +260,7 @@ TEST(CommandParserTS, ReadTC4)
 	argumentPointer[1] = argu2;
 
 
-	CommandInfo expected = { 0xFFFFFFFFF, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	EXPECT_EQ(expected.command, actual.command);
 	EXPECT_EQ(expected.lba, actual.lba);

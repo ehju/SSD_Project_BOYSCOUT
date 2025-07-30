@@ -40,3 +40,31 @@ TEST(CPTest, RunCommandCallRed) {
 	const string cmdline = "read 0";
 	EXPECT_EQ(CMD_BASIC_READ, cp.runCommand(cmdline));
 }
+TEST(CPTest, RunCommandWritePassDefault) {
+	CommandParser cp;
+	const string cmdline = "write 3 0xAAAABBBB";
+
+	std::stringstream buffer;
+	std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
+	int expected = CMD_BASIC_WRITE;
+	int actual = cp.runCommand(cmdline);
+
+	std::cout.rdbuf(old);
+	string output = buffer.str();
+	EXPECT_EQ(expected, actual);
+	EXPECT_EQ(output, "[Write] Done\n");
+}
+TEST(CPTest, RunCommandReadPassDefault) {
+	CommandParser cp;
+	const string cmdline = "read 3";
+
+	std::stringstream buffer;
+	std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
+	int expected = CMD_BASIC_READ;
+	int actual = cp.runCommand(cmdline);
+
+	std::cout.rdbuf(old);
+	string output = buffer.str();
+	EXPECT_EQ(expected, actual);
+	EXPECT_EQ(output, "[Read] LBA 3 : 0x00000000\n");
+}
