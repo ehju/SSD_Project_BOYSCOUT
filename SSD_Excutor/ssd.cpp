@@ -30,6 +30,10 @@ public:
 		{
 			readCommand->execute(commandInfo.lba);
 		}
-
+		else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID))
+		{
+			std::string errorStr = "ERROR";
+			readCommand->writeOutputFile(errorStr);
+		}
 	}
 };
