@@ -6,8 +6,9 @@
 
 class FileUtil {
 public:
-	void deletePrevOutputFile()
+	static void deletePrevOutputFile()
 	{
+		static const std::string OUTPUT_FILE = "ssd_output.txt";
 		if (file_exists(OUTPUT_FILE)) {
 			if (deleteFile(OUTPUT_FILE) == DELETE_SUCCESS) {
 			}
@@ -17,16 +18,27 @@ public:
 		}
 	}
 
+	static void writeOutputFile(std::string& writeString)
+	{
+		static const std::string OUTPUT_FILE = "ssd_output.txt";
+		std::ofstream out(OUTPUT_FILE);
+		if (out.is_open()) {
+			out << writeString;
+			out.close();
+		}
+		else {
+			std::cout << "fail to create output file";
+		}
+	}
+
 private:
-	bool file_exists(const std::string& filename) {
+	static bool file_exists(const std::string& filename) {
 		std::ifstream file(filename);
 		return file.good();
 	}
-	int deleteFile(const std::string& fileName)
+	static int deleteFile(const std::string& fileName)
 	{
 		return std::remove(fileName.c_str());
 	}
-	const std::string NAND_FILE = "ssd_nand.txt";
-	const std::string OUTPUT_FILE = "ssd_output.txt";
-	const int DELETE_SUCCESS = 0;
+	static const int DELETE_SUCCESS = 0;
 };

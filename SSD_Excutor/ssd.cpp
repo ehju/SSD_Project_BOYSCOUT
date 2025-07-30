@@ -35,11 +35,10 @@ public:
 	CommandParser* commandParser;
 	CommandFactory commandFactory;
 	std::vector<std::shared_ptr<ICommand>> commandList;
-	FileUtil fileUtil;
 
 	void run(int argc, char* argv[])
 	{
-		fileUtil.deletePrevOutputFile();
+		FileUtil::deletePrevOutputFile();
 
 		CommandInfo commandInfo = commandParser->parse(argc, argv);
 
@@ -54,7 +53,7 @@ public:
 		else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID))
 		{
 			std::string errorStr = "ERROR";
-			commandList[static_cast<int>(SSDCommand::SSDCommand_READ)]->writeOutputFile(errorStr);
+			FileUtil::writeOutputFile(errorStr);
 		}
 	}
 
