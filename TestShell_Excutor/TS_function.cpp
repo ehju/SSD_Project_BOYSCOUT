@@ -112,7 +112,6 @@ public:
 		int LBA_MIN = 0;
 		int curWriteLBA = LBA_MIN;
 		int curReadLBA = LBA_MIN;
-		bool flag;
 		queue <WrittenData> datas;
 		WrittenData data;
 		
