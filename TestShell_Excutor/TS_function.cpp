@@ -36,7 +36,7 @@ public:
 
 	bool fullwrite(unsigned int data) {
 		for (int lba = 0; lba < 100; lba++) {
-			if (ssd->write(lba, data) == false) return false;
+			if (!ssd->write(lba, data)) return false;
 		}
 		return true;
 	}
