@@ -12,6 +12,11 @@ class TS_function {
 public:
 	TS_function(DummySSD* ssd) : ssd { ssd } {}
 
+	bool readCompare(int lba, unsigned int writtenData) { return true; };
+	bool fullWriteAndReadCompare() { return true; }
+	bool partialLBAWrite() { return true; }
+	bool writeReadAging() { return true; }
+
 	unsigned int read(int lba) {
 		if (lba < 0 || lba > 99) {
 			throw std::exception("invalid LBA");
