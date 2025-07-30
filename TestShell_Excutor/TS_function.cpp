@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <iomanip> 
 
 using std::vector;
 using std::queue;
@@ -71,8 +72,8 @@ private:
 
 
 	std::string toHex(unsigned int value) {
-		std::stringstream ss;
-		ss << "0x" << std::hex << std::uppercase << value;
+		std::ostringstream ss;
+		ss << "0x" << std::uppercase << std::setfill('0') << std::setw(8) << std::hex << value;
 		return ss.str();
 	}
 	string cmd = "";
