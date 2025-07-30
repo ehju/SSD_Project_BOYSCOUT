@@ -79,7 +79,6 @@ TEST_F(SSDFixture, NoWriteOutOfRangeLBA2) {
 	shell.write(lba, data);
 }
 
-
 TEST_F(SSDFixture, ReadFullReadTest) {
 
 	vector<unsigned int> result;
@@ -105,3 +104,13 @@ TEST_F(SSDFixture, ReadFullReadTestExpectedReturn) {
 	result = shell.fullread();
 	EXPECT_EQ(expected_result, result);
 }
+
+TEST_F(SSDFixture, FullWriteNormal) {
+	data = 0xABCDFFFF;
+	EXPECT_CALL(ssd, write(_, data))
+		.Times(100)
+		.WillRepeatedly(Return(true));
+
+	EXPECT_EQ(true, shell.fullwrite(data));
+}
+
