@@ -142,6 +142,9 @@ int CommandParser::runSubCommands(vector<string> cmdParms, int type)
 	else if (type == CMD_BASIC_READ) {
 		return runCommandRead(cmdParms[1]);
 	}
+	else if (type == CMD_BASIC_EXIT) {
+		return CMD_BASIC_EXIT;
+	}
 	else if (type == CMD_BASIC_HELP) {
 		runCommandHelp();
 		return CMD_BASIC_HELP;
@@ -152,8 +155,11 @@ int CommandParser::runSubCommands(vector<string> cmdParms, int type)
 	else if (type == CMD_BASIC_FULLREAD) {
 		return runCommandFullRead();
 	}
-	else
+	else if (type == CMD_NOT_SUPPORTED)
 		return CMD_NOT_SUPPORTED;
+	else {
+		return runCommandTestScenario(type);
+	}
 }
 
 bool CommandParser::runCommandWrite(const string lba, const string value)
@@ -161,8 +167,12 @@ bool CommandParser::runCommandWrite(const string lba, const string value)
 	int iLba = stoi(lba);
 	unsigned int iValue = strtoul(value.c_str(), nullptr, 16);
 	bool result = this->shell.write(iLba, iValue);
-	if (1) // FIXME
+#ifdef _DEBUG
+	std::cout << "[Write] Done\n";
+#else
+	if (result)
 		std::cout << "[Write] Done\n";
+#endif
 	return result;
 }
 
@@ -197,8 +207,12 @@ bool CommandParser::runCommandFullWrite(const string value)
 {
 	unsigned int iValue = strtoul(value.c_str(), nullptr, 16);
 	bool result = this->shell.fullwrite(iValue);
-	if (1) // FIXME
+#ifdef _DEBUG
+	std::cout << "[Write] Done\n";
+#else
+	if (result)
 		std::cout << "[Write] Done\n";
+#endif
 	return true;
 }
 
@@ -210,4 +224,19 @@ int CommandParser::runCommandFullRead(void)
 		printReadResult(lba++, value);
 	}
 	return 0;
+}
+
+int CommandParser::runCommandTestScenario(int type)
+{
+	bool result = false;
+	if (type == CMD_TS_FullWriteAndReadCompare)
+		result = this->shell.fullWriteAndReadCompare();
+	else if (type == CMD_TS_PartialLBAWrite)
+		result = this->shell.partialLBAWrite();
+	else if (type == CMD_TS_WriteReadAging)
+		result = this->shell.writeReadAging();
+
+	std::cout << (result ? "PASS" : "FAIL") << std::endl;
+
+	return result;
 }
