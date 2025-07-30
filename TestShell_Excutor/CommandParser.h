@@ -39,6 +39,7 @@ public:
 	int getCommandType(const string cmd);
 	bool invalidCommandCheck(string str);
 	bool checkParamNum(vector<string> str);
+	bool checkValidLBA(vector<string> str);
 
 private:
 	std::unordered_map<string, int> cmdMap = {

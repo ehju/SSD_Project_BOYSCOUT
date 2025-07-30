@@ -119,3 +119,29 @@ TEST(INVALIDCMD, CHECKHELPARAMNUM_FAIL)
 	EXPECT_EQ(false, returnval);
 
 }
+TEST(INVALIDCMD, CHECKLBA_NOTNUMBER)
+{
+	CommandParser parser;
+	vector<string> wrcmd = { "write","ee","0x12345678" };
+	
+	bool returnval = parser.checkValidLBA(wrcmd);
+	EXPECT_EQ(false, returnval);
+}
+TEST(INVALIDCMD, CHECKWRITELBA_FAIL)
+{
+	CommandParser parser;
+	vector<string> wrcmd = { "write","200","0x12345678" };
+	bool returnval = parser.checkValidLBA(wrcmd);
+	vector<string> rdcmd = { "read","200" };
+	returnval = parser.checkValidLBA(rdcmd);
+	EXPECT_EQ(false, returnval);
+}
+TEST(INVALIDCMD, CHECKWRITELBA_PASS)
+{
+	CommandParser parser;
+	vector<string> wrcmd = { "write","93","0x12345678" };
+	bool returnval = parser.checkValidLBA(wrcmd);
+	vector<string> rdcmd = { "read","93" };
+	returnval = parser.checkValidLBA(rdcmd);
+	EXPECT_EQ(true, returnval);
+}
