@@ -1,5 +1,5 @@
 #include "gmock/gmock.h"
-#include "CommandParser.h";
+#include "CommandParser.h"
 using std::string;
 using std::cout;
 
