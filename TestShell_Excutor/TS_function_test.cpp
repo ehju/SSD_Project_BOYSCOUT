@@ -149,3 +149,19 @@ TEST_F(SSDFixture, ReadCompareDifferentDataFail) {
 
 	EXPECT_EQ(false, shell.readCompare(lba, writtenData));
 }
+
+
+TEST_F(SSDFixture, FullWriteAndReadCompareShouldCallFullRangeSSDcommand) {
+	unsigned int writtenData = 0x12345678;
+	unsigned int readData = writtenData;
+	EXPECT_CALL(ssd, write(_, writtenData))
+		.Times(100)
+		.WillOnce(Return(true));
+	
+	EXPECT_CALL(ssd, read(_))
+		.Times(100)
+		.WillRepeatedly(Return(readData));
+
+	EXPECT_EQ(true, shell.fullWriteAndReadCompare());
+}
+
