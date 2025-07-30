@@ -36,6 +36,8 @@ public:
 	bool isValidCommand(std::vector<std::string> str);
 	CommandInfo MakeCommandInfo(std::vector<std::string> str);
 
+	void getLBAValue(CommandFormat& cmddata, CommandInfo& ret, std::vector<std::string>& cmdSplits);
+
 private:
 	std::vector<CommandFormat> commandlist = {
 		{"W",2,true,true,(int)SSDCommand::SSDCommand_WRITE},
@@ -52,4 +54,5 @@ private:
 	bool checkParamNum(std::vector<std::string> str);
 	bool checkValidLBA(std::vector<std::string> str);
 	bool checkValidValue(std::vector<std::string> str);
+	unsigned int getLBAValue(const CommandFormat& cmddata, std::string str);
 };
