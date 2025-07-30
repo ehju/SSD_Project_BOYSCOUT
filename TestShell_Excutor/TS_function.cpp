@@ -35,7 +35,10 @@ public:
 	}
 
 	bool fullwrite(unsigned int data) {
-		return 0;
+		for (int lba = 0; lba < 100; lba++) {
+			if (ssd->write(lba, data) == false) return false;
+		}
+		return true;
 	}
 
 private:
