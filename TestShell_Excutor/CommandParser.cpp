@@ -70,7 +70,7 @@ bool CommandParser::checkValidLBA(vector<string> cmdSplits)
 			{
 
 				string lbastr = cmdSplits[1];
-				if (lbastr.size() > 2)
+				if (lbastr.size() <= 0 || lbastr.size() > LBAMAXLENGTH)
 					return false;
 				
 				for (char lbach : lbastr)
@@ -98,12 +98,12 @@ bool CommandParser::checkValidValue(vector<string> cmdSplits)
 			{
 				int valueIndex = cmddata.paramnum-1; //value is lastindex
 				string valueStr = cmdSplits[valueIndex];
-				if (valueStr.size() != 10)
+				if (valueStr.size() != VALUELENGTH)
 					return false;
 				else if (valueStr[0] != '0' || valueStr[1] != 'x')
 					return false;
 				bool result = true;
-				for (int i = 2; i < 10; i++)
+				for (int i = VALUESTART; i < VALUELENGTH; i++)
 				{
 					if (valueStr[i] >= '0' && valueStr[i] <= '9')
 						continue;
@@ -115,7 +115,7 @@ bool CommandParser::checkValidValue(vector<string> cmdSplits)
 				return true;
 			}
 			else
-				return true;
+				return true; //not use value string
 		}
 	}
 	return false;
