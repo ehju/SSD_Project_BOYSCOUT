@@ -22,6 +22,12 @@ TEST_F(CPFixture, BasicValidCommand) {
 	EXPECT_EQ(CMD_BASIC_HELP, checkCommandType("help"));
 	EXPECT_EQ(CMD_BASIC_FULLWRITE, checkCommandType("fullwrite"));
 	EXPECT_EQ(CMD_BASIC_FULLREAD, checkCommandType("fullread"));
+	EXPECT_EQ(CMD_TS_FullWriteAndReadCompare, checkCommandType("1_FullWriteAndReadCompare"));
+	EXPECT_EQ(CMD_TS_FullWriteAndReadCompare, checkCommandType("1_"));
+	EXPECT_EQ(CMD_TS_PartialLBAWrite, checkCommandType("2_PartialLBAWrite"));
+	EXPECT_EQ(CMD_TS_PartialLBAWrite, checkCommandType("2_"));
+	EXPECT_EQ(CMD_TS_WriteReadAging, checkCommandType("3_WriteReadAging"));
+	EXPECT_EQ(CMD_TS_WriteReadAging, checkCommandType("3_"));
 }
 
 TEST(CPTest, RunCommandCallExit) {
