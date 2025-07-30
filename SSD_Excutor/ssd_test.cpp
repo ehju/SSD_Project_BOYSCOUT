@@ -7,39 +7,96 @@ public:
 	MOCK_METHOD(CommandInfo, parse, (int argc, char* argv[]), (override));
 };
 
-TEST(SSDTS, TC1)
-{
-	CommandParserMock commandParserMock;
-	Write writeCommand;
-	Read readCommand;
-
-	SSD ssd{ &commandParserMock, &writeCommand, &readCommand };
-	
-	int dummyArgc = 0;
-	char* argv1[] = { nullptr };
-
-	CommandInfo mockReturned = { 0, 0, 1 };
-	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
-		.WillOnce(testing::Return(mockReturned));
-
-	ssd.run(dummyArgc, argv1);
-
-
-	std::string filename = "ssd_nand.txt";
-	std::ifstream file(filename);
-	std::string line;
-
-	std::string expected = "0 0x00000001";
-
-	if (file.is_open())
+class SSDTS : public testing::Test {
+protected:
+	void SetUp() override
 	{
-		getline(file, line);
-		EXPECT_EQ(expected, line);
+		ssd = std::make_shared<SSD>(&commandParserMock, &writeCommand, &readCommand);
+		file.open(nand);
+	}
+
+	void TearDown() override
+	{
 		file.close();
 	}
-	else
+
+public:
+	testing::NiceMock<CommandParserMock> commandParserMock;
+	Write writeCommand;
+	Read readCommand;
+	std::shared_ptr<SSD> ssd;
+	int dummyArgc{ 0 };
+	char** dummyArgv{ nullptr };
+	std::string nand{ "ssd_nand.txt" };
+	std::ifstream file;
+
+	void checkData(unsigned int expectedLba, unsigned int expectedValue, std::string actual)
 	{
-		FAIL();
+		std::string expected = "";
+		std::ostringstream ss;
+		ss << "0x" << std::setfill('0') << std::setw(8) << std::hex << expectedValue;
+		expected = std::to_string(expectedLba) + " " + ss.str();
+		EXPECT_EQ(expected, actual);
 	}
 
+	std::string directAccessNand(unsigned int lba)
+	{
+		std::string line = "";
+		file.seekg(0);
+		for (int i = 0; i <= lba; i++)
+		{
+			getline(file, line);
+		}
+		return line;
+	}
+};
+
+TEST_F(SSDTS, SsdWriteTC1)
+{
+	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
+		.WillOnce(testing::Return(CommandInfo{ 0, 2, 4 }));
+
+	ssd->run(dummyArgc, dummyArgv);
+
+	std::string actual;
+
+	actual = directAccessNand(2);
+	checkData(2, 4, actual);
+}
+
+TEST_F(SSDTS, SsdWriteTC2)
+{
+	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
+		.WillOnce(testing::Return(CommandInfo{ 0, 2, 4 }))
+		.WillOnce(testing::Return(CommandInfo{ 0, 5, 2 }));
+
+	ssd->run(dummyArgc, dummyArgv);
+	ssd->run(dummyArgc, dummyArgv);
+
+	std::string actual;
+
+	actual = directAccessNand(2);
+	checkData(2, 4, actual);
+
+	actual = directAccessNand(5);
+	checkData(5, 2, actual);
+}
+
+TEST_F(SSDTS, SsdWriteTC3)
+{
+	CommandInfo mockReturned = { 0, 2, 4 };
+	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
+		.WillOnce(testing::Return(CommandInfo{ 0, 2, 4 }))
+		.WillOnce(testing::Return(CommandInfo{ 0, 5, 2 }));
+
+	ssd->run(dummyArgc, dummyArgv);
+	ssd->run(dummyArgc, dummyArgv);
+
+	std::string actual;
+
+	actual = directAccessNand(2);
+	checkData(2, 4, actual);
+
+	actual = directAccessNand(5);
+	checkData(5, 2, actual);
 }
