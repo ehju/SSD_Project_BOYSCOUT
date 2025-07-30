@@ -52,6 +52,7 @@ public:
 	int runSubCommands(vector<string> cmdParms, int type);
 	bool runCommandWrite(const string lba, const string value);
 	int runCommandRead(const string lba);
+	void printReadResult(int lba, unsigned int value);
 	void runCommandHelp(void);
 	bool runCommandFullWrite(const string value);
 	int runCommandFullRead(void);

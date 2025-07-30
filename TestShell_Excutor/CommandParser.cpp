@@ -158,13 +158,27 @@ int CommandParser::runSubCommands(vector<string> cmdParms, int type)
 
 bool CommandParser::runCommandWrite(const string lba, const string value)
 {
-	std::cout << "[Write] Done\n";
-	return true;
+	int iLba = stoi(lba);
+	unsigned int iValue = strtoul(value.c_str(), nullptr, 16);
+	bool result = this->shell.write(iLba, iValue);
+	if (1) // FIXME
+		std::cout << "[Write] Done\n";
+	return result;
 }
 
 int CommandParser::runCommandRead(const string lba)
 {
-	return 0;
+	int iLba = stoi(lba);
+	unsigned int iValue = this->shell.read(iLba);
+	printReadResult(iLba, iValue);
+	return iValue;
+}
+
+void CommandParser::printReadResult(int lba, unsigned int value)
+{
+	std::stringstream ss;
+	ss << "0x" << uppercase << hex << setw(8) << setfill('0') << value;
+	std::cout << "[Read] LBA " << lba << " : " << ss.str() << std::endl;
 }
 
 void CommandParser::runCommandHelp(void)
