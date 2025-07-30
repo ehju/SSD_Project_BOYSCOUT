@@ -131,7 +131,7 @@ TEST(CPTest, RunHelpCommand) {
 
 	std::cout.rdbuf(old);
 	string output = buffer.str();
-
+	std::cout << output;
 	EXPECT_EQ(expected, actual);
 	for (string str : containsString)
 	{

@@ -35,26 +35,24 @@ struct CommandFormat
 	int paramnum;
 	bool isUseLBA;
 	bool isUseValue;
-};
-struct HelpData {
-	string command;
 	string usage;
 };
+
 class CommandParser {
 public:
 	vector<CommandFormat> commandlist = {
-		{"write",2,true,true},
-		{"read",1,true,false},
-		{"exit",0,false,false },
-		{"help",0,false,false},
-		{"fullwrite",1,false,true},
-		{"fullread",0,false,false},
-		{"1_FullWriteAndReadCompare",0,false,false},
-		{"1_",0,false,false},
-		{"2_PartialLBAWrite",0,false,false},
-		{"2_",0,false,false},
-		{"3_WriteReadAging",0,false,false},
-		{"3_",0,false,false},
+		{"write",2,true,true," <LBA> <VALUE> : LBA = 0~99 , VALUE = 0x00000000~0xFFFFFFFF(10 Digit)// Write Value @LBA"},
+		{"read",1,true,false," <LBA>         : LBA = 0~99 // Read @LBA"},	
+		{"fullwrite",1,false,true," <VALUE>  : VALUE = 0x00000000~0xFFFFFFFF(10 Digit) // Write Value @ALL LBA"},
+		{"fullread",0,false,false,"          : No Param //Read Full Range"},
+		{"1_FullWriteAndReadCompare",0,false,false," : No Param //Write and Read Compare @ AllRange"},
+		{"1_",0,false,false,"		: No Param//Write and Read Compare @ AllRange"},
+		{"2_PartialLBAWrite",0,false,false," : No Param //(Write 0x12345678 @LBA_0~4 & ReadCompare) * 30 times"},
+		{"2_",0,false,false,"		: No Param//(Write 0x12345678 @LBA_0~4 & ReadCompare) * 30 times"},
+		{"3_WriteReadAging",0,false,false," : No Param //(Write RandomValue @LBA_9 and @LBA_99) * 200 times"},
+		{"3_",0,false,false,"		: No Param//(Write RandomValue @LBA_9 and @LBA_99) * 200 times"},
+		{"exit",0,false,false,"		: No Param//Terminate Shell" },
+		{"help",0,false,false,"		: No Param//Print Command Usage"},
 	};
 	int runCommand(const string cmd);
 	vector<string> getCommandParams(const std::string& cmd);
@@ -78,17 +76,7 @@ private:
 	const string teamName = "BOYSCOUT";
 	const string teamLeader = "¹Ú¼¼¿î";
 	const string teamMemberName = "ÀÌ½ÂÇö/ÁÖÀºÇý/Á¤Áø¼·/ÇãÈÆ/Á¤ÇýÁø";
-	vector<HelpData> commandUsage = {
-		{"write"," <LBA> <VALUE> : LBA = 0~99 , VALUE = 0x00000000~0xFFFFFFFF(10 Digit)// Write Value @LBA"},
-		{"read"," <LBA> : LBA = 0~99 // Read @LBA"},
-		{"fullwrite"," <VALUE>  : VALUE = 0x00000000~0xFFFFFFFF(10 Digit) // Write Value @ALL LBA"},
-		{"fullread","//Read Full Range"},
-		{"1_FullWriteAndReadCompare","or 1_ //Write and Read Compare @ AllRange"},
-		{"2_PartialLBAWrite","or 2_ //(Write 0x12345678 @LBA_0~4 & ReadCompare) * 30 times"},
-		{"3_WriteReadAging","or 3_ //(Write RandomValue @LBA_9 and @LBA_99* 200 times"},
-		{"exit","//Terminate Shell"},
-		{"help","//Print Command Usage"},
-	};
+	
 	std::unordered_map<string, int> cmdMap = {
 		{"write", CMD_BASIC_WRITE },
 		{"read", CMD_BASIC_READ },

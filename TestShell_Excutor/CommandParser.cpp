@@ -186,9 +186,9 @@ void CommandParser::runCommandHelp(void)
 	std::cout <<"* TEAM_NAME: " << teamName << std::endl;
 	std::cout << "* TEAM_LEADER: " << teamLeader << std::endl;
 	std::cout << "* TEAM_MEMBER: " << teamMemberName << std::endl;
-	for (HelpData data : commandUsage)
+	for (CommandFormat data : commandlist)
 	{
-		std::cout << data.command << data.usage << std::endl;
+		std::cout << data.cmd << data.usage << std::endl;
 	}
 }
 
