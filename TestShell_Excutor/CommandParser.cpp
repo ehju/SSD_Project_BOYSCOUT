@@ -5,7 +5,7 @@ using namespace std;
 int CommandParser::runCommand(const string cmd) {
 	// Precondition
 	vector<string> cmdParms = getCommandParams(cmd);
-	if (isInvalidCommand(cmdParms) == false)
+	if (isValidCommand(cmdParms) == false)
 		return CMD_NOT_SUPPORTED;
 
 	// TODO : Run command and Print Log
@@ -32,7 +32,7 @@ int CommandParser::getCommandType(const string cmd)
 	return this->cmdMap[cmd];
 }
 
-bool CommandParser::isInvalidCommand(vector<string> cmdSplits)
+bool CommandParser::isValidCommand(vector<string> cmdSplits)
 {
 	if (!checkCommand(cmdSplits))
 		return false;

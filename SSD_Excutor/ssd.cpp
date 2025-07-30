@@ -1,14 +1,9 @@
 #include <iostream>
 #include "read.cpp"
 #include "write.cpp"
-#include "command_parser.cpp"
+#include "command_parser.h"
 
-enum class SSDCommand
-{
-	SSDCommand_WRITE = 0,
-	SSDCommand_READ,
-	SSDCommand_Count
-};
+
 
 class SSD
 {
