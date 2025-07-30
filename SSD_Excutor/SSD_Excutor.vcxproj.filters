@@ -48,6 +48,9 @@
     <ClCompile Include="command_parser_test.cpp">
       <Filter>테스트파일</Filter>
     </ClCompile>
+    <ClCompile Include="ssd_test.cpp">
+      <Filter>테스트파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -3,12 +3,12 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include "ssd.cpp"
+#include "write.cpp"
 
 TEST(WriteCommandTS, FirstWriteAndCreateSsdNandTxtTC)
 {
-	SSD ssd;
-	ssd.writeCommand.execute(0, 1);
+	Write write;
+	write.execute(0, 1);
 
 	std::string filename = "ssd_nand.txt";
 	std::ifstream file(filename);
@@ -18,8 +18,8 @@ TEST(WriteCommandTS, FirstWriteAndCreateSsdNandTxtTC)
 
 TEST(WriteCommandTS, OneWrite)
 {
-	SSD ssd;
-	ssd.writeCommand.execute(0, 1);
+	Write write;
+	write.execute(0, 1);
 
 	std::string filename = "ssd_nand.txt";
 	std::ifstream file(filename);
@@ -42,9 +42,9 @@ TEST(WriteCommandTS, OneWrite)
 
 TEST(WriteCommandTS, OverWriteTC)
 {
-	SSD ssd;
-	ssd.writeCommand.execute(0, 1);
-	ssd.writeCommand.execute(0, 3);
+	Write write;
+	write.execute(0, 1);
+	write.execute(0, 3);
 
 
 	std::string filename = "ssd_nand.txt";
@@ -67,10 +67,10 @@ TEST(WriteCommandTS, OverWriteTC)
 
 TEST(WriteCommandTS, FullWriteAndVerifyTC)
 {
-	SSD ssd;
+	Write write;
 	for (int i = 0; i < 100; i++)
 	{
-		ssd.writeCommand.execute(i, i+1);
+		write.execute(i, i+1);
 	}
 
 	std::string filename = "ssd_nand.txt";
