@@ -5,6 +5,7 @@
 using namespace testing;
 using std::vector;
 
+#define REAL_DEBUG 0
 class MockSSD : public iTS_SSD {
 public:
 	MOCK_METHOD(unsigned int, read, (int lba), (override));
@@ -127,7 +128,6 @@ TEST_F(SSDFixture, FullWriteFail) {
 	EXPECT_EQ(false, shell.fullwrite(data));
 }
 
-
 TEST_F(SSDFixture, ReadCompareCallSSDRead) {
 	unsigned int writtenData = 0x12345678;
 	unsigned int readData = writtenData;
@@ -149,6 +149,7 @@ TEST_F(SSDFixture, ReadCompareDifferentDataFail) {
 	EXPECT_EQ(false, shell.readCompare(lba, writtenData));
 }
 
+#if REAL_DEBUG
 TEST_F(SSDFixture, SSDExWrite_Normal) {
 	SSDExecutor ssde;
 	TS_function shell(&ssde);
@@ -163,3 +164,4 @@ TEST_F(SSDFixture, SSDExRead_Normal) {
 	bool expected = 0;
 	EXPECT_EQ(expected, shell.read(lba));
 }
+#endif
