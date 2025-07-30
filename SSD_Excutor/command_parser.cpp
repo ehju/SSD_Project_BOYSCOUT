@@ -37,20 +37,7 @@ CommandInfo CommandParser::MakeCommandInfo(std::vector<std::string> cmdSplits)
 		if (cmddata.cmd == cmdSplits[CMDINDEX])
 		{
 			ret.command = cmddata.cmdIndex;		
-			if (cmddata.isUseLBA)
-			{
-				try {
-					ret.lba = stoul(cmdSplits[LBAINDEX]);
-				}
-				catch (const std::invalid_argument& e) {
-					std::cerr << "Invalid argument: " << e.what() << std::endl;
-				}
-				catch (const std::out_of_range& e) {
-					std::cerr << "Out of range: " << e.what() << std::endl;
-				}
-			}
-			else
-				ret.value = 0xFFFFFFFF;
+			ret.lba=getLBAValue(cmddata,  cmdSplits[LBAINDEX]);
 
 			if (cmddata.isUseValue)
 			{
@@ -71,6 +58,25 @@ CommandInfo CommandParser::MakeCommandInfo(std::vector<std::string> cmdSplits)
 	}
 
 	return ret;
+}
+
+unsigned int CommandParser::getLBAValue(const CommandFormat& cmddata, std::string lbaStr)
+{
+	
+	if (cmddata.isUseLBA)
+	{
+		try {
+			return stoul(lbaStr);
+		}
+		catch (const std::invalid_argument& e) {
+			std::cerr << "Invalid argument: " << e.what() << std::endl;
+		}
+		catch (const std::out_of_range& e) {
+			std::cerr << "Out of range: " << e.what() << std::endl;
+		}
+	}
+	else
+		return 0xFFFFFFFF;
 }
 
 bool CommandParser::checkCommand(vector<string> cmdSplits)
