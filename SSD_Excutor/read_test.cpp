@@ -2,7 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "ssd.cpp"
+#include "read.cpp"
+#include "write.cpp"
 
 using namespace testing;
 
@@ -35,7 +36,8 @@ public:
 class ReadTestFixture : public Test {
 public:
     SSDHelper ssdHelper;
-    SSD ssd;
+    Read readCommand;
+    Write writeCommand;
 };
 
 // if read command issued, there must be ssd_output.txt
@@ -49,7 +51,7 @@ TEST_F(ReadTestFixture, ReadCommandLeavesOutputfile) {
 
 // read command should return 0x00000000 even if ssd has never been used 
 TEST_F(ReadTestFixture, NeverWrittenReadReturnZero) {
-    Read readCommand;
+
     int address = 0x0;
     readCommand.execute(address);
 
@@ -63,8 +65,8 @@ TEST_F(ReadTestFixture, DISABLED_CompareReadResultWithWriteValue) {
     unsigned int address = 0x0;
     unsigned int writeValue = 0x0;
 
-    ssd.writeCommand.execute(address, writeValue);
-    ssd.readCommand.execute(address);
+    writeCommand.execute(address, writeValue);
+    readCommand.execute(address);
 
     unsigned int readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
     
@@ -79,8 +81,8 @@ TEST_F(ReadTestFixture, DISABLED_NonWrittenLBARead) {
     unsigned int writeValue = 0x0;
 
     ssdHelper.resetSSD();
-    ssd.writeCommand.execute(writeAddress, writeValue);
-    ssd.readCommand.execute(readAddress);
+    writeCommand.execute(writeAddress, writeValue);
+    readCommand.execute(readAddress);
 
     unsigned int readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
 
@@ -98,13 +100,13 @@ TEST_F(ReadTestFixture, DISABLED_OutputShouldContainsOnlyLastReadResult) {
 
     ssdHelper.resetSSD();
 
-    ssd.writeCommand.execute(addressOne, valueOne);
-    ssd.writeCommand.execute(addressTwo, valueTwo);
-    ssd.writeCommand.execute(addressThree, valueThree);
+    writeCommand.execute(addressOne, valueOne);
+    writeCommand.execute(addressTwo, valueTwo);
+    writeCommand.execute(addressThree, valueThree);
 
-    ssd.readCommand.execute(addressOne);
-    ssd.readCommand.execute(addressTwo);
-    ssd.readCommand.execute(addressThree);
+    readCommand.execute(addressOne);
+    readCommand.execute(addressTwo);
+    readCommand.execute(addressThree);
 
     unsigned int readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
 
@@ -117,7 +119,7 @@ TEST_F(ReadTestFixture, DISABLED_OutputShouldContainsOnlyLastReadResult) {
 TEST_F(ReadTestFixture, DISABLED_OutOfRangeRead) {
     unsigned int OutOfRangeAddress = 100;
 
-    ssd.readCommand.execute(OutOfRangeAddress);
+    readCommand.execute(OutOfRangeAddress);
 
     EXPECT_THAT(ssdHelper.getReadResultFromFile(), Eq("ERROR"));
 }
