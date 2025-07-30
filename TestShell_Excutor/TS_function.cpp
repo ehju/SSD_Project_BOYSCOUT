@@ -16,6 +16,7 @@ interface iTS_SSD {
 public:
 	virtual unsigned int read(int lba)=0;
 	virtual bool write(int lba , unsigned int data) = 0;
+
 };
 
 
@@ -86,7 +87,9 @@ struct WrittenData {
 };
 class TS_function {
 public:
-	TS_function(iTS_SSD* ssd) : ssd { ssd } {}
+	TS_function(iTS_SSD* ssd) : ssd { ssd } {
+		std::srand(RAND_SEED);  // set seed for random		
+	}
 
 	bool readCompare(int lba, unsigned int writtenData) { 
 		unsigned int readData = ssd->read(lba);
@@ -147,7 +150,21 @@ public:
 		}
 		return true;
 	}
-	bool writeReadAging() { return true; }
+
+	// writeReadAging does not have unittest
+	bool writeReadAging() {
+		unsigned int randvalue;
+		int loopcount = 200;
+		for (int i = 0; i < loopcount; i++) {
+			randvalue = getRandomUnsignedInt();
+			std::cout << i << "\n";
+			if (!ssd->write(0, randvalue)) return false;
+			if (!ssd->write(99, randvalue)) return false;
+			if (!readCompare(0, randvalue)) return false;
+			if (!readCompare(99, randvalue)) return false;
+		}
+		return true;
+	}
 
 	unsigned int read(int lba) {
 		if (lba < 0 || lba > 99) {
@@ -180,4 +197,11 @@ public:
 
 private:
 	iTS_SSD *ssd;
+	const int RAND_SEED= 1;
+	
+	unsigned int getRandomUnsignedInt() {
+		unsigned int high = static_cast<unsigned int>(std::rand()) << 16;
+		unsigned int low = static_cast<unsigned int>(std::rand()) & 0xFFFF;
+		return high | low;
+	}
 };
