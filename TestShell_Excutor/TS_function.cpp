@@ -18,7 +18,7 @@ public:
 class SSDExecutor : public iTS_SSD {
 public:
 	unsigned int read(int lba) override {
-		cmd = "\".\\SSD_Excutor.exe\" read " + std::to_string(lba);
+		cmd = SSDEXCUTE + " read " + std::to_string(lba);
 		int result = std::system(cmd.c_str());
 		if (result == 0) {
 			throw std::exception("Error System Call read");
@@ -27,7 +27,7 @@ public:
 		return 0;
 	}
 	bool write(int lba, unsigned int data) override {
-		cmd = "\".\\SSD_Excutor.exe\" write " + std::to_string(lba) + " " + (toHex(lba));
+		cmd = SSDEXCUTE + " write " + std::to_string(lba) + " " + (toHex(lba));
 		int result = std::system(cmd.c_str());
 		if (result == 0) {
 			return false;
@@ -44,6 +44,7 @@ private:
 		return ss.str();
 	}
 	string cmd = "";
+	string SSDEXCUTE = "\".\\SSD_Excutor.exe" ;
 };
 
 class TS_function {
