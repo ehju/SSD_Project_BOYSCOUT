@@ -23,7 +23,16 @@ public:
 			return false;
 		}
 	};
-	bool fullWriteAndReadCompare() { return true; }
+	bool fullWriteAndReadCompare() { 
+		unsigned int writeData = 0x12345678;
+		unsigned int readData;
+		bool writepass;
+		for (int lba = 0; lba < 100; lba++) {
+			writepass = ssd->write(lba, writeData);
+			readData = (ssd->read(lba));
+		}
+		return true;
+	}
 	bool partialLBAWrite() { return true; }
 	bool writeReadAging() { return true; }
 
