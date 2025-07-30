@@ -130,11 +130,13 @@ TEST_F(SSDFixture, FullWriteFail) {
 
 
 TEST_F(SSDFixture, ReadCompareCallSSDRead) {
+	unsigned int writtenData = 0x12345678;
+	unsigned int readData = writtenData;
 	EXPECT_CALL(ssd, read(lba))
 		.Times(1)
-		.WillRepeatedly(Return(data));
+		.WillRepeatedly(Return(readData));
 
-	EXPECT_EQ(true, shell.readCompare(lba, data));
+	EXPECT_EQ(true, shell.readCompare(lba, readData));
 }
 
 TEST_F(SSDFixture, ReadCompareDifferentDataFail) {
