@@ -4,6 +4,7 @@
 #include <queue>
 #include <string>
 #include <sstream>
+#include <fstream>
 
 using std::vector;
 using std::queue;
@@ -27,6 +28,13 @@ public:
 			throw std::exception("Error System Call read");
 		}
 
+		if (file_exists(OUTFILE)) {
+			string result_str = getReadResultFromFile(OUTFILE);
+			if (result_str == "ERROR") return 0;
+			unsigned int readValue = (unsigned int)std::stoul(result_str, nullptr, 16);
+
+			return readValue;
+		}
 		return 0;
 	}
 	bool write(int lba, unsigned int data) override {
@@ -35,11 +43,31 @@ public:
 		if (result == 0) {
 			return false;
 		}
-		return true;
+		if (file_exists(OUTFILE)) {
+			string result_str = getReadResultFromFile(OUTFILE);
+			if (result_str == "ERROR") return false;
+		}
 
+		return true;
 	}
 
 private:
+	bool file_exists(const std::string& filename) {
+		std::ifstream file(filename);
+		return file.good();
+	}
+
+	std::string getReadResultFromFile(string filename) {
+		std::ifstream file(filename);
+		std::string line;
+		if (file.is_open())
+		{
+			getline(file, line);
+			return line;
+		}
+		return "";
+	}
+
 
 	std::string toHex(unsigned int value) {
 		std::stringstream ss;
@@ -47,7 +75,8 @@ private:
 		return ss.str();
 	}
 	string cmd = "";
-	string SSDEXCUTE = "\".\\SSD_Excutor.exe" ;
+	string SSDEXCUTE = "\".\\SSD_Excutor.exe";
+	string OUTFILE = "ssd_output.txt";
 
 };
 
