@@ -11,6 +11,11 @@ protected:
 	void SetUp() override
 	{
 		file.open(nand);
+
+		if (file.is_open() == false)
+		{
+			FAIL();
+		}
 	}
 
 	void TearDown() override
@@ -33,6 +38,16 @@ public:
 		EXPECT_EQ(expected, actual);
 	}
 
+	std::string directAccessNand(unsigned int lba)
+	{
+		std::string line = "";
+		file.seekg(0);
+		for (int i = 0; i <= lba; i++)
+		{
+			getline(file, line);
+		}
+		return line;
+	}
 };
 
 TEST_F(WriteCommandTS, FirstWriteAndCreateSsdNandTxtTC)
@@ -48,7 +63,7 @@ TEST_F(WriteCommandTS, OneWrite)
 
 	std::string actual;
 
-	getline(file, actual);
+	actual = directAccessNand(0);
 	checkData(0, 1, actual);
 
 }
@@ -60,7 +75,7 @@ TEST_F(WriteCommandTS, OverWriteTC)
 
 	std::string actual;
 
-	getline(file, actual);
+	actual = directAccessNand(0);
 	checkData(0, 3, actual);
 }
 
@@ -75,7 +90,7 @@ TEST_F(WriteCommandTS, FullWriteAndVerifyTC)
 
 	for (int i = 0; i < 100; i++)
 	{
-		getline(file, actual);
+		actual = directAccessNand(i);
 		checkData(i, i + 1, actual);
 	}
 }
