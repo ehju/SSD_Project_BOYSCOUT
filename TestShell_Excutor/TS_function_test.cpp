@@ -80,9 +80,8 @@ TEST_F(SSDFixture, NoWriteOutOfRangeLBA2) {
 }
 
 
-TEST(TS_function, ReadFullReadTest) {
-	MockSSD ssd;
-	TS_function shell{ &ssd };
+TEST_F(SSDFixture, ReadFullReadTest) {
+
 	vector<unsigned int> result;
 	EXPECT_CALL(ssd, read(_))
 		.Times(100);
@@ -90,9 +89,7 @@ TEST(TS_function, ReadFullReadTest) {
 	result = shell.fullread();
 }
 
-TEST(TS_function, ReadFullReadTestExpectedReturn) {
-	MockSSD ssd;
-	TS_function shell{ &ssd };
+TEST_F(SSDFixture, ReadFullReadTestExpectedReturn) {
 	unsigned int data = 0x00000000;
 	
 	vector<unsigned int> expected_result;
