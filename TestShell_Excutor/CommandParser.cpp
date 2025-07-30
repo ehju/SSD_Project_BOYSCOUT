@@ -8,8 +8,8 @@ int CommandParser::runCommand(const string cmd) {
 	if (isInvalidCommand(cmdParms) == false)
 		return CMD_NOT_SUPPORTED;
 
-	// TODO : Run command and Print Log
-	return getCommandType(cmdParms[0]);
+	int type = getCommandType(cmdParms[0]);
+	return type;
 }
 
 vector<string> CommandParser::getCommandParams(const string& cmd)
@@ -133,5 +133,8 @@ bool CommandParser::checkValidValue(vector<string> cmdSplits)
 	return false;
 }
 
-
-
+bool CommandParser::runCommandWrite(const string lba, const string value)
+{
+	std::cout << "[Write] Done\n";
+	return true;
+}

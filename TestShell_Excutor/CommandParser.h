@@ -40,6 +40,7 @@ public:
 	int getCommandType(const string cmd);
 	bool isInvalidCommand(vector<string> str);
 	
+	bool runCommandWrite(const string lba, const string value);
 private:
 	const int CMDINDEX = 0;
 	const int LBAINDEX =1;

@@ -40,3 +40,15 @@ TEST(CPTest, RunCommandCallRed) {
 	const string cmdline = "read 0";
 	EXPECT_EQ(CMD_BASIC_READ, cp.runCommand(cmdline));
 }
+TEST(CPTest, RunCommandWritePass) {
+	CommandParser cp;
+
+	std::stringstream buffer;
+	std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
+	int actual = cp.runCommandWrite("3", "0xAAAABBBB");
+
+	std::cout.rdbuf(old);
+	string output = buffer.str();
+	EXPECT_EQ(true, actual);
+	EXPECT_EQ(output, "[Write] Done\n");
+}
