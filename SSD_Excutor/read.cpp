@@ -1,6 +1,10 @@
+#pragma once
+#include <iostream>
+
+
 class Read {
 public:
-	void execute(unsigned int address) {
-		return;
+	std::string execute(unsigned int address) {
+		return "";
 	}
 };
