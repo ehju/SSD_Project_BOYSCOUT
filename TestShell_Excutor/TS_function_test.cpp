@@ -162,6 +162,5 @@ TEST_F(SSDFixture, SSDExRead_Normal) {
 	SSDExecutor ssde;
 	TS_function shell(&ssde);
 	bool expected = 0;
-
 	EXPECT_EQ(expected, shell.read(lba));
 }
