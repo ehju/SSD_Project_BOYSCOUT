@@ -1,22 +1,39 @@
 #include <iostream>
+#include <vector>
 #include "read.cpp"
 #include "write.cpp"
 #include "command_parser.h"
 
+class CommandFactory
+{
+public:
+	std::shared_ptr<ICommand> CreateCommand(int commandNumber)
+	{
+		if (commandNumber == static_cast<int>(SSDCommand::SSDCommand_WRITE))
+			return std::make_shared<Write>();
+		else if (commandNumber == static_cast<int>(SSDCommand::SSDCommand_READ))
+			return std::make_shared<Read>();
+
+		return nullptr;
+	}
+};
 
 
 class SSD
 {
 public:
-	SSD(CommandParser* commandParser, Write* writeCommand, Read* readCommand) :
-		commandParser{ commandParser },
-		writeCommand{ writeCommand },
-		readCommand{ readCommand }
-	{}
+	SSD(CommandParser* commandParser) :
+		commandParser{ commandParser }
+	{
+		for (int i = 0; i < static_cast<int>(SSDCommand::SSDCommand_Count); i++)
+		{
+			commandList.push_back(commandFactory.CreateCommand(i));
+		}
+	}
 
-	Write* writeCommand;
-	Read* readCommand;
 	CommandParser* commandParser;
+	CommandFactory commandFactory;
+	std::vector<std::shared_ptr<ICommand>> commandList;
 
 	void run(int argc, char* argv[])
 	{
@@ -24,16 +41,17 @@ public:
 
 		if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
 		{
-			writeCommand->execute(commandInfo.lba, commandInfo.value);
+			commandList[static_cast<int>(SSDCommand::SSDCommand_WRITE)]->execute(commandInfo.lba, commandInfo.value);
 		}
 		else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_READ))
 		{
-			readCommand->execute(commandInfo.lba);
+			commandList[static_cast<int>(SSDCommand::SSDCommand_READ)]->execute(commandInfo.lba);
 		}
 		else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID))
 		{
 			std::string errorStr = "ERROR";
-			readCommand->writeOutputFile(errorStr);
+			commandList[static_cast<int>(SSDCommand::SSDCommand_READ)]->writeOutputFile(errorStr);
 		}
 	}
+
 };

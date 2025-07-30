@@ -11,7 +11,7 @@ class SSDTS : public testing::Test {
 protected:
 	void SetUp() override
 	{
-		ssd = std::make_shared<SSD>(&commandParserMock, &writeCommand, &readCommand);
+		ssd = std::make_shared<SSD>(&commandParserMock);
 	}
 
 	void TearDown() override
@@ -21,8 +21,6 @@ protected:
 
 public:
 	testing::NiceMock<CommandParserMock> commandParserMock;
-	Write writeCommand;
-	Read readCommand;
 	std::shared_ptr<SSD> ssd;
 	int dummyArgc{ 0 };
 	char** dummyArgv{ nullptr };
@@ -38,7 +36,7 @@ public:
 	{
 		std::string expected = "";
 		std::ostringstream ss;
-		ss << "0x" << std::setfill('0') << std::setw(8) << std::hex << expectedValue;
+		ss << "0x" << std::uppercase << std::setfill('0') << std::setw(8) << std::hex << expectedValue;
 		expected = std::to_string(expectedLba) + " " + ss.str();
 		EXPECT_EQ(expected, actual);
 	}
