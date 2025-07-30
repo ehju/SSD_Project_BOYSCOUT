@@ -4,10 +4,11 @@
 #include <string>
 #include <sstream>	
 
+#include "command_interface.h"
 
-class Read {
+class Read : public ICommand {
 public:
-	void execute(unsigned int address) {
+	void execute(unsigned int address) override {
 		deletePrevOutputFile();
 
 		std::string matchedValue = getValue(address);

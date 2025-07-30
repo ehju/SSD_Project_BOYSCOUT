@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
     Read readCommand;
     CommandParser commandParser;
 
-    SSD ssd(&commandParser, &writeCommand, &readCommand);
+    SSD ssd(&commandParser);
 
     ssd.run(argc, argv);
 
