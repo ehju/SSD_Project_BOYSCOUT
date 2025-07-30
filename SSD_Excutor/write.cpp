@@ -48,7 +48,7 @@ private:
 				std::string lbaStr;
 				std::string valueStr;
 				unsigned int lba;
-				long int value;
+				unsigned int value;
 
 				std::istringstream iss(line);
 
@@ -56,7 +56,7 @@ private:
 				lba = stoi(lbaStr);
 
 				char* endptr;
-				value = strtol(valueStr.c_str(), &endptr, 16);
+				value = strtoul(valueStr.c_str(), &endptr, 16);
 
 				map[lba] = value;
 			}
