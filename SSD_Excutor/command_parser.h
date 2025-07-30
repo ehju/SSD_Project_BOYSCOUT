@@ -39,8 +39,8 @@ public:
 
 private:
 	std::vector<CommandFormat> commandlist = {
-		{"W",2,true,true,(int)SSDCommand::SSDCommand_WRITE},
-		{"R",1,true,false,(int)SSDCommand::SSDCommand_READ},
+		{"W",2,true,true,(unsigned int)SSDCommand::SSDCommand_WRITE},
+		{"R",1,true,false,(unsigned int)SSDCommand::SSDCommand_READ},
 	};
 	const int CMDINDEX = 0;
 	const int LBAINDEX = 1;

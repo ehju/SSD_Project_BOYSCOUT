@@ -1,268 +1,185 @@
 #include "gmock/gmock.h"
 #include "ssd.cpp"
-
-TEST(CommandParserTS, InvalidCommandTC1)
-{
+using namespace testing;
+class CommandParserTS :public Test {
+public:
 	CommandParser commandParser;
-
-	int argumentNum = 2;
+	int argumentNum;
 	char* argumentPointer[10];
 
-	char argu1[32] = "T";
+	void setInput(int num, char* arg1,  char* arg2, char* arg3)
+	{
+		argumentNum = num;
+		char argu0[32] = "SSD.exe";
+		argumentPointer[0] = argu0;
+		argumentPointer[1] = arg1;
+		argumentPointer[2] = arg2;
+		argumentPointer[3] = arg3;
 
-	argumentPointer[0] = argu1;
-
+	}
+	void checkExpected(const CommandInfo& expected, const CommandInfo& actual)
+	{
+		EXPECT_EQ(expected.command, actual.command);
+		EXPECT_EQ(expected.lba, actual.lba);
+		EXPECT_EQ(expected.value, actual.value);
+	}
+	
+};
+TEST_F(CommandParserTS, InvalidCommandTC1)
+{
+	char argu1[32]="T";	
+	setInput(2, argu1,nullptr, nullptr);
 	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFF , 0xFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.lba, actual.lba);
-	EXPECT_EQ(expected.value, actual.value);
-
+	checkExpected(expected, actual);
 }
 
-TEST(CommandParserTS, WriteTC1)
+TEST_F(CommandParserTS, WriteTC1)
 {
-	CommandParser commandParser;
-
-	int argumentNum = 4;
-	char* argumentPointer[10];
-
 	char argu1[32] = "W";
 	char argu2[32] = "0";
 	char argu3[32] = "0xFF23001D";
-
-
-	argumentPointer[0] = argu1;
-	argumentPointer[1] = argu2;
-	argumentPointer[2] = argu3;
-
+	setInput(4, argu1, argu2, argu3);
 
 	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_WRITE, 0 , 0xFF23001D };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.lba, actual.lba);
-	EXPECT_EQ(expected.value, actual.value);
+	checkExpected(expected, actual);
+
 }
 
-TEST(CommandParserTS, WriteTC2)
+TEST_F(CommandParserTS, WriteTC2)
 {
-	CommandParser commandParser;
-
-	int argumentNum = 4;
-	char* argumentPointer[10];
 
 	char argu1[32] = "W";
 	char argu2[32] = "0";
 	char argu3[32] = "0xAe129432";
 
-
-	argumentPointer[0] = argu1;
-	argumentPointer[1] = argu2;
-	argumentPointer[2] = argu3;
-
+	setInput(4, argu1, argu2, argu3);
 
 	CommandInfo expected = {(unsigned int) SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.lba, actual.lba);
-	EXPECT_EQ(expected.value, actual.value);
+	checkExpected(expected, actual);
+
 }
 
-TEST(CommandParserTS, WriteTC3)
+TEST_F(CommandParserTS, WriteTC3)
 {
-	CommandParser commandParser;
-
-	int argumentNum = 4;
-	char* argumentPointer[10];
+	
 
 	char argu1[32] = "W";
 	char argu2[32] = "0";
 	char argu3[32] = "0xAe1294322344";
-
-
-	argumentPointer[0] = argu1;
-	argumentPointer[1] = argu2;
-	argumentPointer[2] = argu3;
+	setInput(4, argu1, argu2, argu3);
 
 
 	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.lba, actual.lba);
-	EXPECT_EQ(expected.value, actual.value);
+	checkExpected(expected, actual);
+
 }
 
-TEST(CommandParserTS, WriteTC4)
+TEST_F(CommandParserTS, WriteTC4)
 {
-	CommandParser commandParser;
-
-	int argumentNum = 4;
-	char* argumentPointer[10];
-
+	
 	char argu1[32] = "W";
 	char argu2[32] = "0";
 	char argu3[32] = "ABFF123423";
-
-
-	argumentPointer[0] = argu1;
-	argumentPointer[1] = argu2;
-	argumentPointer[2] = argu3;
+	setInput(4, argu1, argu2, argu3);
 
 
 	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.lba, actual.lba);
-	EXPECT_EQ(expected.value, actual.value);
+	checkExpected(expected, actual);
+
 }
 
-TEST(CommandParserTS, WriteTC5)
+TEST_F(CommandParserTS, WriteTC5)
 {
-	CommandParser commandParser;
-
-	int argumentNum = 4;
-	char* argumentPointer[10];
-
+	
 	char argu1[32] = "W";
 	char argu2[32] = "0";
 	char argu3[32] = "ABFF123423";
-
-
-	argumentPointer[0] = argu1;
-	argumentPointer[1] = argu2;
-	argumentPointer[2] = argu3;
+	setInput(4, argu1, argu2, argu3);
 
 
 	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.lba, actual.lba);
-	EXPECT_EQ(expected.value, actual.value);
+	checkExpected(expected, actual);
+
 }
 
-TEST(CommandParserTS, WriteTC6)
+TEST_F(CommandParserTS, WriteTC6)
 {
-	CommandParser commandParser;
-
-	int argumentNum = 4;
-	char* argumentPointer[10];
 
 	char argu1[32] = "W";
 	char argu2[32] = "101";
 	char argu3[32] = "0xFFDA1234";
-
-
-	argumentPointer[0] = argu1;
-	argumentPointer[1] = argu2;
-	argumentPointer[2] = argu3;
+	setInput(4, argu1, argu2, argu3);
 
 
 	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.lba, actual.lba);
-	EXPECT_EQ(expected.value, actual.value);
+	checkExpected(expected, actual);
+
 }
 
-TEST(CommandParserTS, WriteTC7)
+TEST_F(CommandParserTS, WriteTC7)
 {
-	CommandParser commandParser;
-
-	int argumentNum = 2;
-	char* argumentPointer[10];
-
 	char argu1[32] = "W";
-
-	argumentPointer[0] = argu1;
-
+	setInput(2, argu1, nullptr, nullptr);
 	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.lba, actual.lba);
-	EXPECT_EQ(expected.value, actual.value);
+	checkExpected(expected, actual);
+
 }
 
-TEST(CommandParserTS, ReadTC1)
+TEST_F(CommandParserTS, ReadTC1)
 {
-	CommandParser commandParser;
 
-	int argumentNum = 3;
-	char* argumentPointer[10];
 
 	char argu1[32] = "R";
 	char argu2[32] = "0";
-
-
-	argumentPointer[0] = argu1;
-	argumentPointer[1] = argu2;
+	setInput(3, argu1, argu2, nullptr);
 
 
 	CommandInfo expected = { 1, 0 , 0xFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.lba, actual.lba);
-	EXPECT_EQ(expected.value, actual.value);
+	checkExpected(expected, actual);
 }
 
-TEST(CommandParserTS, ReadTC2)
+TEST_F(CommandParserTS, ReadTC2)
 {
-	CommandParser commandParser;
-
-	int argumentNum = 4;
-	char* argumentPointer[10];
-
 	char argu1[32] = "R";
 	char argu2[32] = "0";
 	char argu3[32] = "0x1";
 
-
-	argumentPointer[0] = argu1;
-	argumentPointer[1] = argu2;
-	argumentPointer[2] = argu3;
+	setInput(4, argu1, argu2, argu3);
 
 	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.lba, actual.lba);
-	EXPECT_EQ(expected.value, actual.value);
+	checkExpected(expected, actual);
+
 }
 
-TEST(CommandParserTS, ReadTC3)
+TEST_F(CommandParserTS, ReadTC3)
 {
-	CommandParser commandParser;
-
-	int argumentNum = 2;
-	char* argumentPointer[10];
-
 	char argu1[32] = "R";
-
-	argumentPointer[0] = argu1;
+	setInput(2, argu1, nullptr, nullptr);
 
 	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.lba, actual.lba);
-	EXPECT_EQ(expected.value, actual.value);
+	checkExpected(expected, actual);
+
 }
 
-TEST(CommandParserTS, ReadTC4)
+TEST_F(CommandParserTS, ReadTC4)
 {
-	CommandParser commandParser;
-
-	int argumentNum = 3;
-	char* argumentPointer[10];
-
 	char argu1[32] = "R";
 	char argu2[32] = "101";
 
-
-	argumentPointer[0] = argu1;
-	argumentPointer[1] = argu2;
-
-
+	setInput(3, argu1, argu2, nullptr);
 	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.lba, actual.lba);
-	EXPECT_EQ(expected.value, actual.value);
+	checkExpected(expected, actual);
+
 }
