@@ -193,5 +193,10 @@ bool CommandParser::runCommandFullWrite(const string value)
 
 int CommandParser::runCommandFullRead(void)
 {
+	vector<unsigned int> reads = this->shell.fullread();
+	int lba = 0;
+	for(auto value : reads) {
+		printReadResult(lba++, value);
+	}
 	return 0;
 }

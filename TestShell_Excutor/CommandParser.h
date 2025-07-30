@@ -23,6 +23,9 @@ enum CommandType {
 	CMD_BASIC_HELP,
 	CMD_BASIC_FULLWRITE,
 	CMD_BASIC_FULLREAD,
+	CMD_TS_FullWriteAndReadCompare,
+	CMD_TS_PartialLBAWrite,
+	CMD_TS_WriteReadAging,
 	CMD_MAX
 };
 
@@ -71,6 +74,12 @@ private:
 		{"help", CMD_BASIC_HELP },
 		{"fullwrite", CMD_BASIC_FULLWRITE },
 		{"fullread", CMD_BASIC_FULLREAD },
+		{"1_FullWriteAndReadCompare", CMD_TS_FullWriteAndReadCompare },
+		{"1_", CMD_TS_FullWriteAndReadCompare },
+		{"2_PartialLBAWrite", CMD_TS_PartialLBAWrite },
+		{"2_", CMD_TS_PartialLBAWrite },
+		{"3_WriteReadAging", CMD_TS_WriteReadAging },
+		{"3_", CMD_TS_WriteReadAging },
 	};
 
 	bool checkCommand(vector<string> str);
