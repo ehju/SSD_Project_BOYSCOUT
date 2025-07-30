@@ -97,5 +97,9 @@ private:
 	bool checkParamNum(vector<string> str);
 	bool checkValidLBA(vector<string> str);
 	bool checkValidValue(vector<string> str);
+#ifdef _DEBUG
 	TS_function shell{ new testing::NiceMock<MockSSD>()};
+#else
+	TS_function shell{ new SSDExecutor()};
+#endif
 };
