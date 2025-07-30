@@ -10,8 +10,3 @@ void ICommand::execute(unsigned int lba)
 {
 
 }
-
-void ICommand::writeOutputFile(std::string& matchedValue)
-{
-
-}
