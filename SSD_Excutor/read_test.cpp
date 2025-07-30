@@ -4,6 +4,7 @@
 #include <string>
 #include "read.cpp"
 #include "write.cpp"
+#include <sstream>
 
 using namespace testing;
 
@@ -29,7 +30,26 @@ public:
 
     void resetSSD() {
         // clear SSD_FILE_
+        if (file_exists(SSD_FILE_NAME)) {
+            if (std::remove(SSD_FILE_NAME.c_str()) == 0) {
+            }
+            else {
+                std::cout << "파일 삭제 실패\n";
+            }
+        }
         // clear OUTPUT_FILE_
+        if (file_exists(OUTPUT_FILE_NAME)) {
+            if (std::remove(OUTPUT_FILE_NAME.c_str()) == 0) {
+            }
+            else {
+                std::cout << "파일 삭제 실패\n";
+            }
+        }
+    }
+private:
+    bool file_exists(const std::string& filename) {
+        std::ifstream file(filename);
+        return file.good();
     }
 };
 
@@ -50,14 +70,15 @@ TEST_F(ReadTestFixture, ReadCommandLeavesOutputfile) {
 }
 
 // read command should return 0x00000000 even if ssd has never been used 
-TEST_F(ReadTestFixture, NeverWrittenReadReturnZero) {
-
-    int address = 0x0;
-    readCommand.execute(address);
-
+TEST_F(ReadTestFixture, NeverWrittenReadReturnZero) {    
     ssdHelper.resetSSD();
 
-    EXPECT_THAT(readCommand.execute(address), "0x00000000");
+    unsigned int address = 0x0;
+    ssd.readCommand.execute(address);
+
+    unsigned int readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
+
+    EXPECT_THAT(readValue, (unsigned int)0x00000000);
 }
 
 // if lba 1 is written with specific value, lba 1 read should return exactly same value.
