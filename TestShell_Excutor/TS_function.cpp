@@ -81,7 +81,7 @@ public:
 		
 		while (curReadLBA <= LBA_MAX)
 		{
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 5; i++) {
 				data.lba = curWriteLBA;
 				data.writtenData = writeData;
 				if (curWriteLBA > LBA_MAX) break;
