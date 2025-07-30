@@ -149,6 +149,48 @@ TEST_F(SSDFixture, ReadCompareDifferentDataFail) {
 	EXPECT_EQ(false, shell.readCompare(lba, writtenData));
 }
 
+
+TEST_F(SSDFixture, FullWriteAndReadCompareShouldCallFullRangeSSDcommand) {
+	unsigned int writtenData = 0x12345678;
+	unsigned int readData = writtenData;
+	EXPECT_CALL(ssd, write(_, writtenData))
+		.Times(100)
+		.WillRepeatedly(Return(true));
+	
+	EXPECT_CALL(ssd, read(_))
+		.Times(100)
+		.WillRepeatedly(Return(readData));
+
+	EXPECT_EQ(true, shell.fullWriteAndReadCompare());
+}
+
+TEST_F(SSDFixture, FullWriteAndReadCompare_WriteFail) {
+	unsigned int writtenData = 0x12345678;
+	unsigned int readData = writtenData;
+
+	EXPECT_CALL(ssd, write(_, _))
+		.WillOnce(Return(true))
+		.WillOnce(Return(true))
+		.WillRepeatedly(Return(false));
+
+	EXPECT_CALL(ssd, read(_))
+		.WillRepeatedly(Return(writtenData));
+	EXPECT_EQ(false, shell.fullWriteAndReadCompare());
+}
+
+TEST_F(SSDFixture, FullWriteAndReadCompare_ReadFail) {
+	unsigned int writtenData = 0x12345678;
+	unsigned int readData = 0x87654321;
+
+	EXPECT_CALL(ssd, write(_, _))
+		.WillRepeatedly(Return(true));
+
+	EXPECT_CALL(ssd, read(_))
+		.WillOnce(Return(writtenData))
+		.WillRepeatedly(Return(readData));
+	EXPECT_EQ(false, shell.fullWriteAndReadCompare());
+}
+
 #if REAL_DEBUG
 TEST_F(SSDFixture, SSDExWrite_Normal) {
 	SSDExecutor ssde;

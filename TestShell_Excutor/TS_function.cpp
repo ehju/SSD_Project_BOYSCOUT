@@ -1,10 +1,12 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <string>
 #include <sstream>
 
 using std::vector;
+using std::queue;
 using std::string;
 
 #define interface struct
@@ -14,6 +16,7 @@ public:
 	virtual unsigned int read(int lba)=0;
 	virtual bool write(int lba , unsigned int data) = 0;
 };
+
 
 class SSDExecutor : public iTS_SSD {
 public:
@@ -45,8 +48,13 @@ private:
 	}
 	string cmd = "";
 	string SSDEXCUTE = "\".\\SSD_Excutor.exe" ;
+
 };
 
+struct WrittenData {
+	int lba;
+	unsigned int writtenData;
+};
 class TS_function {
 public:
 	TS_function(iTS_SSD* ssd) : ssd { ssd } {}
@@ -60,7 +68,38 @@ public:
 			return false;
 		}
 	};
-	bool fullWriteAndReadCompare() { return true; }
+	bool fullWriteAndReadCompare() {
+		unsigned int writeData = 0x12345678;
+		unsigned int readData = writeData;
+		int LBA_MAX = 99;
+		int LBA_MIN = 0;
+		int curWriteLBA = LBA_MIN;
+		int curReadLBA = LBA_MIN;
+		bool flag;
+		queue <WrittenData> datas;
+		WrittenData data;
+		
+		while (curReadLBA <= LBA_MAX)
+		{
+			for (int i = 0; i < 5; i++) {
+				data.lba = curWriteLBA;
+				data.writtenData = writeData;
+				if (curWriteLBA > LBA_MAX) break;
+				if (!ssd->write(data.lba, data.writtenData)) return false;
+				datas.push(data);
+				curWriteLBA++;
+			}
+			while (!datas.empty())
+			{
+				data = datas.front();
+
+				if (!readCompare(data.lba, data.writtenData)) return false;
+				datas.pop();
+			}
+			if (curWriteLBA > LBA_MAX) break;
+		}
+		return true;
+	}
 	bool partialLBAWrite() { return true; }
 	bool writeReadAging() { return true; }
 
