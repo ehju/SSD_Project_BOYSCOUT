@@ -5,19 +5,19 @@ using std::vector;
 CommandInfo CommandParser::parse(int argc, char* argv[]) 
 {
 	vector<string> cmdSplits;
-	for(int i =0; i<argc-1; i++)	
+	for(int i =1; i<argc; i++)	
 	{
 		cmdSplits.push_back(argv[i]);
 	}
-
 	if (isValidCommand(cmdSplits)==false)
 	{
-		return { (int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFF, 0xFFFFFFFF };
+		return { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFF, 0xFFFFFFFF };
 	}
 	return MakeCommandInfo(cmdSplits);
 }
 bool CommandParser::isValidCommand(vector<string> cmdSplits)
 {
+	
 	if (!checkCommand(cmdSplits))
 		return false;
 	if (!checkParamNum(cmdSplits))
