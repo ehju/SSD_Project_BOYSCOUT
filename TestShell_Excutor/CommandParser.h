@@ -66,6 +66,7 @@ public:
 	void runCommandHelp(void);
 	bool runCommandFullWrite(const string value);
 	int runCommandFullRead(void);
+	int runCommandTestScenario(int type);
 private:
 	const int CMDINDEX = 0;
 	const int LBAINDEX =1;
@@ -96,6 +97,5 @@ private:
 	bool checkParamNum(vector<string> str);
 	bool checkValidLBA(vector<string> str);
 	bool checkValidValue(vector<string> str);
-	
 	TS_function shell{ new testing::NiceMock<MockSSD>()};
 };
