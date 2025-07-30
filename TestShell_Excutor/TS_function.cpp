@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#include <sstream>
 
 using std::vector;
 using std::string;
@@ -18,14 +18,32 @@ public:
 class SSDExecutor : public iTS_SSD {
 public:
 	unsigned int read(int lba) override {
+		cmd = "\".\\SSD_Excutor.exe\" read " + std::to_string(lba);
+		int result = std::system(cmd.c_str());
+		if (result == 0) {
+			throw std::exception("Error System Call read");
+		}
+
 		return 0;
 	}
 	bool write(int lba, unsigned int data) override {
+		cmd = "\".\\SSD_Excutor.exe\" write " + std::to_string(lba) + " " + (toHex(lba));
+		int result = std::system(cmd.c_str());
+		if (result == 0) {
+			return false;
+		}
+		return true;
 
-		return 0;
 	}
 
 private:
+
+	std::string toHex(unsigned int value) {
+		std::stringstream ss;
+		ss << "0x" << std::hex << std::uppercase << value;
+		return ss.str();
+	}
+	string cmd = "";
 };
 
 class TS_function {
