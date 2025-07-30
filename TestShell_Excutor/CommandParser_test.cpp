@@ -68,3 +68,16 @@ TEST(CPTest, RunCommandReadPassDefault) {
 	EXPECT_EQ(expected, actual);
 	EXPECT_EQ(output, "[Read] LBA 3 : 0x00000000\n");
 }
+TEST(CPTest, RunCommandFullReadPassDefault) {
+	CommandParser cp;
+	const string cmdline = "fullread";
+
+	std::stringstream buffer;
+	std::streambuf* old = std::cout.rdbuf(buffer.rdbuf());
+	int expected = CMD_BASIC_FULLREAD;
+	int actual = cp.runCommand(cmdline);
+
+	std::cout.rdbuf(old);
+	string output = buffer.str();
+	EXPECT_EQ(expected, actual);
+}
