@@ -27,11 +27,15 @@ public:
 	vector<unsigned int> fullread() {
 		unsigned int data;
 		vector<unsigned int> result;
-		for (int lba = 0; lba < 100;lba++) {
+		for (int lba = 0; lba < 100; lba++) {
 			data = (ssd->read(lba));
 			result.push_back(data);
 		}
 		return result;
+	}
+
+	bool fullwrite(unsigned int data) {
+		return 0;
 	}
 
 private:
