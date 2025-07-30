@@ -23,6 +23,9 @@ enum CommandType {
 	CMD_BASIC_HELP,
 	CMD_BASIC_FULLWRITE,
 	CMD_BASIC_FULLREAD,
+	CMD_TS_FullWriteAndReadCompare,
+	CMD_TS_PartialLBAWrite,
+	CMD_TS_WriteReadAging,
 	CMD_MAX
 };
 
@@ -42,7 +45,14 @@ public:
 		{ "exit",0,false,false },
 		{"help",0,false,false},
 		{"fullwrite",1,false,true},
-		{"fullread",0,false,false} };
+		{"fullread",0,false,false},
+		{"1_FullWriteAndReadCompare",0,false,false},
+		{"1_",0,false,false},
+		{"2_PartialLBAWrite",0,false,false},
+		{"2_",0,false,false},
+		{"3_WriteReadAging",0,false,false},
+		{"3_",0,false,false},
+	};
 
 	int runCommand(const string cmd);
 	vector<string> getCommandParams(const std::string& cmd);
@@ -71,6 +81,12 @@ private:
 		{"help", CMD_BASIC_HELP },
 		{"fullwrite", CMD_BASIC_FULLWRITE },
 		{"fullread", CMD_BASIC_FULLREAD },
+		{"1_FullWriteAndReadCompare", CMD_TS_FullWriteAndReadCompare },
+		{"1_", CMD_TS_FullWriteAndReadCompare },
+		{"2_PartialLBAWrite", CMD_TS_PartialLBAWrite },
+		{"2_", CMD_TS_PartialLBAWrite },
+		{"3_WriteReadAging", CMD_TS_WriteReadAging },
+		{"3_", CMD_TS_WriteReadAging },
 	};
 
 	bool checkCommand(vector<string> str);

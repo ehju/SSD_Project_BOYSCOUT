@@ -187,11 +187,19 @@ void CommandParser::runCommandHelp(void)
 
 bool CommandParser::runCommandFullWrite(const string value)
 {
-	std::cout << "[Write] Done\n";
+	unsigned int iValue = strtoul(value.c_str(), nullptr, 16);
+	bool result = this->shell.fullwrite(iValue);
+	if (1) // FIXME
+		std::cout << "[Write] Done\n";
 	return true;
 }
 
 int CommandParser::runCommandFullRead(void)
 {
+	vector<unsigned int> reads = this->shell.fullread();
+	int lba = 0;
+	for(auto value : reads) {
+		printReadResult(lba++, value);
+	}
 	return 0;
 }
