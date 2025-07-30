@@ -68,3 +68,21 @@ TEST(CPTest, RunCommandReadPassDefault) {
 	EXPECT_EQ(expected, actual);
 	EXPECT_EQ(output, "[Read] LBA 3 : 0x00000000\n");
 }
+TEST(CPTest, RunCommandFullReadPassDefault) {
+	CommandParser cp;
+	const string cmdline = "fullread";
+
+	int expected = CMD_BASIC_FULLREAD;
+	int actual = cp.runCommand(cmdline);
+
+	EXPECT_EQ(expected, actual);
+}
+TEST(CPTest, RunCommandFullWritePassDefault) {
+	CommandParser cp;
+	const string cmdline = "fullwrite 0xAAAABBBB";
+
+	int expected = CMD_BASIC_FULLWRITE;
+	int actual = cp.runCommand(cmdline);
+
+	EXPECT_EQ(expected, actual);
+}
