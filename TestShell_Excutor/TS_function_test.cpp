@@ -114,3 +114,17 @@ TEST_F(SSDFixture, FullWriteNormal) {
 	EXPECT_EQ(true, shell.fullwrite(data));
 }
 
+TEST_F(SSDFixture, FullWriteFail) {
+	data = 0xABCDFFFF;
+	EXPECT_CALL(ssd, write(_, data))
+		.Times(5)
+		.WillOnce(Return(true))
+		.WillOnce(Return(true))
+		.WillOnce(Return(true))
+		.WillOnce(Return(true))
+		.WillOnce(Return(false))
+		.WillRepeatedly(Return(true));
+
+	EXPECT_EQ(false, shell.fullwrite(data));
+}
+
