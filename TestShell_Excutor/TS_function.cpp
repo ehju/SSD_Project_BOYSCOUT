@@ -32,7 +32,10 @@ public:
 
 		if (file_exists(OUTFILE)) {
 			string result_str = getReadResultFromFile(OUTFILE);
-			if (result_str == "ERROR") return 0;
+			if (result_str == "ERROR") {
+				std::cout << "Error Read\n ";
+				return 0;
+			}
 			unsigned int readValue = (unsigned int)std::stoul(result_str, nullptr, 16);
 
 			return readValue;
@@ -72,6 +75,7 @@ private:
 
 
 	std::string toHex(unsigned int value) {
+
 		std::ostringstream ss;
 		ss << "0x" << std::uppercase << std::setfill('0') << std::setw(8) << std::hex << value;
 		return ss.str();
