@@ -5,7 +5,7 @@
 #include <sstream>
 #include "ssd.cpp"
 
-TEST(TS, FirstWriteAndCreateSsdNandTxtTC)
+TEST(WriteCommandTS, FirstWriteAndCreateSsdNandTxtTC)
 {
 	SSD ssd;
 	ssd.writeCommand.execute(0, 1);
@@ -16,7 +16,7 @@ TEST(TS, FirstWriteAndCreateSsdNandTxtTC)
 	EXPECT_TRUE(file.is_open());
 }
 
-TEST(TS, OneWrite)
+TEST(WriteCommandTS, OneWrite)
 {
 	SSD ssd;
 	ssd.writeCommand.execute(0, 1);
@@ -40,7 +40,7 @@ TEST(TS, OneWrite)
 
 }
 
-TEST(TS, OverWriteTC)
+TEST(WriteCommandTS, OverWriteTC)
 {
 	SSD ssd;
 	ssd.writeCommand.execute(0, 1);
@@ -65,7 +65,7 @@ TEST(TS, OverWriteTC)
 	}
 }
 
-TEST(TS, FullWriteAndVerifyTC)
+TEST(WriteCommandTS, FullWriteAndVerifyTC)
 {
 	SSD ssd;
 	for (int i = 0; i < 100; i++)
