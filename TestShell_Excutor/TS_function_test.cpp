@@ -122,8 +122,7 @@ TEST_F(SSDFixture, FullWriteFail) {
 		.WillOnce(Return(true))
 		.WillOnce(Return(true))
 		.WillOnce(Return(true))
-		.WillOnce(Return(false))
-		.WillRepeatedly(Return(true));
+		.WillRepeatedly(Return(false));
 
 	EXPECT_EQ(false, shell.fullwrite(data));
 }
