@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <iomanip> 
 
 using std::vector;
 using std::queue;
@@ -23,7 +24,7 @@ public:
 class SSDExecutor : public iTS_SSD {
 public:
 	unsigned int read(int lba) override {
-		cmd = SSDEXCUTE + " read " + std::to_string(lba);
+		cmd = SSDEXCUTE + " R " + std::to_string(lba);
 		int result = std::system(cmd.c_str());
 		if (result == 0) {
 			throw std::exception("Error System Call read");
@@ -39,7 +40,7 @@ public:
 		return 0;
 	}
 	bool write(int lba, unsigned int data) override {
-		cmd = SSDEXCUTE + " write " + std::to_string(lba) + " " + (toHex(lba));
+		cmd = SSDEXCUTE + " W " + std::to_string(lba) + " " + (toHex(data));
 		int result = std::system(cmd.c_str());
 		if (result == 0) {
 			return false;
@@ -71,12 +72,16 @@ private:
 
 
 	std::string toHex(unsigned int value) {
-		std::stringstream ss;
-		ss << "0x" << std::hex << std::uppercase << value;
+		std::ostringstream ss;
+		ss << "0x" << std::uppercase << std::setfill('0') << std::setw(8) << std::hex << value;
 		return ss.str();
 	}
 	string cmd = "";
+#if _DEBUG
 	string SSDEXCUTE = "\".\\SSD_Excutor.exe";
+#else
+	string SSDEXCUTE = "SSD_Excutor.exe";
+#endif
 	string OUTFILE = "ssd_output.txt";
 
 };
@@ -107,7 +112,6 @@ public:
 		int LBA_MIN = 0;
 		int curWriteLBA = LBA_MIN;
 		int curReadLBA = LBA_MIN;
-		bool flag;
 		queue <WrittenData> datas;
 		WrittenData data;
 		
@@ -128,6 +132,7 @@ public:
 				if (!readCompare(data.lba, data.writtenData)) return false;
 				datas.pop();
 			}
+			writeData++;
 			if (curWriteLBA > LBA_MAX) break;
 		}
 		return true;
@@ -157,7 +162,6 @@ public:
 		int loopcount = 200;
 		for (int i = 0; i < loopcount; i++) {
 			randvalue = getRandomUnsignedInt();
-			std::cout << i << "\n";
 			if (!ssd->write(0, randvalue)) return false;
 			if (!ssd->write(99, randvalue)) return false;
 			if (!readCompare(0, randvalue)) return false;
