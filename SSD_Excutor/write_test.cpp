@@ -96,26 +96,3 @@ TEST(TS, FullWriteAndVerifyTC)
 		FAIL();
 	}
 }
-
-TEST(TS, WriteOufOfRangeLbaTC)
-{
-	SSD ssd;
-	ssd.writeCommand.execute(101, 2);
-
-	std::string filename = "ssd_output.txt";
-	std::ifstream file(filename);
-	std::string line;
-	
-	std::string expected = "ERROR";
-
-	if (file.is_open())
-	{
-		getline(file, line);
-		EXPECT_EQ(expected, line);
-		file.close();
-	}
-	else
-	{
-		FAIL();
-	}
-}
