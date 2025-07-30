@@ -23,10 +23,8 @@ private:
 		std::string ret = "0x00000000";
 		std::string line;
 		std::ifstream nand(NAND_FILE);
-		if (!nand.is_open()) {
-			std::cout << "fail to open : " << NAND_FILE << "\n";
-		}
-		else {
+
+		if (nand.is_open()) {
 			while (std::getline(nand, line)) {
 				unsigned int addr;
 				std::string value;
