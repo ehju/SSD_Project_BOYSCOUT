@@ -14,7 +14,12 @@ public:
 
 	bool readCompare(int lba, unsigned int writtenData) { 
 		unsigned int readData = ssd->read(lba);
-		return true; 
+		if (readData == writtenData) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	};
 	bool fullWriteAndReadCompare() { return true; }
 	bool partialLBAWrite() { return true; }
