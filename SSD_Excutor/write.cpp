@@ -45,17 +45,13 @@ private:
 				std::string line = "";
 				getline(file, line);
 
-				std::string lbaStr;
-				std::string valueStr;
-				unsigned int lba;
-				unsigned int value;
-
 				std::istringstream iss(line);
-
-				iss >> lbaStr >> valueStr;
-				lba = stoi(lbaStr);
+				unsigned int lba;
+				std::string valueStr;
+				iss >> lba >> valueStr;
 
 				char* endptr;
+				unsigned int value;
 				value = strtoul(valueStr.c_str(), &endptr, 16);
 
 				map[lba] = value;
