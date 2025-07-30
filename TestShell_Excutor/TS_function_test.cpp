@@ -5,7 +5,7 @@
 using namespace testing;
 using std::vector;
 
-class MockSSD : public DummySSD {
+class MockSSD : public iTS_SSD {
 public:
 	MOCK_METHOD(unsigned int, read, (int lba), (override));
 	MOCK_METHOD(bool, write, (int lba, unsigned int data), (override));

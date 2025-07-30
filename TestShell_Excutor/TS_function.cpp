@@ -2,7 +2,9 @@
 #include <vector>
 using std::vector;
 
-class DummySSD {
+#define interface struct
+
+interface iTS_SSD {
 public:
 	virtual unsigned int read(int lba)=0;
 	virtual bool write(int lba , unsigned int data) = 0;
@@ -10,7 +12,7 @@ public:
 
 class TS_function {
 public:
-	TS_function(DummySSD* ssd) : ssd { ssd } {}
+	TS_function(iTS_SSD* ssd) : ssd { ssd } {}
 
 	bool readCompare(int lba, unsigned int writtenData) { 
 		unsigned int readData = ssd->read(lba);
@@ -55,5 +57,5 @@ public:
 	}
 
 private:
-	DummySSD *ssd;
+	iTS_SSD *ssd;
 };
