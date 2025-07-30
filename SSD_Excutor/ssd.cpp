@@ -3,6 +3,7 @@
 #include "read.cpp"
 #include "write.cpp"
 #include "command_parser.h"
+#include "FileUtil.cpp"
 
 class CommandFactory
 {
@@ -34,9 +35,12 @@ public:
 	CommandParser* commandParser;
 	CommandFactory commandFactory;
 	std::vector<std::shared_ptr<ICommand>> commandList;
+	FileUtil fileUtil;
 
 	void run(int argc, char* argv[])
 	{
+		fileUtil.deletePrevOutputFile();
+
 		CommandInfo commandInfo = commandParser->parse(argc, argv);
 
 		if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
