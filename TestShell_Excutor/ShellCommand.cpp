@@ -19,20 +19,20 @@ bool ShellCommand::readCompare(int lba, unsigned int writtenData) {
 };
 bool ShellCommand::fullWriteAndReadCompare() {
 	CommandInfo cmdInfo;
-	cmdInfo.testScenario = SCENARIO::FullWriteAndReadCompareScenario;
+	cmdInfo.command = CommandType::CMD_TS_FullWriteAndReadCompare;
 	ShellCommandItem* cmd = new TestScenario(ssd);
 	return cmd->execute(cmdInfo);
 }
 bool ShellCommand::partialLBAWrite() {
 	CommandInfo cmdInfo;
-	cmdInfo.testScenario = SCENARIO::PartialLBAWriteScenario;
+	cmdInfo.command = CommandType::CMD_TS_PartialLBAWrite;
 	ShellCommandItem* cmd = new TestScenario(ssd);
 	return cmd->execute(cmdInfo);
 }
 
 bool ShellCommand::writeReadAging() {
 	CommandInfo cmdInfo;
-	cmdInfo.testScenario = SCENARIO::WriteReadAgingScenario;
+	cmdInfo.command = CommandType::CMD_TS_WriteReadAging;
 	ShellCommandItem* cmd = new TestScenario(ssd);
 	return cmd->execute(cmdInfo);
 }
@@ -40,7 +40,7 @@ bool ShellCommand::writeReadAging() {
 bool ShellCommand::eraseWriteAging()
 {
 	CommandInfo cmdInfo;
-	cmdInfo.testScenario = SCENARIO::EraseWriteAgingScenario;
+	cmdInfo.command = CommandType::CMD_TS_EraseWriteAging;
 	ShellCommandItem* cmd = new TestScenario(ssd);
 	return cmd->execute(cmdInfo);
 }
@@ -110,7 +110,6 @@ bool ShellCommand::erase(int lba, int size)
 	}
 
 	return ssd->erase(lba, size);
-
 }
 
 bool ShellCommand::erase_range(int start_lba, int end_lba)
