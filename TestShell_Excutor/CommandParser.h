@@ -16,18 +16,26 @@ public:
 	MOCK_METHOD(bool, erase, (int lba, int size), (override));
 	MOCK_METHOD(bool, flush, (), (override));
 };
+struct CommandInfo
+{
+	unsigned int command; //CommandType
+	unsigned int lba; //param1
+	unsigned int value; //param2
+};
 
 enum CommandType {
 	CMD_NOT_SUPPORTED = -1,
 	CMD_BASIC_WRITE = 0,
 	CMD_BASIC_READ,
+	CMD_BASIC_ERASE,
+	CMD_BASIC_ERASE_RANGE,
 	CMD_BASIC_EXIT,
 	CMD_BASIC_HELP,
 	CMD_BASIC_FULLWRITE,
 	CMD_BASIC_FULLREAD,
 	CMD_TS_FullWriteAndReadCompare,
 	CMD_TS_PartialLBAWrite,
-	CMD_TS_WriteReadAging,
+	CMD_TS_WriteReadAging,	
 	CMD_MAX
 };
 
@@ -37,24 +45,29 @@ struct CommandFormat
 	int paramnum;
 	bool isUseLBA;
 	bool isUseValue;
+	bool isUseSize;
+	bool isUseEndLBA;
+
 	string usage;
 };
 
 class CommandParser {
 public:
 	vector<CommandFormat> commandlist = {
-		{"write",2,true,true," <LBA> <VALUE> : LBA = 0~99 , VALUE = 0x00000000~0xFFFFFFFF(10 Digit)// Write Value @LBA"},
-		{"read",1,true,false," <LBA>         : LBA = 0~99 // Read @LBA"},	
-		{"fullwrite",1,false,true," <VALUE>  : VALUE = 0x00000000~0xFFFFFFFF(10 Digit) // Write Value @ALL LBA"},
-		{"fullread",0,false,false,"          : No Param //Read Full Range"},
-		{"1_FullWriteAndReadCompare",0,false,false," : No Param //Write and Read Compare @ AllRange"},
-		{"1_",0,false,false,"		: No Param//Write and Read Compare @ AllRange"},
-		{"2_PartialLBAWrite",0,false,false," : No Param //(Write 0x12345678 @LBA_0~4 & ReadCompare) * 30 times"},
-		{"2_",0,false,false,"		: No Param//(Write 0x12345678 @LBA_0~4 & ReadCompare) * 30 times"},
-		{"3_WriteReadAging",0,false,false," : No Param //(Write RandomValue @LBA_9 and @LBA_99) * 200 times"},
-		{"3_",0,false,false,"		: No Param//(Write RandomValue @LBA_9 and @LBA_99) * 200 times"},
-		{"exit",0,false,false,"		: No Param//Terminate Shell" },
-		{"help",0,false,false,"		: No Param//Print Command Usage"},
+		{"write",2,true,true,false,false," <LBA> <VALUE> : LBA = 0~99 , VALUE = 0x00000000~0xFFFFFFFF(10 Digit)// Write Value @LBA"},
+		{"read",1,true,false,false,false," <LBA>         : LBA = 0~99 // Read @LBA"},
+		{"erase",2,true,true,true,false," <LBA> <SIZE> : LBA = 0~99 , SIZE = (+/-Decimal)// Erase Value @LBA ~@LBA+SIZE"},
+		{"erase_range",2,true,false,false,true," <START_LBA> <END_LBA>: LBA = 0~99 // Erase @ STARTLBA~ENDLBA"},
+		{"fullwrite",1,false,true,false,false," <VALUE>  : VALUE = 0x00000000~0xFFFFFFFF(10 Digit) // Write Value @ALL LBA"},
+		{"fullread",0,false,false,false,false,"          : No Param //Read Full Range"},
+		{"1_FullWriteAndReadCompare",0,false,false,false,false," : No Param //Write and Read Compare @ AllRange"},
+		{"1_",0,false,false,false,false,"		: No Param//Write and Read Compare @ AllRange"},
+		{"2_PartialLBAWrite",0,false,false,false,false," : No Param //(Write 0x12345678 @LBA_0~4 & ReadCompare) * 30 times"},
+		{"2_",0,false,false,false,false,"		: No Param//(Write 0x12345678 @LBA_0~4 & ReadCompare) * 30 times"},
+		{"3_WriteReadAging",0,false,false,false,false," : No Param //(Write RandomValue @LBA_9 and @LBA_99) * 200 times"},
+		{"3_",0,false,false,false,false,"		: No Param//(Write RandomValue @LBA_9 and @LBA_99) * 200 times"},
+		{"exit",0,false,false,false,false,"		: No Param//Terminate Shell" },
+		{"help",0,false,false,false,false,"		: No Param//Print Command Usage"},
 	};
 	int runCommand(const string cmd);
 	vector<string> getCommandParams(const std::string& cmd);
@@ -83,6 +96,8 @@ private:
 	std::unordered_map<string, int> cmdMap = {
 		{"write", CMD_BASIC_WRITE },
 		{"read", CMD_BASIC_READ },
+		{"erase", CMD_BASIC_ERASE },
+		{"erase_range", CMD_BASIC_ERASE_RANGE },
 		{"exit", CMD_BASIC_EXIT },
 		{"help", CMD_BASIC_HELP },
 		{"fullwrite", CMD_BASIC_FULLWRITE },
