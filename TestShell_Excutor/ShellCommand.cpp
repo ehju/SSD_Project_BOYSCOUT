@@ -19,67 +19,17 @@ bool ShellCommand::readCompare(int lba, unsigned int writtenData) {
 	}
 };
 bool ShellCommand::fullWriteAndReadCompare() {
-	unsigned int writeData = 0x12345678;
-	unsigned int readData = writeData;
-	int LBA_MAX = 99;
-	int LBA_MIN = 0;
-	int curWriteLBA = LBA_MIN;
-	int curReadLBA = LBA_MIN;
-	queue <WrittenData> datas;
-	WrittenData data;
-
-	while (curReadLBA <= LBA_MAX)
-	{
-		for (int i = 0; i < 5; i++) {
-			data.lba = curWriteLBA;
-			data.writtenData = writeData;
-			if (curWriteLBA > LBA_MAX) break;
-			if (!ssd->write(data.lba, data.writtenData)) return false;
-			datas.push(data);
-			curWriteLBA++;
-		}
-		while (!datas.empty())
-		{
-			data = datas.front();
-
-			if (!readCompare(data.lba, data.writtenData)) return false;
-			datas.pop();
-		}
-		writeData++;
-		if (curWriteLBA > LBA_MAX) break;
-	}
-	return true;
+	ShellCommandItem* cmd = new TestScenario(ssd);
+	return cmd->execute(SCENARIO::FullWriteAndReadCompareScenario, 0);
 }
 bool ShellCommand::partialLBAWrite() {
-	unsigned int writeData = 0x12345678;
-	queue <WrittenData> datas;
-	int loopcount = 30;
-	for (int i = 0; i < loopcount;i++) {
-
-		if (!ssd->write(4, writeData)) return false;
-		if (!ssd->write(0, writeData)) return false;
-		if (!ssd->write(3, writeData)) return false;
-		if (!ssd->write(1, writeData)) return false;
-		if (!ssd->write(2, writeData)) return false;
-
-		for (int i = 0; i < 5; i++) {
-			if (!readCompare(i, writeData)) return false;
-		}
-	}
-	return true;
+	ShellCommandItem* cmd = new TestScenario(ssd);
+	return cmd->execute(SCENARIO::PartialLBAWriteScenario, 0);
 }
 
 bool ShellCommand::writeReadAging() {
-	unsigned int randvalue;
-	int loopcount = 200;
-	for (int i = 0; i < loopcount; i++) {
-		randvalue = getRandomUnsignedInt();
-		if (!ssd->write(0, randvalue)) return false;
-		if (!ssd->write(99, randvalue)) return false;
-		if (!readCompare(0, randvalue)) return false;
-		if (!readCompare(99, randvalue)) return false;
-	}
-	return true;
+	ShellCommandItem* cmd = new TestScenario(ssd);
+	return cmd->execute(SCENARIO::WriteReadAgingScenario, 0);
 }
 
 unsigned int ShellCommand::read(int lba) {
