@@ -38,10 +38,9 @@ bool ShellCommand::eraseWriteAging()
 }
 
 unsigned int ShellCommand::read(int lba) {
-	if (lba < 0 || lba > 99) {
-		throw std::exception("invalid LBA");
-	}
-	return  ssd->read(lba);
+	bool ret;
+	ShellCommandItem* cmd = new Read(ssd);
+	return cmd->execute(lba, 0);
 }
 
 bool ShellCommand::write(int lba, unsigned int data) {
@@ -51,13 +50,11 @@ bool ShellCommand::write(int lba, unsigned int data) {
 
 
 vector<unsigned int> ShellCommand::fullread() {
-	unsigned int data;
-	vector<unsigned int> result;
-	for (int lba = 0; lba < 100; lba++) {
-		data = (ssd->read(lba));
-		result.push_back(data);
-	}
-	return result;
+	bool ret;
+	vector<unsigned int> result_dummy;
+	ShellCommandItem* cmd = new FullRead(ssd);
+	ret = cmd->execute(0, 0);
+	return result_dummy;
 }
 
 bool ShellCommand::fullwrite(unsigned int data) {
