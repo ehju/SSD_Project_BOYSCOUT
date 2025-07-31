@@ -217,7 +217,7 @@ TEST_F(CommandParserTS, EraseTC3)
 
 	setInput(4, argu1, argu2, argu3);
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_ERASE, 95 , 6 };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID,0xFFFFFFFFF , 0xFFFFFFFFF };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 }

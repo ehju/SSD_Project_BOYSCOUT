@@ -43,7 +43,19 @@ CommandInfo CommandParser::MakeCommandInfo(std::vector<std::string> cmdSplits)
 			if(cmddata.isUseValue)
 				ret.value = getHexValue(cmddata, cmdSplits);
 			else if (cmddata.isUseSize)
-				ret.value = getSize(cmddata, cmdSplits);
+			{
+				unsigned int size= getSize(cmddata, cmdSplits);
+				if ((ret.lba + size) >= 0 && (ret.lba + size) <= 99)
+				{
+					ret.value = size;
+				}
+				else
+				{
+					ret.command = (unsigned int)SSDCommand::SSDCommand_INVALID;
+					ret.lba = 0xFFFFFFFF;
+					ret.value = 0xFFFFFFFF;
+				}
+			}
 			else
 				ret.value= 0xFFFFFFFF;
 
