@@ -38,10 +38,13 @@ CommandInfo CommandParser::createCommandData(const string cmd)
 		{
 			ret.command = getCommandType(cmdParms[0]);
 			ret.lba = getLBA(cmddata, cmdParms);
-			if(cmddata.isUseValue)
+			if (cmddata.isUseValue)
 				ret.value = getHexValue(cmddata, cmdParms);
-			else if(cmddata.isUseEndLBA)
+			else if (cmddata.isUseEndLBA)
 				ret.value = getEndLBA(cmddata, cmdParms);
+			else
+				ret.value = 0xFFFFFFFF;
+
 			ret.size = getSize(cmddata, cmdParms);
 		}
 	}
