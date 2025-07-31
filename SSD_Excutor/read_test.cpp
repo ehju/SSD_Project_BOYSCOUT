@@ -21,8 +21,8 @@ public:
 // if read command issued, there must be ssd_output.txt
 TEST_F(ReadTestFixture, ReadCommandLeavesOutputfile) {
     Read readCommand;
-    int address = 0x0;
-    readCommand.execute(address);
+    unsigned int address = 0x0;
+    readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), address, static_cast<unsigned int>(0xFFFFFFFF) });
 
     EXPECT_EQ(ssdHelper.isFileExist(OUTPUT_FILE_NAME), true);
 }
@@ -32,7 +32,8 @@ TEST_F(ReadTestFixture, NeverWrittenReadReturnZero) {
     ssdHelper.resetSSD();
 
     unsigned int address = 0x0;
-    readCommand.execute(address);
+    readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), address, static_cast<unsigned int>(0xFFFFFFFF) });
+
 
     unsigned int readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
 
@@ -44,9 +45,9 @@ TEST_F(ReadTestFixture, CompareReadResultWithWriteValue) {
     unsigned int address = 0x1;
     unsigned int writeValue = 0x1;
 
-    writeCommand.execute(address, writeValue);
-    readCommand.execute(address);
-
+    writeCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), address, writeValue });
+    readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), address, static_cast<unsigned int>(0xFFFFFFFF) });
+    
     unsigned int readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
     
     EXPECT_EQ(readValue, writeValue);
@@ -60,8 +61,8 @@ TEST_F(ReadTestFixture, NonWrittenLBARead) {
     unsigned int writeValue = 0x1;
 
     ssdHelper.resetSSD();
-    writeCommand.execute(writeAddress, writeValue);
-    readCommand.execute(readAddress);
+    writeCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), writeAddress, writeValue });
+    readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), readAddress, static_cast<unsigned int>(0xFFFFFFFF) });
 
     unsigned int readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
 
@@ -79,13 +80,12 @@ TEST_F(ReadTestFixture, OutputShouldContainsOnlyLastReadResult) {
 
     ssdHelper.resetSSD();
 
-    writeCommand.execute(addressOne, valueOne);
-    writeCommand.execute(addressTwo, valueTwo);
-    writeCommand.execute(addressThree, valueThree);
-
-    readCommand.execute(addressOne);
-    readCommand.execute(addressTwo);
-    readCommand.execute(addressThree);
+    writeCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), addressOne, valueOne });
+    writeCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), addressTwo, valueTwo });
+    writeCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), addressThree, valueThree });
+    readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), addressOne, static_cast<unsigned int>(0xFFFFFFFF) });
+    readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), addressTwo, static_cast<unsigned int>(0xFFFFFFFF) });
+    readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), addressThree, static_cast<unsigned int>(0xFFFFFFFF) });
 
     unsigned int readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
 

@@ -3,7 +3,7 @@
 #include <string>
 #include "flush.h"
 
-void Flush::execute()
+void Flush::execute(CommandInfo commandInfo)
 {
 
 }

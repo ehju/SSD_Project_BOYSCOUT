@@ -5,11 +5,12 @@
 #include <sstream>	
 
 #include "command_interface.h"
+#include "command_parser.h"
 #include "FileUtil.h"
 
 class Read : public ICommand {
 public:
-    void execute(unsigned int address) override;
+    void execute(CommandInfo commandInfo) override;
 
 private:
     std::string getHexValue(unsigned int address);

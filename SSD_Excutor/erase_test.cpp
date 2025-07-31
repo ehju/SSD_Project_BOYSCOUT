@@ -26,24 +26,24 @@ TEST_F(EraseTestFixture, EraseAfterWrite) {
     unsigned int valueTwo = 0x2;
     unsigned int valueThree = 0x3;
 
-    writeCommand.execute(addressOne, valueOne);
-    writeCommand.execute(addressTwo, valueTwo);
-    writeCommand.execute(addressThree, valueThree);
+    writeCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), addressOne, valueOne });
+    writeCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), addressTwo, valueTwo });
+    writeCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), addressThree, valueThree });
 
-    eraseCommand.execute(addressOne, (unsigned int)0x2);
-    eraseCommand.execute(addressThree, (unsigned int)0x1);
+    eraseCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE), addressOne, static_cast<unsigned int>(0x2) });
+    eraseCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE), addressThree, static_cast<unsigned int>(0x1) });
 
     unsigned int readValue;
     unsigned int expectErasedValue = static_cast<unsigned int>(0x0);
-    readCommand.execute(addressOne);
+    readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), addressOne, static_cast<unsigned int>(0xFFFFFFFF) });
     readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
     EXPECT_EQ(readValue, expectErasedValue);
     
-    readCommand.execute(addressTwo);
+    readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), addressTwo, static_cast<unsigned int>(0xFFFFFFFF) });
     readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
     EXPECT_EQ(readValue, expectErasedValue);
     
-    readCommand.execute(addressThree);
+    readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), addressThree, static_cast<unsigned int>(0xFFFFFFFF) });
     readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
     EXPECT_EQ(readValue, expectErasedValue);
 }

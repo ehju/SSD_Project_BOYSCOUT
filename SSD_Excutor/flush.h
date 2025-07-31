@@ -4,5 +4,5 @@
 class Flush : public ICommand
 {
 public:
-	void execute() override;
+	void execute(CommandInfo commandInfo) override;
 };

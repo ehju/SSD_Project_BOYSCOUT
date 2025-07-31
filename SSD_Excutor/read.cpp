@@ -1,9 +1,9 @@
 #include "read.h"
 
-void Read::execute(unsigned int address) {
+void Read::execute(CommandInfo commandInfo) {
 	FileUtil::deletePrevOutputFile();
 
-	std::string matchedValue = getHexValue(address);
+	std::string matchedValue = getHexValue(commandInfo.lba);
 	FileUtil::writeOutputFile(matchedValue);
 	return;
 }

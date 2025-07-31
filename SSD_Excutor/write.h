@@ -10,7 +10,7 @@ class Write : public ICommand {
 public:
     Write();
 
-    void execute(unsigned int lba, unsigned int value) override;
+    void execute(CommandInfo commandInfo) override;
 
 private:
     static const unsigned int START_LBA = 0;

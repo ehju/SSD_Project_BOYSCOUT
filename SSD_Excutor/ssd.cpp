@@ -18,19 +18,19 @@ void SSD::run(int argc, char* argv[])
 
 	if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
 	{
-		commandList[static_cast<int>(SSDCommand::SSDCommand_WRITE)]->execute(commandInfo.lba, commandInfo.value);
+		commandList[static_cast<int>(SSDCommand::SSDCommand_WRITE)]->execute(commandInfo);
 	}
 	else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_READ))
 	{
-		commandList[static_cast<int>(SSDCommand::SSDCommand_READ)]->execute(commandInfo.lba);
+		commandList[static_cast<int>(SSDCommand::SSDCommand_READ)]->execute(commandInfo);
 	}
 	else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
 	{
-		commandList[static_cast<int>(SSDCommand::SSDCommand_ERASE)]->execute(commandInfo.lba);
+		commandList[static_cast<int>(SSDCommand::SSDCommand_ERASE)]->execute(commandInfo);
 	}
 	else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_FLUSH))
 	{
-		commandList[static_cast<int>(SSDCommand::SSDCommand_FLUSH)]->execute(commandInfo.lba);
+		commandList[static_cast<int>(SSDCommand::SSDCommand_FLUSH)]->execute(commandInfo);
 	}
 	else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID))
 	{
