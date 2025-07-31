@@ -25,7 +25,7 @@ struct CommandInfo
 };
 
 enum CommandType {
-	CMD_NOT_SUPPORTED = -1,
+
 	CMD_BASIC_WRITE = 0,
 	CMD_BASIC_READ,
 	CMD_BASIC_ERASE,
@@ -37,7 +37,8 @@ enum CommandType {
 	CMD_TS_FullWriteAndReadCompare,
 	CMD_TS_PartialLBAWrite,
 	CMD_TS_WriteReadAging,	
-	CMD_MAX
+	CMD_MAX,
+	CMD_NOT_SUPPORTED,
 };
 
 struct CommandFormat
