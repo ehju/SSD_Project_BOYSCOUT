@@ -153,6 +153,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommandData.h" />
     <ClInclude Include="CommandParser.h" />
     <ClInclude Include="ShellCommand.h" />
     <ClInclude Include="ShellErase.h" />

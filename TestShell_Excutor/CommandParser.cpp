@@ -25,7 +25,30 @@ vector<string> CommandParser::getCommandParams(const string& cmd)
 	return tokens;
 }
 
-int CommandParser::getCommandType(const string cmd)
+CommandInfo CommandParser::createCommandData(const string cmd)
+{
+	vector<string> cmdParms = getCommandParams(cmd);
+	if (isValidCommand(cmdParms) == false)
+		return MakeInvalidCmdData();
+
+	CommandInfo ret = { 0, 0, 0,0 };
+	for (CommandFormat cmddata : commandlist)
+	{
+		if (cmddata.cmd == cmdParms[CMDINDEX])
+		{
+			ret.command = getCommandType(cmdParms[0]);
+			ret.lba = getLBA(cmddata, cmdParms);
+			if(cmddata.isUseValue)
+				ret.value = getHexValue(cmddata, cmdParms);
+			else if(cmddata.isUseEndLBA)
+				ret.value = getEndLBA(cmddata, cmdParms);
+			ret.size = getSize(cmddata, cmdParms);
+		}
+	}
+	return ret;
+}
+
+unsigned int CommandParser::getCommandType(const string cmd)
 {
 	auto it = this->cmdMap.find(cmd);
 	if (it == this->cmdMap.end())
@@ -35,7 +58,7 @@ int CommandParser::getCommandType(const string cmd)
 
 bool CommandParser::isValidCommand(vector<string> cmdSplits)
 {
-	if (checkCommand(cmdSplits)==false)
+	if (checkCommand(cmdSplits) == false)
 		return false;
 	if (checkParamNum(cmdSplits) == false)
 		return false;
@@ -115,6 +138,11 @@ bool CommandParser::checkValiEndLBA(vector<string> cmdSplits)
 		}
 	}
 	return false;
+}
+
+CommandInfo CommandParser::MakeInvalidCmdData()
+{
+	return CommandInfo{ CMD_NOT_SUPPORTED, 0xFFFFFFFF,0xFFFFFFFF,-1 };
 }
 
 bool CommandParser::checkValidValue(vector<string> cmdSplits)
@@ -197,7 +225,7 @@ void CommandParser::printReadResult(int lba, unsigned int value)
 
 void CommandParser::runCommandHelp(void)
 {
-	std::cout <<"* TEAM_NAME: " << teamName << std::endl;
+	std::cout << "* TEAM_NAME: " << teamName << std::endl;
 	std::cout << "* TEAM_LEADER: " << teamLeader << std::endl;
 	std::cout << "* TEAM_MEMBER: " << teamMemberName << std::endl;
 	for (CommandFormat data : commandlist)
@@ -224,7 +252,7 @@ int CommandParser::runCommandFullRead(void)
 {
 	vector<unsigned int> reads = this->shell.fullread();
 	int lba = 0;
-	for(auto value : reads) {
+	for (auto value : reads) {
 		printReadResult(lba++, value);
 	}
 	return 0;
@@ -257,7 +285,7 @@ bool CommandParser::checkValidSize(vector<string> cmdSplits)
 				string sizestr = cmdSplits[SIZEINDEX];
 				if (sizestr[0] == '-')
 				{
-					return isNumber(sizestr.substr(1,sizestr.length()));
+					return isNumber(sizestr.substr(1, sizestr.length()));
 				}
 				else
 				{
@@ -298,4 +326,79 @@ bool CommandParser::isHex(const std::string& str)
 			return false;
 	}
 	return true;
+}
+
+unsigned int CommandParser::getLBA(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
+{
+	if (cmddata.isUseLBA)
+	{
+		return getDecimal(cmdSplits[LBAINDEX]);
+	}
+	return 0xFFFFFFFF;
+}
+unsigned int CommandParser::getEndLBA(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
+{
+	if (cmddata.isUseEndLBA)
+	{
+		return getDecimal(cmdSplits[VALUEINDEX]);
+	}
+	return 0xFFFFFFFF;
+}
+unsigned int CommandParser::getSize(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
+{
+	if (cmddata.isUseSize)
+	{
+		return getSignedDecimal(cmdSplits[SIZEINDEX]);
+	}
+	return -1;
+}
+unsigned int  CommandParser::getDecimal(const string& str)
+{
+
+	try {
+		return stoul(str);
+	}
+	catch (const std::invalid_argument& e) {
+		std::cerr << "Invalid argument: " << e.what() << std::endl;
+	}
+	catch (const std::out_of_range& e) {
+		std::cerr << "Out of range: " << e.what() << std::endl;
+	}
+	return 0xFFFFFFFF;
+
+}
+
+int  CommandParser::getSignedDecimal(const string& str)
+{
+
+	try {
+		return stol(str);
+	}
+	catch (const std::invalid_argument& e) {
+		std::cerr << "Invalid argument: " << e.what() << std::endl;
+	}
+	catch (const std::out_of_range& e) {
+		std::cerr << "Out of range: " << e.what() << std::endl;
+	}
+	return 0xFFFFFFFF;
+
+}
+unsigned int CommandParser::getHexValue(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
+{
+
+	if (cmddata.isUseValue)
+	{
+		try {
+
+			return std::stoul(cmdSplits[VALUEINDEX], nullptr, 16);
+		}
+		catch (const std::invalid_argument& e) {
+			std::cerr << "Invalid argument: " << e.what() << std::endl;
+		}
+		catch (const std::out_of_range& e) {
+			std::cerr << "Out of range: " << e.what() << std::endl;
+		}
+	}
+
+	return 0xFFFFFFFF;
 }
