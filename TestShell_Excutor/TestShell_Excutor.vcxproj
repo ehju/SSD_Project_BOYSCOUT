@@ -142,6 +142,7 @@
     <ClCompile Include="ShellFlush.cpp" />
     <ClCompile Include="ShellFullRead.cpp" />
     <ClCompile Include="ShellFullWrite.cpp" />
+    <ClCompile Include="ShellLogger.cpp" />
     <ClCompile Include="ShellRead.cpp" />
     <ClCompile Include="ShellRunner.cpp" />
     <ClCompile Include="ShellRunner_test.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="ShellFlush.h" />
     <ClInclude Include="ShellFullRead.h" />
     <ClInclude Include="ShellFullWrite.h" />
+    <ClInclude Include="ShellLogger.h" />
     <ClInclude Include="ShellRead.h" />
     <ClInclude Include="ShellRunner.h" />
     <ClInclude Include="ShellTestScenarios.h" />
