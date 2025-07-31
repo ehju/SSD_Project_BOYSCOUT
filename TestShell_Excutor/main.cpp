@@ -1,5 +1,5 @@
 #include "gmock/gmock.h"
-#include "CommandParser.h"
+#include "ShellRunner.h"
 using std::string;
 using std::cout;
 
@@ -11,12 +11,12 @@ int main() {
 #else
 int main(int argc, char* argv[]) {
 	string command;
-	CommandParser cp;
-	int type;
+	ShellRunner shell;
+
 	while (true) {
 		cout << "Shell> ";
 		getline(std::cin, command);
-		type = cp.runCommand(command);
+		int type = shell.runCommand(command);
 
 		switch (type) {
 		case CMD_NOT_SUPPORTED:
@@ -26,6 +26,7 @@ int main(int argc, char* argv[]) {
 			return 0;
 		}
 	}
+
     return 0;
 }
 #endif
