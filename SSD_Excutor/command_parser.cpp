@@ -26,6 +26,8 @@ bool CommandParser::isValidCommand(vector<string> cmdSplits)
 		return false;
 	if (!checkValidValue(cmdSplits))
 		return false;
+	if (!checkValidSize(cmdSplits))
+		return false;
 	return true;
 }
 
@@ -38,7 +40,13 @@ CommandInfo CommandParser::MakeCommandInfo(std::vector<std::string> cmdSplits)
 		{
 			ret.command = cmddata.cmdIndex;		
 			ret.lba=getLBA(cmddata, cmdSplits);
-			ret.value = getValue(cmddata, cmdSplits);
+			if(cmddata.isUseValue)
+				ret.value = getHexValue(cmddata, cmdSplits);
+			else if (cmddata.isUseSize)
+				ret.value = getSize(cmddata, cmdSplits);
+			else
+				ret.value= 0xFFFFFFFF;
+
 		}
 	}
 
@@ -47,23 +55,36 @@ CommandInfo CommandParser::MakeCommandInfo(std::vector<std::string> cmdSplits)
 
 unsigned int CommandParser::getLBA(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
 {
-	
 	if (cmddata.isUseLBA)
 	{
-		try {
-			return stoul(cmdSplits[LBAINDEX]);
-		}
-		catch (const std::invalid_argument& e) {
-			std::cerr << "Invalid argument: " << e.what() << std::endl;
-		}
-		catch (const std::out_of_range& e) {
-			std::cerr << "Out of range: " << e.what() << std::endl;
-		}
-	}
-
+		return getDecimal(cmdSplits[LBAINDEX]);
+	}	
 	return 0xFFFFFFFF;
 }
-unsigned int CommandParser::getValue(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
+unsigned int CommandParser::getSize(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
+{
+	if (cmddata.isUseSize)
+	{
+		return getDecimal(cmdSplits[VALUEINDEX]);
+	}
+	return 0xFFFFFFFF;
+}
+unsigned int  CommandParser::getDecimal(const string& str)
+{
+	
+	try {
+		return stoul(str);
+	}
+	catch (const std::invalid_argument& e) {
+		std::cerr << "Invalid argument: " << e.what() << std::endl;
+	}
+	catch (const std::out_of_range& e) {
+		std::cerr << "Out of range: " << e.what() << std::endl;
+	}
+	return 0xFFFFFFFF;
+	
+}
+unsigned int CommandParser::getHexValue(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
 {
 
 	if (cmddata.isUseValue)
@@ -164,6 +185,35 @@ bool CommandParser::checkValidValue(vector<string> cmdSplits)
 			}
 			else
 				return true; //not use value string
+		}
+	}
+	return false;
+}
+
+bool CommandParser::checkValidSize(vector<string> cmdSplits)
+{
+	for (CommandFormat cmddata : commandlist)
+	{
+		if (cmddata.cmd == cmdSplits[CMDINDEX])
+		{
+			if (cmddata.isUseSize)
+			{
+				string sizestr = cmdSplits[SIZEINDEX];		
+				if (sizestr.size() <= 0 || sizestr.size() > SIZEMAXLENGTH)
+					return false;
+				else if (sizestr.size() == SIZEMAXLENGTH)
+				{
+					if (sizestr[0] != '1' || sizestr[1] !='0')
+						return false;
+				}
+
+				if (sizestr[0] < '0' || sizestr[0] > '9')
+					return false;
+
+				return true;
+			}
+			else
+				return true;
 		}
 	}
 	return false;
