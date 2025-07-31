@@ -23,7 +23,7 @@ public:
 	bool fullWriteAndReadCompare();
 	bool partialLBAWrite();
 	bool writeReadAging();
-
+	bool eraseWriteAging();
 	unsigned int read(int lba);
 	bool write(int lba, unsigned int data);
 	vector<unsigned int> fullread();
@@ -31,6 +31,7 @@ public:
 	bool erase(int lba, int size);
 	bool erase_range(int start_lba, int end_lba);
 	bool flush();
+
 
 private:
 	iTS_SSD* ssd;

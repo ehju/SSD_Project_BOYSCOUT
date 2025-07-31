@@ -32,6 +32,15 @@ bool ShellCommand::writeReadAging() {
 	return cmd->execute(SCENARIO::WriteReadAgingScenario, 0);
 }
 
+bool ShellCommand::eraseWriteAging()
+{
+	ShellCommandItem* cmd = new TestScenario(ssd);
+	return cmd->execute(SCENARIO::EraseWriteAgingScenario, 0);
+	/*
+
+	*/
+}
+
 unsigned int ShellCommand::read(int lba) {
 	if (lba < 0 || lba > 99) {
 		throw std::exception("invalid LBA");
