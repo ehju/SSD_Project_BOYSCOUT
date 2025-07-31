@@ -183,6 +183,7 @@
     <ClInclude Include="command_interface.h" />
     <ClInclude Include="command_parser.h" />
     <ClInclude Include="erase.h" />
+    <ClInclude Include="read.h" />
     <ClInclude Include="write.h" />
     <ClInclude Include="flush.h" />
   </ItemGroup>

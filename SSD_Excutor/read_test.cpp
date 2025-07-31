@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include <string>
-#include "read.cpp"
+#include "read.h"
 #include "write.h"
 
 #include "SSDHelper.cpp"

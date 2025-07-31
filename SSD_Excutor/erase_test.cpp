@@ -1,6 +1,6 @@
 #include "gmock/gmock.h"
 
-#include "read.cpp"
+#include "read.h"
 #include "write.h"
 #include "erase.h"
 #include "SSDHelper.cpp"

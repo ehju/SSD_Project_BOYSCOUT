@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "read.cpp"
+#include "read.h"
 #include "write.h"
 #include "command_parser.h"
 #include "FileUtil.cpp"

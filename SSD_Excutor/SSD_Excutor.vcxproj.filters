@@ -98,6 +98,9 @@
     <ClInclude Include="erase.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="read.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
