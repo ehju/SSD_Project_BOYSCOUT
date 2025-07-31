@@ -45,6 +45,8 @@ private:
 		{"W",2,true,true,false,(unsigned int)SSDCommand::SSDCommand_WRITE},
 		{"R",1,true,false,false,(unsigned int)SSDCommand::SSDCommand_READ},
 		{"E",2,true,false,true, (unsigned int)SSDCommand::SSDCommand_ERASE},
+		{"F",0,false,false,false, (unsigned int)SSDCommand::SSDCommand_FLUSH},
+
 	};
 	const int CMDINDEX = 0;
 	const int LBAINDEX = 1;
