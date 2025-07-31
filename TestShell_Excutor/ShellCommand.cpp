@@ -1,6 +1,22 @@
 #pragma once
 #include "ShellCommand.h"
 
+bool Write::execute(unsigned int num1, unsigned int num2) {
+	unsigned int lba = num1;
+	unsigned int data = num2;
+	if (lba > 99 || lba < 0) return false;
+	return ssd->write(lba, data);
+}
+bool FullWrite::execute(unsigned int num1, unsigned int num2)
+{
+	unsigned int lba = num1;
+	unsigned int data = num2;
+	for (int lba = 0; lba < 100; lba++) {
+		if (!ssd->write(lba, data)) return false;
+	}
+	return true;
+}
+
 bool ShellCommand::readCompare(int lba, unsigned int writtenData) {
 	unsigned int readData = ssd->read(lba);
 	if (readData == writtenData) {
@@ -82,9 +98,10 @@ unsigned int ShellCommand::read(int lba) {
 }
 
 bool ShellCommand::write(int lba, unsigned int data) {
-	if (lba > 99 || lba < 0) return false;
-	return ssd->write(lba, data);
+	ShellCommandItem* cmd = new Write(ssd);
+	return cmd->execute(lba,data);
 }
+
 
 vector<unsigned int> ShellCommand::fullread() {
 	unsigned int data;
@@ -97,10 +114,47 @@ vector<unsigned int> ShellCommand::fullread() {
 }
 
 bool ShellCommand::fullwrite(unsigned int data) {
-	for (int lba = 0; lba < 100; lba++) {
-		if (!ssd->write(lba, data)) return false;
+	ShellCommandItem* cmd = new FullWrite(ssd);
+	return cmd->execute(0, data);
+}
+
+bool ShellCommand::erase(int lba, int size)
+{
+	if (lba > 99 || lba < 0) return false;
+	if (size == 0) return true;
+	const int LBA_MAX = 99;
+	const int LBA_MIN = 0;
+	int tempsize;
+	if (size > 0) {
+		tempsize = size - 1;
+		if (lba + tempsize > LBA_MAX) {
+			size = LBA_MAX - lba + 1;
+		}
 	}
-	return true;
+	else {
+		tempsize = size + 1;
+		if ((lba + tempsize) < 0) {
+			size = lba + 1;
+			lba = 0;
+		}
+		else {
+			lba = lba + tempsize;
+			size = -size;
+		}
+	}
+	while (size > 10) {
+		if (ssd->erase(lba, 10) == false) return false;
+		lba = lba + 10;
+		size = size - 10;
+	}
+
+	return ssd->erase(lba, size);
+
+}
+
+bool ShellCommand::flush()
+{
+	return false;
 }
 
 

@@ -38,13 +38,13 @@ CommandInfo CommandParser::MakeCommandInfo(std::vector<std::string> cmdSplits)
 	{
 		if (cmddata.cmd == cmdSplits[CMDINDEX])
 		{
-			ret.command = cmddata.cmdIndex;		
-			ret.lba=getLBA(cmddata, cmdSplits);
-			if(cmddata.isUseValue)
+			ret.command = cmddata.cmdIndex;
+			ret.lba = getLBA(cmddata, cmdSplits);
+			if (cmddata.isUseValue)
 				ret.value = getHexValue(cmddata, cmdSplits);
 			else if (cmddata.isUseSize)
 			{
-				unsigned int size= getSize(cmddata, cmdSplits);
+				unsigned int size = getSize(cmddata, cmdSplits);
 				if ((ret.lba + size) >= 0 && (ret.lba + size) <= 99)
 				{
 					ret.value = size;
@@ -57,11 +57,9 @@ CommandInfo CommandParser::MakeCommandInfo(std::vector<std::string> cmdSplits)
 				}
 			}
 			else
-				ret.value= 0xFFFFFFFF;
-
+				ret.value = 0xFFFFFFFF;
 		}
 	}
-
 	return ret;
 }
 
@@ -153,14 +151,7 @@ bool CommandParser::checkValidLBA(vector<string> cmdSplits)
 				string lbastr = cmdSplits[LBAINDEX];
 				if (lbastr.size() <= 0 || lbastr.size() > LBAMAXLENGTH)
 					return false;
-
-				for (char lbach : lbastr)
-				{
-					if (lbach < '0' || lbach > '9')
-						return false;
-
-				}
-				return true;
+				return isNumber(lbastr);
 			}
 			else
 				return true;
@@ -168,6 +159,7 @@ bool CommandParser::checkValidLBA(vector<string> cmdSplits)
 	}
 	return false;
 }
+
 
 bool CommandParser::checkValidValue(vector<string> cmdSplits)
 {
@@ -181,19 +173,7 @@ bool CommandParser::checkValidValue(vector<string> cmdSplits)
 				string valueStr = cmdSplits[valueIndex];
 				if (valueStr.size() != VALUELENGTH)
 					return false;
-				else if (valueStr[0] != '0' || valueStr[1] != 'x')
-					return false;
-				bool result = true;
-				for (int i = VALUESTART; i < VALUELENGTH; i++)
-				{
-					if (valueStr[i] >= '0' && valueStr[i] <= '9')
-						continue;
-					else if (valueStr[i] >= 'A' && valueStr[i] <= 'F')
-						continue;
-					else
-						return false;
-				}
-				return true;
+				return isHex(valueStr);
 			}
 			else
 				return true; //not use value string
@@ -218,15 +198,40 @@ bool CommandParser::checkValidSize(vector<string> cmdSplits)
 					if (sizestr[0] != '1' || sizestr[1] !='0')
 						return false;
 				}
-
-				if (sizestr[0] < '0' || sizestr[0] > '9')
-					return false;
-
-				return true;
+				return isNumber(sizestr);
 			}
 			else
 				return true;
 		}
 	}
 	return false;
+}
+
+bool CommandParser::isNumber(const std::string& str)
+{
+
+	for (char ch : str)
+	{
+		if (ch < '0' || ch > '9')
+			return false;
+
+	}
+	return true;
+}
+
+bool CommandParser::isHex(const std::string& str)
+{
+	if (str[0] != '0' || str[1] != 'x')
+		return false;
+	
+	for (int i = HEXSTART; i < str.length(); i++)
+	{
+		if (str[i] >= '0' && str[i] <= '9')
+			continue;
+		else if (str[i] >= 'A' && str[i] <= 'F')
+			continue;
+		else
+			return false;
+	}
+	return true;
 }

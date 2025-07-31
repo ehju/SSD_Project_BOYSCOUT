@@ -6,6 +6,7 @@ unsigned int SSDExecutor::read(int lba) {
 	int result = std::system(cmd.c_str());
 	if (result == 0) {
 		throw std::exception("Error System Call read");
+		return 0;
 	}
 
 	if (file_exists(OUTFILE)) {
@@ -31,6 +32,35 @@ bool SSDExecutor::write(int lba, unsigned int data) {
 		if (result_str == "ERROR") return false;
 	}
 
+	return true;
+}
+
+bool SSDExecutor::erase(int lba, int size)
+{
+	cmd = SSDEXCUTE + " E " + std::to_string(lba) + " " + std::to_string(size);
+	//std::cout << cmd << "\n";
+
+	int result = std::system(cmd.c_str());
+	if (result == 0) {
+    //std::cout << "Error System Call erase\n";
+	return false;
+	}
+	if (file_exists(OUTFILE)) {
+		string result_str = getReadResultFromFile(OUTFILE);
+		if (result_str == "ERROR") return false;
+	}
+	return true;
+}
+
+bool SSDExecutor::flush()
+{
+	cmd = SSDEXCUTE + " F";
+	//std::cout << cmd << "\n";
+	int result = std::system(cmd.c_str());
+	if (result == 0) {
+		//std::cout << "Error System Call flush\n";
+		return false;
+	}
 	return true;
 }
 

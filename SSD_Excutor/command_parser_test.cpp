@@ -273,3 +273,28 @@ TEST_F(CommandParserTS, EraseTC7)
 	checkExpected(expected, actual);
 
 }
+
+
+TEST_F(CommandParserTS, FlushTC1)
+{
+	char argu1[32] = "F";
+
+	setInput(2, argu1, nullptr, nullptr);
+
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_FLUSH, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	checkExpected(expected, actual);
+
+}
+TEST_F(CommandParserTS, FlushTC2)
+{
+	char argu1[32] = "F";
+	char argu2[32] = "80";
+
+	setInput(3, argu1, argu2, nullptr);
+
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	checkExpected(expected, actual);
+
+}
