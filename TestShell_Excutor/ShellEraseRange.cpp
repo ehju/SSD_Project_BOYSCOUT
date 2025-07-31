@@ -4,8 +4,6 @@ bool EraseRange::execute(CommandInfo cmdInfo)
 {
 	unsigned int start_lba = cmdInfo.lba;
 	unsigned int end_lba = cmdInfo.value;
-	const int LBA_MAX = 99;
-	const int LBA_MIN = 0;
 	if (start_lba > end_lba) {
 		std::swap(start_lba, end_lba);
 	}

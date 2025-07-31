@@ -21,8 +21,8 @@ public:
 	bool writeReadAging();
 	bool eraseWriteAging();
 private:
-
-
-
 	iTS_SSD* ssd;
+	const unsigned int DUMMY_WRITE_DATA = 0x12345678;
+	const int LBA_MAX = 99;
+	const int LBA_MIN = 0;
 };

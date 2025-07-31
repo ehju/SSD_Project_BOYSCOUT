@@ -3,13 +3,11 @@
 #include "CommandData.h"
 
 
-class ShellCommandItem {
+interface ShellCommandItem {
 public:
 	ShellCommandItem() {}
-	ShellCommandItem(iTS_SSD* ssd) : ssd{ ssd } {}
+	ShellCommandItem(iTS_SSD* ssd){}
 	virtual bool execute(CommandInfo cmdInfo)=0;
-protected:
-	iTS_SSD* ssd;
 };
 
 
