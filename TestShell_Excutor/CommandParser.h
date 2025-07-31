@@ -13,6 +13,8 @@ class MockSSD : public iTS_SSD {
 public:
 	MOCK_METHOD(unsigned int, read, (int lba), (override));
 	MOCK_METHOD(bool, write, (int lba, unsigned int data), (override));
+	MOCK_METHOD(bool, erase, (int lba, int size), (override));
+	MOCK_METHOD(bool, flush, (), (override));
 };
 
 enum CommandType {
