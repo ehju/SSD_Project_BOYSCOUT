@@ -63,6 +63,11 @@ CommandInfo CommandParser::MakeCommandInfo(std::vector<std::string> cmdSplits)
 	return ret;
 }
 
+CommandFormat CommandParser::getCommandFormat(unsigned int commandNum)
+{
+	return commandlist[commandNum];
+}
+
 unsigned int CommandParser::getLBA(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
 {
 	if (cmddata.isUseLBA)

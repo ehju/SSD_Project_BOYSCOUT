@@ -6,6 +6,10 @@ std::shared_ptr<ICommand> CommandFactory::CreateCommand(int commandNumber)
 		return std::make_shared<Write>();
 	else if (commandNumber == static_cast<int>(SSDCommand::SSDCommand_READ))
 		return std::make_shared<Read>();
+	else if (commandNumber == static_cast<int>(SSDCommand::SSDCommand_ERASE))
+		return std::make_shared<Erase>();
+	else if (commandNumber == static_cast<int>(SSDCommand::SSDCommand_FLUSH))
+		return std::make_shared<Flush>();
 
 	return nullptr;
 }
