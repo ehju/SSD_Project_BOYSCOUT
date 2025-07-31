@@ -18,7 +18,6 @@ public:
 	ShellCommand(iTS_SSD* ssd) : ssd{ ssd } {
 		std::srand(RAND_SEED);  // set seed for random		
 	}
-	bool readCompare(int lba, unsigned int writtenData);
 
 	//TestScenario
 	bool fullWriteAndReadCompare();
@@ -37,5 +36,4 @@ public:
 private:
 	iTS_SSD* ssd;
 	const int RAND_SEED = 1;
-	unsigned int getRandomUnsignedInt();
 };

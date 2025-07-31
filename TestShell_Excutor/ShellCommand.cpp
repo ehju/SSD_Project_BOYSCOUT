@@ -9,15 +9,6 @@
 #include "ShellTestScenarios.h"
 #include "ShellEraseRange.h"
 
-bool ShellCommand::readCompare(int lba, unsigned int writtenData) {
-	unsigned int readData = ssd->read(lba);
-	if (readData == writtenData) {
-		return true;
-	}
-	else {
-		return false;
-	}
-};
 bool ShellCommand::fullWriteAndReadCompare() {
 	CommandInfo cmdInfo;
 	cmdInfo.command = CommandType::CMD_TS_FullWriteAndReadCompare;
@@ -102,11 +93,4 @@ bool ShellCommand::flush()
 	CommandInfo cmdInfo{};
 	ShellCommandItem* cmd = new Flush(ssd);
 	return cmd->execute(cmdInfo);
-}
-
-
-unsigned int ShellCommand::getRandomUnsignedInt() {
-	unsigned int high = static_cast<unsigned int>(std::rand()) << 16;
-	unsigned int low = static_cast<unsigned int>(std::rand()) & 0xFFFF;
-	return high | low;
 }

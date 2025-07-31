@@ -144,6 +144,7 @@
     <ClCompile Include="ShellFullWrite.cpp" />
     <ClCompile Include="ShellRead.cpp" />
     <ClCompile Include="ShellTestScenarios.cpp" />
+    <ClCompile Include="ShellTestScenario_test.cpp" />
     <ClCompile Include="ShellWrite.cpp" />
     <ClCompile Include="TS_function.cpp" />
     <ClCompile Include="TS_function_test.cpp">
