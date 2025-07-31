@@ -131,6 +131,8 @@
     <ClCompile Include="CommandParser_test.cpp" />
     <ClCompile Include="InvalidCmd_test.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ShellCommand.cpp" />
+    <ClCompile Include="ShellCommand_test.cpp" />
     <ClCompile Include="ShellErase.cpp" />
     <ClCompile Include="ShellFlush.cpp" />
     <ClCompile Include="ShellFullRead.cpp" />
@@ -149,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandParser.h" />
+    <ClInclude Include="ShellCommand.h" />
     <ClInclude Include="ShellErase.h" />
     <ClInclude Include="ShellFlush.h" />
     <ClInclude Include="ShellFullRead.h" />
@@ -156,6 +159,7 @@
     <ClInclude Include="ShellRead.h" />
     <ClInclude Include="ShellTestScenarios.h" />
     <ClInclude Include="ShellWrite.h" />
+    <ClInclude Include="TS_function.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
