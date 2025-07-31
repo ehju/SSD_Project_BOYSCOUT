@@ -1,6 +1,6 @@
 #pragma once
 #include "gmock/gmock.h"
-#include "TS_function.cpp"
+#include "ShellCommand.h"
 
 #include <vector>
 #include <iostream>
@@ -98,8 +98,8 @@ private:
 	bool checkValidLBA(vector<string> str);
 	bool checkValidValue(vector<string> str);
 #ifdef _DEBUG
-	TS_function shell{ new testing::NiceMock<MockSSD>()};
+	ShellCommand shell{ new testing::NiceMock<MockSSD>()};
 #else
-	TS_function shell{ new SSDExecutor()};
+	ShellCommand shell{ new SSDExecutor()};
 #endif
 };
