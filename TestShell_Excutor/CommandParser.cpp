@@ -133,6 +133,12 @@ bool CommandParser::checkValidValue(vector<string> cmdSplits)
 	}
 	return false;
 }
+// main : commandline 입력받기
+// main -> TS_Manager (shell <-> test script 모드 결정)
+// TS_manager(mode값으로 생성)
+// type -> struct * = parsing(commandline)
+// runSubCommands(commandline, type)
+// return result = run->excute(param1, param2)
 
 int CommandParser::runSubCommands(vector<string> cmdParms, int type)
 {

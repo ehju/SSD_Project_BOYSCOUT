@@ -2,6 +2,7 @@
 ## Members
 이승현, 주은혜, 정진섭, 허훈, 정혜진, 박세운(Leader) 
 
+
 ## Ground Rules
 <Ground Rule 3주-2일차 생성> 
 📌 Pull Request(PR) 규칙
