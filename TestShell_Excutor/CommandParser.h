@@ -1,7 +1,7 @@
 #pragma once
 #include "gmock/gmock.h"
 #include "ShellCommand.h"
-
+#include "CommandData.h"
 #include <vector>
 #include <iostream>
 #include <string>
@@ -16,30 +16,6 @@ public:
 	MOCK_METHOD(bool, erase, (int lba, int size), (override));
 	MOCK_METHOD(bool, flush, (), (override));
 };
-struct CommandInfo
-{
-	unsigned int command; //CommandType
-	unsigned int lba; //param1
-	unsigned int value; //param2
-	int size; //param2
-};
-
-enum CommandType {
-
-	CMD_BASIC_WRITE = 0,
-	CMD_BASIC_READ,
-	CMD_BASIC_ERASE,
-	CMD_BASIC_ERASE_RANGE,
-	CMD_BASIC_EXIT,
-	CMD_BASIC_HELP,
-	CMD_BASIC_FULLWRITE,
-	CMD_BASIC_FULLREAD,
-	CMD_TS_FullWriteAndReadCompare,
-	CMD_TS_PartialLBAWrite,
-	CMD_TS_WriteReadAging,	
-	CMD_MAX,
-	CMD_NOT_SUPPORTED,
-};
 
 struct CommandFormat
 {
@@ -49,7 +25,6 @@ struct CommandFormat
 	bool isUseValue;
 	bool isUseSize;
 	bool isUseEndLBA;
-
 	string usage;
 };
 
@@ -71,11 +46,11 @@ public:
 		{"exit",0,false,false,false,false,"		: No Param//Terminate Shell" },
 		{"help",0,false,false,false,false,"		: No Param//Print Command Usage"},
 	};
-	int runCommand(const string cmd);
-	vector<string> getCommandParams(const std::string& cmd);
-	int getCommandType(const string cmd);
-	bool isValidCommand(vector<string> str);
 	
+
+	CommandInfo createCommandData(const string cmd);
+
+	int runCommand(const string cmd);
 	int runSubCommands(vector<string> cmdParms, int type);//CommandInfo cmddata
 	bool runCommandWrite(const string lba, const string value);
 	int runCommandRead(const string lba);
@@ -89,10 +64,10 @@ private:
 	const int LBAINDEX =1;
 	const int ENDLBAINDEX = 2;
 	const int VALUEINDEX = 2;
+	const int SIZEINDEX = 2;
 	const int LBAMAXLENGTH = 2;
 	const int HEXSTART = 2;
 	const int VALUELENGTH = 10;
-	const int SIZEINDEX = 2;
 	const int SIZEMAXLENGTH = 2;
 	const string teamName = "BOYSCOUT";
 	const string teamLeader = "¹Ú¼¼¿î";
@@ -114,6 +89,9 @@ private:
 		{"3_WriteReadAging", CMD_TS_WriteReadAging },
 		{"3_", CMD_TS_WriteReadAging },
 	};
+	vector<string> getCommandParams(const std::string& cmd);
+	unsigned int getCommandType(const string cmd);
+	bool isValidCommand(vector<string> str);
 
 	bool checkCommand(vector<string> str);
 	bool checkParamNum(vector<string> str);
@@ -121,7 +99,13 @@ private:
 	bool checkValidValue(vector<string> str);
 	bool checkValidSize(vector<string> cmdSplits);
 	bool checkValiEndLBA(vector<string> cmdSplits);
-	
+
+	CommandInfo MakeInvalidCmdData();
+	unsigned int getLBA(const CommandFormat& cmddata, const std::vector<std::string>& strlist);
+	unsigned int getEndLBA(const CommandFormat& cmddata, const std::vector<std::string>& strlist);
+
+	unsigned int getSize(const CommandFormat& cmddata, const std::vector<std::string>& strlist);
+	int getSignedDecimal(const string& str);
 	unsigned int getDecimal(const string& str);
 	unsigned int getHexValue(const CommandFormat& cmddata, const vector<string>& strlist);
 	bool isNumber(const string& str);

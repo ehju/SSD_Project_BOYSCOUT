@@ -94,5 +94,8 @@
     <ClInclude Include="ShellCommand.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CommandData.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
