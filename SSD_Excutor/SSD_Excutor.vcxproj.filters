@@ -87,6 +87,9 @@
     <ClCompile Include="proxyRead_test.cpp">
       <Filter>테스트파일</Filter>
     </ClCompile>
+    <ClCompile Include="invalid.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="command_parser.h">
@@ -123,6 +126,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="proxyRead.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="invalid.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

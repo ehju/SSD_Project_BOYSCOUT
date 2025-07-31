@@ -215,7 +215,7 @@ int CommandParser::runCommandRead(const string lba)
 {
 	int iLba = stoi(lba);
 	unsigned int iValue = this->shell.read(iLba);
-	printReadResult(iLba, iValue);
+	//printReadResult(iLba, iValue);
 	return iValue;
 }
 
