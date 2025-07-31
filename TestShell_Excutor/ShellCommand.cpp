@@ -6,6 +6,7 @@
 #include "ShellFullRead.h"
 #include "ShellFlush.h"
 #include "ShellErase.h"
+#include "ShellTestScenarios.h"
 
 
 bool ShellCommand::readCompare(int lba, unsigned int writtenData) {
