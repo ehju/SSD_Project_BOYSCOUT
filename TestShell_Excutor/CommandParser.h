@@ -21,6 +21,7 @@ struct CommandInfo
 	unsigned int command; //CommandType
 	unsigned int lba; //param1
 	unsigned int value; //param2
+	int size; //param2
 };
 
 enum CommandType {
@@ -56,7 +57,7 @@ public:
 	vector<CommandFormat> commandlist = {
 		{"write",2,true,true,false,false," <LBA> <VALUE> : LBA = 0~99 , VALUE = 0x00000000~0xFFFFFFFF(10 Digit)// Write Value @LBA"},
 		{"read",1,true,false,false,false," <LBA>         : LBA = 0~99 // Read @LBA"},
-		{"erase",2,true,true,true,false," <LBA> <SIZE> : LBA = 0~99 , SIZE = (+/-Decimal)// Erase Value @LBA ~@LBA+SIZE"},
+		{"erase",2,true,false,true,false," <LBA> <SIZE> : LBA = 0~99 , SIZE = (+/-Decimal)// Erase Value @LBA ~@LBA+SIZE"},
 		{"erase_range",2,true,false,false,true," <START_LBA> <END_LBA>: LBA = 0~99 // Erase @ STARTLBA~ENDLBA"},
 		{"fullwrite",1,false,true,false,false," <VALUE>  : VALUE = 0x00000000~0xFFFFFFFF(10 Digit) // Write Value @ALL LBA"},
 		{"fullread",0,false,false,false,false,"          : No Param //Read Full Range"},
@@ -74,7 +75,7 @@ public:
 	int getCommandType(const string cmd);
 	bool isValidCommand(vector<string> str);
 	
-	int runSubCommands(vector<string> cmdParms, int type);
+	int runSubCommands(vector<string> cmdParms, int type);//CommandInfo cmddata
 	bool runCommandWrite(const string lba, const string value);
 	int runCommandRead(const string lba);
 	void printReadResult(int lba, unsigned int value);
@@ -85,10 +86,13 @@ public:
 private:
 	const int CMDINDEX = 0;
 	const int LBAINDEX =1;
+	const int ENDLBAINDEX = 2;
 	const int VALUEINDEX = 2;
 	const int LBAMAXLENGTH = 2;
-	const int VALUESTART = 2;
+	const int HEXSTART = 2;
 	const int VALUELENGTH = 10;
+	const int SIZEINDEX = 2;
+	const int SIZEMAXLENGTH = 2;
 	const string teamName = "BOYSCOUT";
 	const string teamLeader = "¹Ú¼¼¿î";
 	const string teamMemberName = "ÀÌ½ÂÇö/ÁÖÀºÇý/Á¤Áø¼·/ÇãÈÆ/Á¤ÇýÁø";
@@ -114,6 +118,13 @@ private:
 	bool checkParamNum(vector<string> str);
 	bool checkValidLBA(vector<string> str);
 	bool checkValidValue(vector<string> str);
+	bool checkValidSize(vector<string> cmdSplits);
+	bool checkValiEndLBA(vector<string> cmdSplits);
+	
+	unsigned int getDecimal(const string& str);
+	unsigned int getHexValue(const CommandFormat& cmddata, const vector<string>& strlist);
+	bool isNumber(const string& str);
+	bool isHex(const string& str);
 #ifdef _DEBUG
 	ShellCommand shell{ new testing::NiceMock<MockSSD>()};
 #else

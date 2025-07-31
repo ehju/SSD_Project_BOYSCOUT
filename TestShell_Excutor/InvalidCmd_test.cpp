@@ -199,7 +199,7 @@ TEST(INVALIDCMD, ERASESIZEFAIL)
 		passIndex++;
 	}
 
-	EXPECT_EQ(10, passIndex);
+	EXPECT_EQ(4, passIndex);
 }
 
 TEST(INVALIDCMD, ERASEPASS)
@@ -220,7 +220,7 @@ TEST(INVALIDCMD, ERASEPASS)
 		passIndex++;
 	}
 
-	EXPECT_EQ(10, passIndex);
+	EXPECT_EQ(4, passIndex);
 }
 TEST(INVALIDCMD, ERASERANGEFAIL)
 {
@@ -237,7 +237,7 @@ TEST(INVALIDCMD, ERASERANGEFAIL)
 		passIndex++;
 	}
 
-	EXPECT_EQ(10, passIndex);
+	EXPECT_EQ(2, passIndex);
 }
 
 TEST(INVALIDCMD, ERASERANGEPASS)
@@ -258,5 +258,5 @@ TEST(INVALIDCMD, ERASERANGEPASS)
 		passIndex++;
 	}
 
-	EXPECT_EQ(10, passIndex);
+	EXPECT_EQ(4, passIndex);
 }
