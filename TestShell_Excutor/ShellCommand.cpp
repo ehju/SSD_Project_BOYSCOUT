@@ -94,6 +94,19 @@ bool ShellCommand::erase(int lba, int size)
 
 }
 
+bool ShellCommand::erase_range(int start_lba, int end_lba)
+{
+	const int LBA_MAX = 99;
+	const int LBA_MIN = 0;
+	if (start_lba > end_lba) return false;
+	if (start_lba < LBA_MIN) start_lba = LBA_MIN;
+	else if (start_lba > LBA_MAX) start_lba = LBA_MAX;
+	if (end_lba < LBA_MIN)  end_lba = LBA_MIN;
+	else if (end_lba > LBA_MAX)     end_lba = LBA_MAX;
+	int size = end_lba - start_lba + 1;
+	return erase(start_lba, size);
+}
+
 bool ShellCommand::flush()
 {
 	return false;
