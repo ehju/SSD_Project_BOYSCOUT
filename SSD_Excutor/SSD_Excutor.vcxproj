@@ -188,6 +188,7 @@
     <ClInclude Include="FileUtil.h" />
     <ClInclude Include="read.h" />
     <ClInclude Include="ssd.h" />
+    <ClInclude Include="SSDHelper.h" />
     <ClInclude Include="write.h" />
     <ClInclude Include="flush.h" />
   </ItemGroup>

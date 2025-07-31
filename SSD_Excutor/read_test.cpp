@@ -5,7 +5,7 @@
 #include "read.h"
 #include "write.h"
 
-#include "SSDHelper.cpp"
+#include "SSDHelper.h"
 using namespace testing;
 
 const static std::string SSD_FILE_NAME = "ssd_nand.txt";

@@ -3,7 +3,7 @@
 #include "read.h"
 #include "write.h"
 #include "erase.h"
-#include "SSDHelper.cpp"
+#include "SSDHelper.h"
 
 using namespace testing;
 
