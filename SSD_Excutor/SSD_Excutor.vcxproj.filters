@@ -27,12 +27,6 @@
     <ClCompile Include="read.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="write_test.cpp">
       <Filter>테스트파일</Filter>
     </ClCompile>
@@ -66,9 +60,12 @@
     <ClCompile Include="erase_test.cpp">
       <Filter>테스트파일</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <ClCompile Include="flush.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="flush_test.cpp">
+      <Filter>테스트파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="command_parser.h">
@@ -77,5 +74,8 @@
     <ClInclude Include="command_interface.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
