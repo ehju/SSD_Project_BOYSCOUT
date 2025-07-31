@@ -144,6 +144,7 @@
     </ClCompile>
     <ClCompile Include="erase.cpp" />
     <ClCompile Include="erase_test.cpp" />
+    <ClCompile Include="proxyRead.cpp" />
     <ClCompile Include="FileUtil.cpp" />
     <ClCompile Include="flush.cpp" />
     <ClCompile Include="flush_test.cpp">
@@ -158,6 +159,7 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">  %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">  %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <ClCompile Include="proxyRead_test.cpp" />
     <ClCompile Include="read.cpp" />
     <ClCompile Include="read_test.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"> %(AdditionalOptions)</AdditionalOptions>
@@ -189,6 +191,7 @@
     <ClInclude Include="command_interface.h" />
     <ClInclude Include="command_parser.h" />
     <ClInclude Include="erase.h" />
+    <ClInclude Include="proxyRead.h" />
     <ClInclude Include="FileUtil.h" />
     <ClInclude Include="read.h" />
     <ClInclude Include="ssd.h" />

@@ -103,7 +103,8 @@ void CommandBufferManager::flush()
 	{
 		if (commandBufferList[i].cmd != static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID))
 		{
-			commandBufferList[i].commandStructure->execute(commandBufferList[i].param1, commandBufferList[i].param2);
+			//readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), address, static_cast<unsigned int>(0xFFFFFFFF) });
+			commandBufferList[i].commandStructure->execute(CommandInfo{ commandBufferList[i].cmd, commandBufferList[i].param1, commandBufferList[i].param2 });
 		}
 	}
 

@@ -95,7 +95,7 @@ TEST_F(FlushTS, TC1)
 
 	CommandBufferManager::getInstance().syncCommandBuffer();
 
-	flush.execute();
+	flush.execute(CommandInfo{ 0,0,0 });
 
 	std::string actual;
 	actual = directAccessNand(1);
@@ -123,7 +123,7 @@ TEST_F(FlushTS, TC2)
 
 	CommandBufferManager::getInstance().syncCommandBuffer();
 
-	flush.execute();
+	flush.execute(CommandInfo{0,0,0});
 
 	std::string actual;
 	actual = directAccessNand(1);
@@ -147,7 +147,7 @@ TEST_F(FlushTS, TC3)
 
 	CommandBufferManager::getInstance().syncCommandBuffer();
 
-	flush.execute();
+	flush.execute(CommandInfo{ 0,0,0 });
 
 	std::string actual;
 	actual = directAccessNand(1);
