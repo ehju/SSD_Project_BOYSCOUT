@@ -1,47 +1,34 @@
-#pragma once
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>	
+#include "read.h"
 
-#include "command_interface.h"
-#include "FileUtil.cpp"
+void Read::execute(unsigned int address) {
+	FileUtil::deletePrevOutputFile();
 
-class Read : public ICommand {
-public:
-	void execute(unsigned int address) override {
-		FileUtil::deletePrevOutputFile();
+	std::string matchedValue = getHexValue(address);
+	FileUtil::writeOutputFile(matchedValue);
+	return;
+}
 
-		std::string matchedValue = getHexValue(address);
-		FileUtil::writeOutputFile(matchedValue);
-		return;
-	}
-	
-private:
-	std::string getHexValue(unsigned int address)
-	{
-		std::string ret = "0x00000000";
-		std::string line;
-		std::ifstream nand(NAND_FILE);
+std::string Read::getHexValue(unsigned int address)
+{
+	std::string ret = "0x00000000";
+	std::string line;
+	std::ifstream nand(NAND_FILE);
 
-		if (nand.is_open()) {
-			while (std::getline(nand, line)) {
-				unsigned int addr;
-				std::string value;
-				std::istringstream iss(line);
+	if (nand.is_open()) {
+		while (std::getline(nand, line)) {
+			unsigned int addr;
+			std::string value;
+			std::istringstream iss(line);
 
-				if (!(iss >> addr >> value)) {
-					continue;
-				}
-
-				if (addr == address) {
-					ret = value;
-				}
+			if (!(iss >> addr >> value)) {
+				continue;
 			}
-			nand.close();
-		}
-		return ret;
-	}
 
-	const std::string NAND_FILE = "ssd_nand.txt";
-};
+			if (addr == address) {
+				ret = value;
+			}
+		}
+		nand.close();
+	}
+	return ret;
+}

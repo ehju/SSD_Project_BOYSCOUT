@@ -1,6 +1,6 @@
 #include "write.h"
 
-Write::Write() : nand{"ssd_nand.txt"}
+Write::Write()
 {
 	for (int i = 0; i < SSD_SIZE_PER_LBA; i++)
 	{

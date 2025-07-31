@@ -1,9 +1,9 @@
 #include "gmock/gmock.h"
 
-#include "read.cpp"
+#include "read.h"
 #include "write.h"
-#include "erase.cpp"
-#include "SSDHelper.cpp"
+#include "erase.h"
+#include "SSDHelper.h"
 
 using namespace testing;
 

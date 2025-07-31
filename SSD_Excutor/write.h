@@ -16,7 +16,7 @@ private:
     static const unsigned int START_LBA = 0;
     static const unsigned int SSD_SIZE_PER_LBA = 100;
 
-    std::string nand;
+    const std::string nand = "ssd_nand.txt";
     unsigned int map[SSD_SIZE_PER_LBA];
 
     void sync();

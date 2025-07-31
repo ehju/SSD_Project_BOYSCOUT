@@ -1,68 +1,40 @@
-#include <iostream>
-#include <vector>
-#include "read.cpp"
-#include "write.h"
-#include "command_parser.h"
-#include "FileUtil.cpp"
+#include "ssd.h"
 
-class CommandFactory
+
+SSD::SSD(CommandParser* commandParser) :
+	commandParser{ commandParser }
 {
-public:
-	std::shared_ptr<ICommand> CreateCommand(int commandNumber)
+	for (int i = 0; i < static_cast<int>(SSDCommand::SSDCommand_Count); i++)
 	{
-		if (commandNumber == static_cast<int>(SSDCommand::SSDCommand_WRITE))
-			return std::make_shared<Write>();
-		else if (commandNumber == static_cast<int>(SSDCommand::SSDCommand_READ))
-			return std::make_shared<Read>();
-
-		return nullptr;
+		commandList.push_back(commandFactory.CreateCommand(i));
 	}
-};
+}
 
-
-class SSD
+void SSD::run(int argc, char* argv[])
 {
-public:
-	SSD(CommandParser* commandParser) :
-		commandParser{ commandParser }
+	FileUtil::deletePrevOutputFile();
+
+	CommandInfo commandInfo = commandParser->parse(argc, argv);
+
+	if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
 	{
-		for (int i = 0; i < static_cast<int>(SSDCommand::SSDCommand_Count); i++)
-		{
-			commandList.push_back(commandFactory.CreateCommand(i));
-		}
+		commandList[static_cast<int>(SSDCommand::SSDCommand_WRITE)]->execute(commandInfo.lba, commandInfo.value);
 	}
-
-	CommandParser* commandParser;
-	CommandFactory commandFactory;
-	std::vector<std::shared_ptr<ICommand>> commandList;
-
-	void run(int argc, char* argv[])
+	else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_READ))
 	{
-		FileUtil::deletePrevOutputFile();
-
-		CommandInfo commandInfo = commandParser->parse(argc, argv);
-
-		if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
-		{
-			commandList[static_cast<int>(SSDCommand::SSDCommand_WRITE)]->execute(commandInfo.lba, commandInfo.value);
-		}
-		else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_READ))
-		{
-			commandList[static_cast<int>(SSDCommand::SSDCommand_READ)]->execute(commandInfo.lba);
-		}
-		else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
-		{
-			commandList[static_cast<int>(SSDCommand::SSDCommand_ERASE)]->execute(commandInfo.lba);
-		}
-		else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_FLUSH))
-		{
-			commandList[static_cast<int>(SSDCommand::SSDCommand_FLUSH)]->execute(commandInfo.lba);
-		}
-		else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID))
-		{
-			std::string errorStr = "ERROR";
-			FileUtil::writeOutputFile(errorStr);
-		}
+		commandList[static_cast<int>(SSDCommand::SSDCommand_READ)]->execute(commandInfo.lba);
 	}
-
-};
+	else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
+	{
+		commandList[static_cast<int>(SSDCommand::SSDCommand_ERASE)]->execute(commandInfo.lba);
+	}
+	else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_FLUSH))
+	{
+		commandList[static_cast<int>(SSDCommand::SSDCommand_FLUSH)]->execute(commandInfo.lba);
+	}
+	else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID))
+	{
+		std::string errorStr = "ERROR";
+		FileUtil::writeOutputFile(errorStr);
+	}
+}

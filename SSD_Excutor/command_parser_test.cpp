@@ -1,5 +1,5 @@
 #include "gmock/gmock.h"
-#include "ssd.cpp"
+#include "ssd.h"
 using namespace testing;
 class CommandParserTS :public Test {
 public:

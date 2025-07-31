@@ -1,6 +1,6 @@
 #include "gmock/gmock.h"
-#include "ssd.cpp"
-#include "SSDHelper.cpp"
+#include "ssd.h"
+#include "SSDHelper.h"
 class CommandParserMock : public CommandParser
 {
 public:
