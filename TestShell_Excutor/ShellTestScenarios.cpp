@@ -15,19 +15,19 @@ bool TestScenario::readCompare(int lba, unsigned int writtenData) {
 		return false;
 	}
 };
-bool TestScenario::execute(unsigned int num1, unsigned int num2)
+bool TestScenario::execute(CommandInfo cmdInfo)
 {
-	unsigned int scenarioNum = num1;
-	if (scenarioNum == SCENARIO::FullWriteAndReadCompareScenario) {
+	unsigned int scenarioNum = cmdInfo.command;
+	if (scenarioNum == CommandType::CMD_TS_FullWriteAndReadCompare) {
 		return fullWriteAndReadCompare();
 	}
-	else if (scenarioNum == SCENARIO::PartialLBAWriteScenario) {
+	else if (scenarioNum == CommandType::CMD_TS_PartialLBAWrite) {
 		return partialLBAWrite();
 	}
-	else if (scenarioNum == SCENARIO::WriteReadAgingScenario) {
+	else if (scenarioNum == CommandType::CMD_TS_WriteReadAging) {
 		return writeReadAging();
 	}
-	else if (scenarioNum == SCENARIO::EraseWriteAgingScenario) {
+	else if (scenarioNum == CommandType::CMD_TS_EraseWriteAging) {
 		return eraseWriteAging();
 	}
 	return false;

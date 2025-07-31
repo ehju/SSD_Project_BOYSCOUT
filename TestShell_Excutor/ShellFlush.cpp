@@ -1,5 +1,5 @@
 #include "ShellFlush.h"
-bool Flush::execute(unsigned int num1, unsigned int num2)
+bool Flush::execute(CommandInfo cmdInfo)
 {
 	return true;
 }

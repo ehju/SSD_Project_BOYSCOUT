@@ -1,12 +1,13 @@
 #pragma once
 #include "TS_function.h"
+#include "CommandData.h"
 
 
 class ShellCommandItem {
 public:
 	ShellCommandItem() {}
 	ShellCommandItem(iTS_SSD* ssd) : ssd{ ssd } {}
-	virtual bool execute(unsigned int num1, unsigned int num2)=0;
+	virtual bool execute(CommandInfo cmdInfo)=0;
 protected:
 	iTS_SSD* ssd;
 };
@@ -17,7 +18,6 @@ public:
 	ShellCommand(iTS_SSD* ssd) : ssd{ ssd } {
 		std::srand(RAND_SEED);  // set seed for random		
 	}
-	bool readCompare(int lba, unsigned int writtenData);
 
 	//TestScenario
 	bool fullWriteAndReadCompare();
@@ -36,5 +36,4 @@ public:
 private:
 	iTS_SSD* ssd;
 	const int RAND_SEED = 1;
-	unsigned int getRandomUnsignedInt();
 };
