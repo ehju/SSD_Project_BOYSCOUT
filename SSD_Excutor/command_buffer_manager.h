@@ -21,7 +21,7 @@ public:
 	std::vector<DetailedCommandInfo> commandBufferList;
 
 	static CommandBufferManager& getInstance();
-	std::vector<DetailedCommandInfo> getCommandBufferList();
+	virtual std::vector<DetailedCommandInfo> getCommandBufferList();
 	void flush();
 	void run();
 	void syncCommandBuffer();
@@ -32,7 +32,9 @@ public:
 	void clearCommandBuffer();
 
 private:
+#ifndef _DEBUG
 	CommandBufferManager() = default;
+#endif
 	CommandParser commandParser;
 	fs::path folderPath = fs::current_path() / "buffer";
 };

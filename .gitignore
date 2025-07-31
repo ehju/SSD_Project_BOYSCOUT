@@ -429,3 +429,6 @@ FodyWeavers.xsd
 
 #txt file
 *.txt
+
+#Command buffer Files
+/SSD_Excutor/buffer/**
