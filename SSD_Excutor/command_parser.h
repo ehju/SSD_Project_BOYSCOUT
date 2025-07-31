@@ -45,6 +45,8 @@ private:
 		{"W",2,true,true,false,(unsigned int)SSDCommand::SSDCommand_WRITE},
 		{"R",1,true,false,false,(unsigned int)SSDCommand::SSDCommand_READ},
 		{"E",2,true,false,true, (unsigned int)SSDCommand::SSDCommand_ERASE},
+		{"F",0,false,false,false, (unsigned int)SSDCommand::SSDCommand_FLUSH},
+
 	};
 	const int CMDINDEX = 0;
 	const int LBAINDEX = 1;
@@ -52,7 +54,7 @@ private:
 	const int SIZEINDEX = 2;
 	const int LBAMAXLENGTH = 2;
 	const int SIZEMAXLENGTH = 2;
-	const int VALUESTART = 2;
+	const int HEXSTART = 2;
 	const int VALUELENGTH = 10;
 	const int MAXSIZE = 10;
 	bool checkCommand(std::vector<std::string> str);
@@ -64,5 +66,6 @@ private:
 	unsigned int getSize(const CommandFormat& cmddata, const std::vector<std::string>& strlist);
 	unsigned int getDecimal(const std::string& str);
 	unsigned int getHexValue(const CommandFormat& cmddata, const std::vector<std::string>& strlist);
-	
+	bool isNumber(const std::string& str);
+	bool isHex(const std::string& str);
 };
