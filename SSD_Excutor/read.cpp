@@ -12,13 +12,13 @@ public:
 	void execute(unsigned int address) override {
 		FileUtil::deletePrevOutputFile();
 
-		std::string matchedValue = getValue(address);
+		std::string matchedValue = getHexValue(address);
 		FileUtil::writeOutputFile(matchedValue);
 		return;
 	}
 	
 private:
-	std::string getValue(unsigned int address)
+	std::string getHexValue(unsigned int address)
 	{
 		std::string ret = "0x00000000";
 		std::string line;
