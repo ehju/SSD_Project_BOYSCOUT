@@ -3,7 +3,7 @@
 
 #include <string>
 #include "read.cpp"
-#include "write.cpp"
+#include "write.h"
 
 #include "SSDHelper.cpp"
 using namespace testing;
