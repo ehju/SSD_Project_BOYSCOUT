@@ -11,5 +11,5 @@ std::shared_ptr<ICommand> CommandFactory::CreateCommand(int commandNumber)
 	else if (commandNumber == static_cast<int>(SSDCommand::SSDCommand_FLUSH))
 		return std::make_shared<Flush>();
 
-	return nullptr;
+	return std::make_shared<Invalid>();
 }

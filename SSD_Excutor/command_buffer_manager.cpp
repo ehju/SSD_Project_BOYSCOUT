@@ -14,7 +14,7 @@ CommandBufferManager& CommandBufferManager::getInstance()
 	return commandBufferManager;
 }
 
-std::vector<CommandBufferInfo> CommandBufferManager::getCommandBufferList()
+std::vector<DetailedCommandInfo> CommandBufferManager::getCommandBufferList()
 {
 	return commandBufferList;
 }
@@ -26,27 +26,32 @@ void CommandBufferManager::syncCommandBuffer()
 
 		fs::create_directory(folderPath);
 
-		for (int i = 1; i <= 5; ++i) {
+		for (int i = 1; i <= NUM_COMMAND_BUFFER; ++i) {
 			fs::path filePath = folderPath / (std::to_string(i) + "_empty");
 			std::ofstream outFile(filePath);
 			outFile.close();
 		}
 	}
 
-	for (const auto& entry : fs::directory_iterator("./buffer")) {
+	for (const auto& entry : fs::directory_iterator(folderPath)) {
 		
+		std::string filename = entry.path().filename().string();
+		if (filename.length() >= 5 && filename.substr(filename.length() - 5) == "empty") {
+			continue;
+		}
+
 		commandBufferList.push_back(string2CommandBufferInfo(entry.path().filename().string()));
 		
 	}
 
 }
 
-std::string CommandBufferManager::commandBufferInfo2String(CommandBufferInfo commandBufferInfo)
+std::string CommandBufferManager::commandBufferInfo2String(DetailedCommandInfo commandBufferInfo)
 {
 	return "";
 }
 
-CommandBufferInfo CommandBufferManager::string2CommandBufferInfo(std::string str)
+DetailedCommandInfo CommandBufferManager::string2CommandBufferInfo(std::string str)
 {
 	std::stringstream ss(str);
 	std::string item;
@@ -59,7 +64,7 @@ CommandBufferInfo CommandBufferManager::string2CommandBufferInfo(std::string str
 
 	if (result[1] == "empty")
 	{
-		return CommandBufferInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID), 0xFFFFFFFF, 0xFFFFFFFF, nullptr };
+		return DetailedCommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID), 0xFFFFFFFF, 0xFFFFFFFF, nullptr };
 	}
 
 	std::vector<char*> argv;
@@ -68,7 +73,7 @@ CommandBufferInfo CommandBufferManager::string2CommandBufferInfo(std::string str
 	}
 
 	CommandInfo commandInfo = commandParser.parse(argv.size(), argv.data());
-	CommandBufferInfo commandBufferInfo = {commandInfo.command, commandInfo.lba, commandInfo.value, cmdFactory.CreateCommand(commandInfo.command)};
+	DetailedCommandInfo commandBufferInfo = {commandInfo, cmdFactory.CreateCommand(commandInfo.command)};
 
 	return commandBufferInfo;
 }
@@ -101,10 +106,7 @@ void CommandBufferManager::flush()
 {
 	for (int i = 0; i < commandBufferList.size(); i++)
 	{
-		if (commandBufferList[i].cmd != static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID))
-		{
-			commandBufferList[i].commandStructure->execute(commandBufferList[i].param1, commandBufferList[i].param2);
-		}
+		commandBufferList[i].commandStructure->execute(commandBufferList[i].commandInfo);
 	}
 
 	clearCommandBuffer();

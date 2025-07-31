@@ -20,5 +20,5 @@ private:
     unsigned int map[SSD_SIZE_PER_LBA];
 
     void sync();
-    void flush();
+    void mapUpdate();
 };

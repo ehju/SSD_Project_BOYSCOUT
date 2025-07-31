@@ -152,6 +152,7 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">  %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">  %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <ClCompile Include="invalid.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">  %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">  %(AdditionalOptions)</AdditionalOptions>
@@ -190,6 +191,7 @@
     <ClInclude Include="command_parser.h" />
     <ClInclude Include="erase.h" />
     <ClInclude Include="FileUtil.h" />
+    <ClInclude Include="invalid.h" />
     <ClInclude Include="read.h" />
     <ClInclude Include="ssd.h" />
     <ClInclude Include="SSDHelper.h" />

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
 enum class SSDCommand
 {
 	SSDCommand_WRITE = 0,
@@ -11,6 +12,7 @@ enum class SSDCommand
 	SSDCommand_Count,
 	SSDCommand_INVALID,
 };
+
 struct CommandInfo
 {
 	unsigned int command;
