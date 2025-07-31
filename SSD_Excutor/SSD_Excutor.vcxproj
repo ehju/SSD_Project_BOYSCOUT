@@ -138,6 +138,8 @@
     <ClCompile Include="erase.cpp" />
     <ClCompile Include="erase_test.cpp" />
     <ClCompile Include="FileUtil.cpp" />
+    <ClCompile Include="flush.cpp" />
+    <ClCompile Include="flush_test.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">  %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">  %(AdditionalOptions)</AdditionalOptions>
@@ -170,11 +172,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="command_interface.h" />
     <ClInclude Include="command_parser.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
