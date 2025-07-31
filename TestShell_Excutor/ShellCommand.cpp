@@ -1,21 +1,12 @@
 #pragma once
 #include "ShellCommand.h"
+#include "ShellWrite.h"
+#include "ShellFullWrite.h"
+#include "ShellRead.h"
+#include "ShellFullRead.h"
+#include "ShellFlush.h"
+#include "ShellErase.h"
 
-bool Write::execute(unsigned int num1, unsigned int num2) {
-	unsigned int lba = num1;
-	unsigned int data = num2;
-	if (lba > 99 || lba < 0) return false;
-	return ssd->write(lba, data);
-}
-bool FullWrite::execute(unsigned int num1, unsigned int num2)
-{
-	unsigned int lba = num1;
-	unsigned int data = num2;
-	for (int lba = 0; lba < 100; lba++) {
-		if (!ssd->write(lba, data)) return false;
-	}
-	return true;
-}
 
 bool ShellCommand::readCompare(int lba, unsigned int writtenData) {
 	unsigned int readData = ssd->read(lba);

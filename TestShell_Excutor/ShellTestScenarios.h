@@ -1,16 +1,11 @@
 #pragma once
-class TestScenario {
-	virtual bool run();
-};
-class FullWriteAndReadCompare : public TestScenario
-{
-	bool run() override;
-};
-class PartialLBAWrite : public TestScenario
-{
-	bool run() override;
-};
-class WriteReadAging : public TestScenario
-{
-	bool run() override;
+#include "ShellCommand.h"
+
+class TestScenario : public ShellCommandItem {
+public:
+	TestScenario() {}
+	TestScenario(iTS_SSD* ssd) : ssd{ ssd } {}
+	bool execute(unsigned int num1, unsigned int num2) override;
+private:
+	iTS_SSD* ssd;
 };
