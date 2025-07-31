@@ -181,3 +181,82 @@ TEST(INVALIDCMD, CHECKVALUE_FAIL)
 	
 	EXPECT_EQ(10, passIndex);
 }
+TEST(INVALIDCMD, ERASESIZEFAIL)
+{
+	CommandParser parser;
+	vector<vector<string>> invalidcmdlist = {
+		{ "erase","93","0x12345678AAA" }, //Decimal
+		{ "erase","93","0xABCD" }, //Decimal
+		{ "erase","93","STEERW" }, //Decimal
+		{ "erase","-10","50" }, //Decimal
+
+	};
+	int passIndex = 0;
+	for (vector<string> cmd : invalidcmdlist)
+	{
+		if (parser.isValidCommand(cmd) == true)
+			break;
+		passIndex++;
+	}
+
+	EXPECT_EQ(10, passIndex);
+}
+
+TEST(INVALIDCMD, ERASEPASS)
+{
+	CommandParser parser;
+	vector<vector<string>> validcmdlist = {
+		{ "erase","93","10" },
+		{ "erase","93","-10" },
+		{ "erase","93","0" },
+		{ "erase","93","0" },
+		
+	};
+	int passIndex = 0;
+	for (vector<string> cmd : validcmdlist)
+	{
+		if (parser.isValidCommand(cmd) == false)
+			break;
+		passIndex++;
+	}
+
+	EXPECT_EQ(10, passIndex);
+}
+TEST(INVALIDCMD, ERASERANGEFAIL)
+{
+	CommandParser parser;
+	vector<vector<string>> invalidcmdlist = {		
+		{ "erase_range","95","-5" },//FAIL	
+		{ "erase_range","-5","10" },//FAIL	
+	};
+	int passIndex = 0;
+	for (vector<string> cmd : invalidcmdlist)
+	{
+		if (parser.isValidCommand(cmd) == true)
+			break;
+		passIndex++;
+	}
+
+	EXPECT_EQ(10, passIndex);
+}
+
+TEST(INVALIDCMD, ERASERANGEPASS)
+{
+	CommandParser parser;
+	vector<vector<string>> validcmdlist = {
+		{ "erase_range","95","5" },//PASS	
+		{ "erase_range","93","97" },//pass
+		{ "erase_range","0","97" },//pass
+		{ "erase_range","0","100" },//pass
+
+	};
+	int passIndex = 0;
+	for (vector<string> cmd : validcmdlist)
+	{
+		if (parser.isValidCommand(cmd) == false)
+			break;
+		passIndex++;
+	}
+
+	EXPECT_EQ(10, passIndex);
+}
