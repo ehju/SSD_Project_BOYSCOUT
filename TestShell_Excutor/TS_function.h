@@ -18,6 +18,8 @@ interface iTS_SSD{
 public:
 	virtual unsigned int read(int lba) = 0;
 	virtual bool write(int lba , unsigned int data) = 0;
+	virtual bool erase(int lba, int size) = 0;
+	virtual bool flush() = 0;
 };
 
 
@@ -25,6 +27,8 @@ class SSDExecutor : public iTS_SSD {
 public:
 	unsigned int read(int lba) override;
 	bool write(int lba, unsigned int data) override;
+	bool erase(int lba, int size) override;
+	bool flush() override;
 
 private:
 	bool file_exists(const std::string& filename);
