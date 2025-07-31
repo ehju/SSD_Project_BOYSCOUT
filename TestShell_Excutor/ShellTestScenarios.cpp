@@ -15,9 +15,9 @@ bool TestScenario::readCompare(int lba, unsigned int writtenData) {
 		return false;
 	}
 };
-bool TestScenario::execute(unsigned int num1, unsigned int num2)
+bool TestScenario::execute(CommandInfo cmdInfo)
 {
-	unsigned int scenarioNum = num1;
+	unsigned int scenarioNum = cmdInfo.testScenario;
 	if (scenarioNum == SCENARIO::FullWriteAndReadCompareScenario) {
 		return fullWriteAndReadCompare();
 	}

@@ -1,12 +1,13 @@
 #pragma once
 #include "TS_function.h"
+#include "CommandData.h"
 
 
 class ShellCommandItem {
 public:
 	ShellCommandItem() {}
 	ShellCommandItem(iTS_SSD* ssd) : ssd{ ssd } {}
-	virtual bool execute(unsigned int num1, unsigned int num2)=0;
+	virtual bool execute(CommandInfo cmdInfo)=0;
 protected:
 	iTS_SSD* ssd;
 };

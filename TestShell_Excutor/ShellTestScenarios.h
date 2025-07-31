@@ -13,7 +13,7 @@ class TestScenario : public ShellCommandItem {
 public:
 	TestScenario() {}
 	TestScenario(iTS_SSD* ssd) : ssd{ ssd } {}
-	bool execute(unsigned int num1, unsigned int num2) override;
+	bool execute(CommandInfo cmdInfo) override;
 private:
 	bool fullWriteAndReadCompare();
 	bool partialLBAWrite();

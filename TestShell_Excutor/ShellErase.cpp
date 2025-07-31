@@ -1,5 +1,5 @@
 #include "ShellErase.h"
-bool Erase::execute(unsigned int num1, unsigned int num2)
+bool Erase::execute(CommandInfo cmdInfo)
 {
 	return true;
 }

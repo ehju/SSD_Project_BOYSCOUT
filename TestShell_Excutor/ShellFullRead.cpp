@@ -1,7 +1,7 @@
 #include "ShellFullRead.h"
-bool FullRead::execute(unsigned int num1, unsigned int num2)
+bool FullRead::execute(CommandInfo cmdInfo)
 {
-	unsigned int lba = num1;
+	unsigned int lba = cmdInfo.lba;
 	unsigned int data;
 	for (int lba = 0; lba < 100; lba++) {
 		data = (ssd->read(lba));

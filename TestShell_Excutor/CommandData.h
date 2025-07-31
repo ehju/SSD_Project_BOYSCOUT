@@ -5,6 +5,7 @@ struct CommandInfo
 	unsigned int lba; //param1
 	unsigned int value; //param2
 	int size; //param3
+	int testScenario;
 };
 
 enum CommandType {

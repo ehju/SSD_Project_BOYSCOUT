@@ -18,48 +18,65 @@ bool ShellCommand::readCompare(int lba, unsigned int writtenData) {
 	}
 };
 bool ShellCommand::fullWriteAndReadCompare() {
+	CommandInfo cmdInfo;
+	cmdInfo.testScenario = SCENARIO::FullWriteAndReadCompareScenario;
 	ShellCommandItem* cmd = new TestScenario(ssd);
-	return cmd->execute(SCENARIO::FullWriteAndReadCompareScenario, 0);
+	return cmd->execute(cmdInfo);
 }
 bool ShellCommand::partialLBAWrite() {
+	CommandInfo cmdInfo;
+	cmdInfo.testScenario = SCENARIO::PartialLBAWriteScenario;
 	ShellCommandItem* cmd = new TestScenario(ssd);
-	return cmd->execute(SCENARIO::PartialLBAWriteScenario, 0);
+	return cmd->execute(cmdInfo);
 }
 
 bool ShellCommand::writeReadAging() {
+	CommandInfo cmdInfo;
+	cmdInfo.testScenario = SCENARIO::WriteReadAgingScenario;
 	ShellCommandItem* cmd = new TestScenario(ssd);
-	return cmd->execute(SCENARIO::WriteReadAgingScenario, 0);
+	return cmd->execute(cmdInfo);
 }
 
 bool ShellCommand::eraseWriteAging()
 {
+	CommandInfo cmdInfo;
+	cmdInfo.testScenario = SCENARIO::EraseWriteAgingScenario;
 	ShellCommandItem* cmd = new TestScenario(ssd);
-	return cmd->execute(SCENARIO::EraseWriteAgingScenario, 0);
+	return cmd->execute(cmdInfo);
 }
 
 unsigned int ShellCommand::read(int lba) {
+	CommandInfo cmdInfo;
+	cmdInfo.lba = lba;
 	bool ret;
 	ShellCommandItem* cmd = new Read(ssd);
-	return cmd->execute(lba, 0);
+	return cmd->execute(cmdInfo);
 }
 
 bool ShellCommand::write(int lba, unsigned int data) {
+	CommandInfo cmdInfo;
+	cmdInfo.lba = lba;
+	cmdInfo.value = data;
 	ShellCommandItem* cmd = new Write(ssd);
-	return cmd->execute(lba,data);
+	return cmd->execute(cmdInfo);
 }
 
 
 vector<unsigned int> ShellCommand::fullread() {
+	CommandInfo cmdInfo;
+	cmdInfo.lba = 0;
 	bool ret;
 	vector<unsigned int> result_dummy;
 	ShellCommandItem* cmd = new FullRead(ssd);
-	ret = cmd->execute(0, 0);
+	ret = cmd->execute(cmdInfo);
 	return result_dummy;
 }
 
 bool ShellCommand::fullwrite(unsigned int data) {
+	CommandInfo cmdInfo;
+	cmdInfo.value = data;
 	ShellCommandItem* cmd = new FullWrite(ssd);
-	return cmd->execute(0, data);
+	return cmd->execute(cmdInfo);
 }
 
 bool ShellCommand::erase(int lba, int size)

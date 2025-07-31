@@ -1,7 +1,7 @@
 #include "ShellRead.h"
-bool Read::execute(unsigned int num1, unsigned int num2)
+bool Read::execute(CommandInfo cmdInfo)
 {
-	unsigned int lba = num1;
+	unsigned int lba = cmdInfo.lba;
 	unsigned int result;
 	if (lba < 0 || lba > 99) {
 		return false;
