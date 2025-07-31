@@ -30,7 +30,9 @@ TEST_F(EraseTestFixture, EraseAfterWrite) {
     writeCommand.execute(addressTwo, valueTwo);
     writeCommand.execute(addressThree, valueThree);
 
-    // erase
+    eraseCommand.execute(addressOne, (unsigned int)0x2);
+    eraseCommand.execute(addressThree, (unsigned int)0x1);
+
     unsigned int readValue;
     unsigned int expectErasedValue = static_cast<unsigned int>(0x0);
     readCommand.execute(addressOne);
