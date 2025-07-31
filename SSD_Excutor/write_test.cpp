@@ -52,14 +52,14 @@ public:
 
 TEST_F(WriteCommandTS, FirstWriteAndCreateSsdNandTxtTC)
 {
-	write.execute(0, 1);
+	write.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), static_cast<unsigned int>(0x0), static_cast<unsigned int>(0x1) });
 
 	EXPECT_TRUE(file.is_open());
 }
 
 TEST_F(WriteCommandTS, OneWrite)
 {
-	write.execute(0, 1);
+	write.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), static_cast<unsigned int>(0x0), static_cast<unsigned int>(0x1) });
 
 	std::string actual;
 
@@ -70,8 +70,8 @@ TEST_F(WriteCommandTS, OneWrite)
 
 TEST_F(WriteCommandTS, OverWriteTC)
 {
-	write.execute(0, 1);
-	write.execute(0, 3);
+	write.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), static_cast<unsigned int>(0x0), static_cast<unsigned int>(0x1) });
+	write.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), static_cast<unsigned int>(0x0), static_cast<unsigned int>(0x3) });
 
 	std::string actual;
 
@@ -83,7 +83,8 @@ TEST_F(WriteCommandTS, FullWriteAndVerifyTC)
 {
 	for (int i = 0; i < 100; i++)
 	{
-		write.execute(i, i+1);
+		write.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), static_cast<unsigned int>(i), static_cast<unsigned int>(i+1) });
+
 	}
 
 	std::string actual;

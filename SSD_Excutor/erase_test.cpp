@@ -22,53 +22,29 @@ public:
     unsigned int valueThree = 0x3;
     unsigned int readValue;
     unsigned int expectErasedValue = static_cast<unsigned int>(0x0);
-
-    void writeNonZeroValueFromLBA1To3()
-    {
-        writeCommand.execute(addressOne, valueOne);
-        writeCommand.execute(addressTwo, valueTwo);
-        writeCommand.execute(addressThree, valueThree);
-    }
-
-    unsigned long getU_INTValueFromOutputFile()
-    {
-        return std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
-    }
-
-    void checkZero(unsigned int address)
-    {
-        readCommand.execute(address);
-        readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
-        EXPECT_EQ(readValue, expectErasedValue);
-    }
-
-    void checkAddressValue(unsigned int address, unsigned int expectedValue)
-    {
-        readCommand.execute(address);
-        readValue = getU_INTValueFromOutputFile();
-        EXPECT_EQ(readValue, expectedValue);
-    }
 };
 
 TEST_F(EraseTestFixture, EraseAfterWrite) {
     ssdHelper.resetSSD();
 
-    // write non-zero value on LBA 1,2,3
-    writeNonZeroValueFromLBA1To3();
+    writeCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), addressOne, valueOne });
+    writeCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), addressTwo, valueTwo });
+    writeCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), addressThree, valueThree });
 
-    // check write value
-    checkAddressValue(addressOne,valueOne);
-    checkAddressValue(addressTwo,valueTwo);
-    checkAddressValue(addressThree,valueThree);
+    eraseCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE), addressOne, static_cast<unsigned int>(0x2) });
+    eraseCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE), addressThree, static_cast<unsigned int>(0x1) });
 
-    // erase
-    eraseCommand.execute(addressOne, (unsigned int)0x2);
-    eraseCommand.execute(addressThree, (unsigned int)0x1);
+    readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), addressOne, static_cast<unsigned int>(0xFFFFFFFF) });
+    readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
+    EXPECT_EQ(readValue, expectErasedValue);
 
-    // check erased value
-    checkZero(addressOne);
-    checkZero(addressTwo);
-    checkZero(addressThree);
+    readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), addressTwo, static_cast<unsigned int>(0xFFFFFFFF) });
+    readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
+    EXPECT_EQ(readValue, expectErasedValue);
+
+    readCommand.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_READ), addressThree, static_cast<unsigned int>(0xFFFFFFFF) });
+    readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
+    EXPECT_EQ(readValue, expectErasedValue);
 }
 
 

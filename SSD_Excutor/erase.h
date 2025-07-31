@@ -5,7 +5,7 @@
 
 class Erase : public ICommand {
 public:
-    void execute(unsigned int lba, unsigned int size) override;
+    void execute(CommandInfo commandInfo) override;
 
 private:
     Write write;

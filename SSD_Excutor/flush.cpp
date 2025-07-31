@@ -4,7 +4,7 @@
 #include "flush.h"
 #include "command_buffer_manager.h"
 
-void Flush::execute()
+void Flush::execute(CommandInfo commandInfo)
 {
 	CommandBufferManager::getInstance().flush();
 }

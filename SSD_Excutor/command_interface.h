@@ -1,10 +1,9 @@
 #pragma once
 #include <string>
+#include "command_parser.h"
 
 class ICommand
 {
 public:
-	virtual void execute(unsigned int lba, unsigned int value);
-	virtual void execute(unsigned int lba);
-	virtual void execute();
+	virtual void execute(CommandInfo commandInfo) = 0;
 };

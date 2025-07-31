@@ -8,10 +8,10 @@ Write::Write()
 	}
 }
 
-void Write::execute(unsigned int lba, unsigned int value)
+void Write::execute(CommandInfo commandInfo)
 {
 	sync();
-	map[lba] = value;
+	map[commandInfo.lba] = commandInfo.value;
 	flush();
 	return;
 }
