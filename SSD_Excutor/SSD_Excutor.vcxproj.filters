@@ -71,6 +71,11 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc">
       <Filter>소스 파일</Filter>
+    <ClCompile Include="command_buffer_manager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="command_buffer_manager_test.cpp">
+      <Filter>테스트파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +86,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="write.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="command_buffer_manager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="flush.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

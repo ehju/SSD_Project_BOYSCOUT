@@ -127,6 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="command_buffer_manager.cpp" />
+    <ClCompile Include="command_buffer_manager_test.cpp" />
     <ClCompile Include="command_interface.cpp" />
     <ClCompile Include="command_parser.cpp" />
     <ClCompile Include="command_parser_test.cpp">
@@ -139,7 +141,12 @@
     <ClCompile Include="erase_test.cpp" />
     <ClCompile Include="FileUtil.cpp" />
     <ClCompile Include="flush.cpp" />
-    <ClCompile Include="flush_test.cpp" />
+    <ClCompile Include="flush_test.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">  %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="main.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">  %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">  %(AdditionalOptions)</AdditionalOptions>
@@ -172,9 +179,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="command_buffer_manager.h" />
     <ClInclude Include="command_interface.h" />
     <ClInclude Include="command_parser.h" />
     <ClInclude Include="write.h" />
+    <ClInclude Include="flush.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
