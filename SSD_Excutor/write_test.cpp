@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include "write.cpp"
+#include "write.h"
 
 class WriteCommandTS : public testing::Test
 {

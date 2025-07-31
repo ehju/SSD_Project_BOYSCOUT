@@ -3,7 +3,7 @@
 
 #include <string>
 #include "read.cpp"
-#include "write.cpp"
+#include "write.h"
 
 #include "SSDHelper.cpp"
 using namespace testing;
@@ -41,8 +41,8 @@ TEST_F(ReadTestFixture, NeverWrittenReadReturnZero) {
 
 // if lba 1 is written with specific value, lba 1 read should return exactly same value.
 TEST_F(ReadTestFixture, CompareReadResultWithWriteValue) {
-    unsigned int address = 0x0;
-    unsigned int writeValue = 0x0;
+    unsigned int address = 0x1;
+    unsigned int writeValue = 0x1;
 
     writeCommand.execute(address, writeValue);
     readCommand.execute(address);

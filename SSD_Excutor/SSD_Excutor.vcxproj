@@ -182,6 +182,7 @@
     <ClInclude Include="command_buffer_manager.h" />
     <ClInclude Include="command_interface.h" />
     <ClInclude Include="command_parser.h" />
+    <ClInclude Include="write.h" />
     <ClInclude Include="flush.h" />
   </ItemGroup>
   <ItemGroup>

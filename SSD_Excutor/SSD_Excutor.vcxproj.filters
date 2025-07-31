@@ -80,6 +80,9 @@
     <ClInclude Include="command_interface.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="write.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
     <ClInclude Include="command_buffer_manager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
