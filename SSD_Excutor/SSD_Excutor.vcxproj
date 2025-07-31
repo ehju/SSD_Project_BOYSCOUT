@@ -186,6 +186,7 @@
     <ClInclude Include="command_parser.h" />
     <ClInclude Include="erase.h" />
     <ClInclude Include="read.h" />
+    <ClInclude Include="ssd.h" />
     <ClInclude Include="write.h" />
     <ClInclude Include="flush.h" />
   </ItemGroup>
