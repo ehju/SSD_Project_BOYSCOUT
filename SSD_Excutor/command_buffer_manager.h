@@ -4,6 +4,7 @@
 #include "command_parser.h"
 #include "command_interface.h"
 #include <filesystem>
+#include <array>
 
 namespace fs = std::filesystem;
 
@@ -18,8 +19,6 @@ class CommandBufferManager
 public:
 	static const unsigned int NUM_COMMAND_BUFFER = 5;
 
-	std::vector<DetailedCommandInfo> commandBufferList;
-
 	static CommandBufferManager& getInstance();
 	virtual std::vector<DetailedCommandInfo> getCommandBufferList();
 	void flush();
@@ -31,6 +30,7 @@ public:
 	void updateCommandBuffer();
 	void clearCommandBuffer();
 	void initialize();
+	void updateMapForCommand(DetailedCommandInfo* detailedcommandInfo);
 
 private:
 #ifndef _DEBUG
@@ -39,4 +39,9 @@ private:
 	CommandParser commandParser;
 	fs::path folderPath = fs::current_path() / "buffer";
 	std::vector<bool> bufferEnbledCommand = { true, false, true, false, false, false };
+	std::vector<DetailedCommandInfo> commandBufferList;
+	std::vector<DetailedCommandInfo> optimizedCommandBufferList;
+	int checkOptimizePossible{ 0 };
+
+	std::array<DetailedCommandInfo*, 100> mapForOptimizeCommand;
 };
