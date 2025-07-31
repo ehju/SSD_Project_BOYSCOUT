@@ -4,21 +4,7 @@
 #include "write.h"
 #include "command_parser.h"
 #include "FileUtil.cpp"
-
-class CommandFactory
-{
-public:
-	std::shared_ptr<ICommand> CreateCommand(int commandNumber)
-	{
-		if (commandNumber == static_cast<int>(SSDCommand::SSDCommand_WRITE))
-			return std::make_shared<Write>();
-		else if (commandNumber == static_cast<int>(SSDCommand::SSDCommand_READ))
-			return std::make_shared<Read>();
-
-		return nullptr;
-	}
-};
-
+#include "command_factory.h"
 
 class SSD
 {
