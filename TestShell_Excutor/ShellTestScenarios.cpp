@@ -19,7 +19,7 @@ bool TestScenario::execute(unsigned int num1, unsigned int num2)
 {
 	unsigned int scenarioNum = num1;
 	if (scenarioNum == SCENARIO::FullWriteAndReadCompareScenario) {
-		return fullWriteAndReadCompare;
+		return fullWriteAndReadCompare();
 	}
 	else if (scenarioNum == SCENARIO::PartialLBAWriteScenario) {
 		return partialLBAWrite();
