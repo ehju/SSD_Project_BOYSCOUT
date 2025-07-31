@@ -6,6 +6,7 @@ enum SCENARIO
 	FullWriteAndReadCompareScenario = 1,
 	PartialLBAWriteScenario,
 	WriteReadAgingScenario,
+	EraseWriteAgingScenario,
 };
 
 class TestScenario : public ShellCommandItem {
@@ -17,6 +18,8 @@ private:
 	bool fullWriteAndReadCompare();
 	bool partialLBAWrite();
 	bool writeReadAging();
+	bool eraseWriteAging();
+
 	unsigned int getRandomUnsignedInt();
 	bool readCompare(int lba, unsigned int writtenData);
 	iTS_SSD* ssd;

@@ -8,7 +8,6 @@
 #include "ShellErase.h"
 #include "ShellTestScenarios.h"
 
-
 bool ShellCommand::readCompare(int lba, unsigned int writtenData) {
 	unsigned int readData = ssd->read(lba);
 	if (readData == writtenData) {
@@ -30,6 +29,12 @@ bool ShellCommand::partialLBAWrite() {
 bool ShellCommand::writeReadAging() {
 	ShellCommandItem* cmd = new TestScenario(ssd);
 	return cmd->execute(SCENARIO::WriteReadAgingScenario, 0);
+}
+
+bool ShellCommand::eraseWriteAging()
+{
+	ShellCommandItem* cmd = new TestScenario(ssd);
+	return cmd->execute(SCENARIO::EraseWriteAgingScenario, 0);
 }
 
 unsigned int ShellCommand::read(int lba) {
@@ -98,7 +103,9 @@ bool ShellCommand::erase_range(int start_lba, int end_lba)
 {
 	const int LBA_MAX = 99;
 	const int LBA_MIN = 0;
-	if (start_lba > end_lba) return false;
+	if (start_lba > end_lba) {
+		std::swap(start_lba, end_lba);
+	}
 	if (start_lba < LBA_MIN) start_lba = LBA_MIN;
 	else if (start_lba > LBA_MAX) start_lba = LBA_MAX;
 	if (end_lba < LBA_MIN)  end_lba = LBA_MIN;
