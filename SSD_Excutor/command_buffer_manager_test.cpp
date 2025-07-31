@@ -1,4 +1,5 @@
 #include "gmock/gmock.h"
+#include "command_buffer_manager.h"
 
 TEST(CommandBufferMangerTS, TC1)
 {

@@ -5,6 +5,7 @@
 #include "read.h"
 #include "write.h"
 #include "erase.h"
+#include "flush.h"
 
 class CommandFactory {
 public:

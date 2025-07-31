@@ -1,4 +1,5 @@
 #include "ssd.h"
+#include "command_buffer_manager.h"
 
 
 SSD::SSD(CommandParser* commandParser) :
@@ -15,6 +16,8 @@ void SSD::run(int argc, char* argv[])
 	FileUtil::deletePrevOutputFile();
 
 	CommandInfo commandInfo = commandParser->parse(argc, argv);
+
+	CommandBufferManager::getInstance().run();
 
 	if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
 	{

@@ -38,6 +38,7 @@ public:
 	}*/
 	bool isValidCommand(std::vector<std::string> str);
 	CommandInfo MakeCommandInfo(std::vector<std::string> str);
+	CommandFormat getCommandFormat(unsigned int commandNum);
 
 
 private:
