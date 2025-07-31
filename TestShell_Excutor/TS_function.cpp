@@ -5,7 +5,8 @@ unsigned int SSDExecutor::read(int lba) {
 	cmd = SSDEXCUTE + " R " + std::to_string(lba);
 	int result = std::system(cmd.c_str());
 	if (result == 0) {
-		throw std::exception("Error System Call read");
+		//throw std::exception("Error System Call read");
+		//std::cout << "Error System Call read\n ";
 		return 0;
 	}
 
