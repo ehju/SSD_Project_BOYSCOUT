@@ -138,6 +138,7 @@
     <ClCompile Include="ShellCommand.cpp" />
     <ClCompile Include="ShellCommand_test.cpp" />
     <ClCompile Include="ShellErase.cpp" />
+    <ClCompile Include="ShellEraseRange.cpp" />
     <ClCompile Include="ShellFlush.cpp" />
     <ClCompile Include="ShellFullRead.cpp" />
     <ClCompile Include="ShellFullWrite.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="CommandParser.h" />
     <ClInclude Include="ShellCommand.h" />
     <ClInclude Include="ShellErase.h" />
+    <ClInclude Include="ShellEraseRange.h" />
     <ClInclude Include="ShellFlush.h" />
     <ClInclude Include="ShellFullRead.h" />
     <ClInclude Include="ShellFullWrite.h" />

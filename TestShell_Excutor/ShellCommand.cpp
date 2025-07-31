@@ -7,6 +7,7 @@
 #include "ShellFlush.h"
 #include "ShellErase.h"
 #include "ShellTestScenarios.h"
+#include "ShellEraseRange.h"
 
 bool ShellCommand::readCompare(int lba, unsigned int writtenData) {
 	unsigned int readData = ssd->read(lba);
@@ -63,8 +64,7 @@ bool ShellCommand::write(int lba, unsigned int data) {
 
 
 vector<unsigned int> ShellCommand::fullread() {
-	CommandInfo cmdInfo;
-	cmdInfo.lba = 0;
+	CommandInfo cmdInfo{};
 	bool ret;
 	vector<unsigned int> result_dummy;
 	ShellCommandItem* cmd = new FullRead(ssd);
@@ -81,55 +81,27 @@ bool ShellCommand::fullwrite(unsigned int data) {
 
 bool ShellCommand::erase(int lba, int size)
 {
-	if (lba > 99 || lba < 0) return false;
-	if (size == 0) return true;
-	const int LBA_MAX = 99;
-	const int LBA_MIN = 0;
-	int tempsize;
-	if (size > 0) {
-		tempsize = size - 1;
-		if (lba + tempsize > LBA_MAX) {
-			size = LBA_MAX - lba + 1;
-		}
-	}
-	else {
-		tempsize = size + 1;
-		if ((lba + tempsize) < 0) {
-			size = lba + 1;
-			lba = 0;
-		}
-		else {
-			lba = lba + tempsize;
-			size = -size;
-		}
-	}
-	while (size > 10) {
-		if (ssd->erase(lba, 10) == false) return false;
-		lba = lba + 10;
-		size = size - 10;
-	}
-
-	return ssd->erase(lba, size);
+	CommandInfo cmdInfo;
+	cmdInfo.size = size;
+	cmdInfo.lba = lba;
+	ShellCommandItem* cmd = new Erase(ssd);
+	return cmd->execute(cmdInfo);
 }
 
 bool ShellCommand::erase_range(int start_lba, int end_lba)
 {
-	const int LBA_MAX = 99;
-	const int LBA_MIN = 0;
-	if (start_lba > end_lba) {
-		std::swap(start_lba, end_lba);
-	}
-	if (start_lba < LBA_MIN) start_lba = LBA_MIN;
-	else if (start_lba > LBA_MAX) start_lba = LBA_MAX;
-	if (end_lba < LBA_MIN)  end_lba = LBA_MIN;
-	else if (end_lba > LBA_MAX)     end_lba = LBA_MAX;
-	int size = end_lba - start_lba + 1;
-	return erase(start_lba, size);
+	CommandInfo cmdInfo;
+	cmdInfo.lba = start_lba;
+	cmdInfo.value = end_lba;
+	ShellCommandItem* cmd = new EraseRange(ssd);
+	return cmd->execute(cmdInfo);
 }
 
 bool ShellCommand::flush()
 {
-	return false;
+	CommandInfo cmdInfo{};
+	ShellCommandItem* cmd = new Flush(ssd);
+	return cmd->execute(cmdInfo);
 }
 
 
