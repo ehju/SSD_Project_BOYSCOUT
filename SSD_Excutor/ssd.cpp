@@ -50,6 +50,14 @@ public:
 		{
 			commandList[static_cast<int>(SSDCommand::SSDCommand_READ)]->execute(commandInfo.lba);
 		}
+		else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
+		{
+			commandList[static_cast<int>(SSDCommand::SSDCommand_ERASE)]->execute(commandInfo.lba);
+		}
+		else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_FLUSH))
+		{
+			commandList[static_cast<int>(SSDCommand::SSDCommand_FLUSH)]->execute(commandInfo.lba);
+		}
 		else if (commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID))
 		{
 			std::string errorStr = "ERROR";

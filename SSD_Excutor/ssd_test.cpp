@@ -29,7 +29,7 @@ public:
 
 	const unsigned int WRITE_CMD = 0;
 	const unsigned int READ_CMD = 1;
-	const unsigned int INVALID_CMD = 3;
+	const unsigned int INVALID_CMD = 5;
 	SSDHelper ssdHelper;
 
 	void checkData(unsigned int expectedLba, unsigned int expectedValue, std::string actual)

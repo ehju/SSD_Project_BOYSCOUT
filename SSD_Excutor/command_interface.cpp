@@ -10,3 +10,8 @@ void ICommand::execute(unsigned int lba)
 {
 
 }
+
+void ICommand::execute()
+{
+
+}
