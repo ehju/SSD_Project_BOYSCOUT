@@ -20,6 +20,7 @@ enum CommandType {
 	CMD_TS_FullWriteAndReadCompare,
 	CMD_TS_PartialLBAWrite,
 	CMD_TS_WriteReadAging,
+	CMD_TS_EraseWriteAging,
 	CMD_MAX,
 	CMD_NOT_SUPPORTED,
 };
