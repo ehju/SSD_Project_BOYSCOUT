@@ -2,17 +2,6 @@
 #include <sstream>
 using namespace std;
 
-int CommandParser::runCommand(const string cmd) {
-	// Precondition
-	vector<string> cmdParms = getCommandParams(cmd);
-	if (isValidCommand(cmdParms) == false)
-		return CMD_NOT_SUPPORTED;
-
-	int type = getCommandType(cmdParms[0]);
-	runSubCommands(cmdParms, type);
-	return type;
-}
-
 vector<string> CommandParser::getCommandParams(const string& cmd)
 {
 	stringstream stream(cmd);
@@ -169,63 +158,6 @@ bool CommandParser::checkValidValue(vector<string> cmdSplits)
 	return false;
 }
 
-int CommandParser::runSubCommands(vector<string> cmdParms, int type)
-{
-	if (type == CMD_BASIC_WRITE) {
-		return runCommandWrite(cmdParms[1], cmdParms[2]);
-	}
-	else if (type == CMD_BASIC_READ) {
-		return runCommandRead(cmdParms[1]);
-	}
-	else if (type == CMD_BASIC_EXIT) {
-		return CMD_BASIC_EXIT;
-	}
-	else if (type == CMD_BASIC_HELP) {
-		runCommandHelp();
-		return CMD_BASIC_HELP;
-	}
-	else if (type == CMD_BASIC_FULLWRITE) {
-		return runCommandFullWrite(cmdParms[1]);
-	}
-	else if (type == CMD_BASIC_FULLREAD) {
-		return runCommandFullRead();
-	}
-	else if (type == CMD_NOT_SUPPORTED)
-		return CMD_NOT_SUPPORTED;
-	else {
-		return runCommandTestScenario(type);
-	}
-}
-
-bool CommandParser::runCommandWrite(const string lba, const string value)
-{
-	int iLba = stoi(lba);
-	unsigned int iValue = strtoul(value.c_str(), nullptr, 16);
-	bool result = this->shell.write(iLba, iValue);
-#ifdef _DEBUG
-	std::cout << "[Write] Done\n";
-#else
-	if (result)
-		std::cout << "[Write] Done\n";
-#endif
-	return result;
-}
-
-int CommandParser::runCommandRead(const string lba)
-{
-	int iLba = stoi(lba);
-	unsigned int iValue = this->shell.read(iLba);
-	//printReadResult(iLba, iValue);
-	return iValue;
-}
-
-void CommandParser::printReadResult(int lba, unsigned int value)
-{
-	std::stringstream ss;
-	ss << "0x" << uppercase << hex << setw(8) << setfill('0') << value;
-	std::cout << "[Read] LBA " << lba << " : " << ss.str() << std::endl;
-}
-
 void CommandParser::runCommandHelp(void)
 {
 	std::cout << "* TEAM_NAME: " << teamName << std::endl;
@@ -235,45 +167,6 @@ void CommandParser::runCommandHelp(void)
 	{
 		std::cout << data.cmd << data.usage << std::endl;
 	}
-}
-
-
-bool CommandParser::runCommandFullWrite(const string value)
-{
-	unsigned int iValue = strtoul(value.c_str(), nullptr, 16);
-	bool result = this->shell.fullwrite(iValue);
-#ifdef _DEBUG
-	std::cout << "[Write] Done\n";
-#else
-	if (result)
-		std::cout << "[Write] Done\n";
-#endif
-	return true;
-}
-
-int CommandParser::runCommandFullRead(void)
-{
-	vector<unsigned int> reads = this->shell.fullread();
-	int lba = 0;
-	for (auto value : reads) {
-		printReadResult(lba++, value);
-	}
-	return 0;
-}
-
-int CommandParser::runCommandTestScenario(int type)
-{
-	bool result = false;
-	if (type == CMD_TS_FullWriteAndReadCompare)
-		result = this->shell.fullWriteAndReadCompare();
-	else if (type == CMD_TS_PartialLBAWrite)
-		result = this->shell.partialLBAWrite();
-	else if (type == CMD_TS_WriteReadAging)
-		result = this->shell.writeReadAging();
-
-	std::cout << (result ? "PASS" : "FAIL") << std::endl;
-
-	return result;
 }
 
 //size is int
