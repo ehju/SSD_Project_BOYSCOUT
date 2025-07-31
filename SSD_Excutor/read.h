@@ -12,6 +12,6 @@ public:
     void execute(unsigned int address) override;
 
 private:
-    std::string getValue(unsigned int address);
+    std::string getHexValue(unsigned int address);
     const std::string NAND_FILE = "ssd_nand.txt";
 };

@@ -183,3 +183,93 @@ TEST_F(CommandParserTS, ReadTC4)
 	checkExpected(expected, actual);
 
 }
+
+TEST_F(CommandParserTS, EraseTC1)
+{
+	char argu1[32] = "E";
+	char argu2[32] = "0";
+	setInput(3, argu1, argu2, nullptr);
+
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFF , 0xFFFFFFFF };
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	checkExpected(expected, actual);
+}
+
+TEST_F(CommandParserTS, EraseTC2)
+{
+	char argu1[32] = "E";
+	char argu2[32] = "0";
+	char argu3[32] = "-5";
+
+	setInput(4, argu1, argu2, argu3);
+
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	checkExpected(expected, actual);
+
+}
+
+TEST_F(CommandParserTS, EraseTC3)
+{
+	char argu1[32] = "E";
+	char argu2[32] = "95";
+	char argu3[32] = "6";
+
+	setInput(4, argu1, argu2, argu3);
+
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID,0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	checkExpected(expected, actual);
+}
+
+TEST_F(CommandParserTS, EraseTC4)
+{
+	char argu1[32] = "E";
+	char argu2[32] = "80";
+	char argu3[32] = "11";
+
+	setInput(4, argu1, argu2, argu3);
+
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	checkExpected(expected, actual);
+
+}
+
+TEST_F(CommandParserTS, EraseTC5)
+{
+	char argu1[32] = "E";
+	char argu2[32] = "80";
+	char argu3[32] = "0";
+
+	setInput(4, argu1, argu2, argu3);
+
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_ERASE, 80 , 0 };
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	checkExpected(expected, actual);
+}
+TEST_F(CommandParserTS, EraseTC6)
+{
+	char argu1[32] = "E";
+	char argu2[32] = "80";
+	char argu3[32] = "10";
+
+	setInput(4, argu1, argu2, argu3);
+
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_ERASE, 80 , 10 };
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	checkExpected(expected, actual);
+}
+TEST_F(CommandParserTS, EraseTC7)
+{
+	char argu1[32] = "E";
+	char argu2[32] = "80";
+	char argu3[32] = "0x01234567";
+
+	setInput(4, argu1, argu2, argu3);
+
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
+	checkExpected(expected, actual);
+
+}

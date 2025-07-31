@@ -3,12 +3,12 @@
 void Read::execute(unsigned int address) {
 	FileUtil::deletePrevOutputFile();
 
-	std::string matchedValue = getValue(address);
+	std::string matchedValue = getHexValue(address);
 	FileUtil::writeOutputFile(matchedValue);
 	return;
 }
 
-std::string Read::getValue(unsigned int address)
+std::string Read::getHexValue(unsigned int address)
 {
 	std::string ret = "0x00000000";
 	std::string line;
