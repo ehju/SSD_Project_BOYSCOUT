@@ -18,6 +18,7 @@ private:
 
     const std::string nand = "ssd_nand.txt";
     unsigned int map[SSD_SIZE_PER_LBA];
+
     void sync();
     void flush();
 };
