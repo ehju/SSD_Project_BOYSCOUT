@@ -72,12 +72,6 @@
     <ClCompile Include="command_buffer_manager_test.cpp">
       <Filter>테스트파일</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="command_factory.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>

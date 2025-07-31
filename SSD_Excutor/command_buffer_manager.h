@@ -23,10 +23,10 @@ public:
 	static CommandBufferManager& getInstance();
 	std::vector<DetailedCommandInfo> getCommandBufferList();
 	void flush();
-	void run();
+	bool inputCommandBuffer(CommandInfo commandInfo);
 	void syncCommandBuffer();
 	DetailedCommandInfo string2CommandBufferInfo(std::string str);
-	std::string commandBufferInfo2String(DetailedCommandInfo commnadBufferInfo);
+	std::string commandBufferInfo2String(unsigned int bufferIndex, DetailedCommandInfo commnadBufferInfo);
 	void optimizeCommandBuffer();
 	void updateCommandBuffer();
 	void clearCommandBuffer();
@@ -35,4 +35,5 @@ private:
 	CommandBufferManager() = default;
 	CommandParser commandParser;
 	fs::path folderPath = fs::current_path() / "buffer";
+	std::vector<bool> bufferEnbledCommand = { true, false, true, false, false, false };
 };
