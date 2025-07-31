@@ -49,6 +49,8 @@ public:
 	
 
 	CommandInfo createCommandData(const string cmd);
+	unsigned int getCommandType(const string cmd);
+	bool isValidCommand(vector<string> str);
 
 	int runCommand(const string cmd);
 	int runSubCommands(vector<string> cmdParms, int type);//CommandInfo cmddata
@@ -90,9 +92,7 @@ private:
 		{"3_", CMD_TS_WriteReadAging },
 	};
 	vector<string> getCommandParams(const std::string& cmd);
-	unsigned int getCommandType(const string cmd);
-	bool isValidCommand(vector<string> str);
-
+	
 	bool checkCommand(vector<string> str);
 	bool checkParamNum(vector<string> str);
 	bool checkValidLBA(vector<string> str);
