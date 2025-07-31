@@ -2,7 +2,7 @@
 
 #include "read.cpp"
 #include "write.h"
-#include "erase.cpp"
+#include "erase.h"
 #include "SSDHelper.cpp"
 
 using namespace testing;
