@@ -4,7 +4,7 @@
 #include "read.h"
 #include "write.h"
 #include "command_parser.h"
-#include "FileUtil.cpp"
+#include "FileUtil.h"
 #include "command_factory.h"
 
 class SSD {
