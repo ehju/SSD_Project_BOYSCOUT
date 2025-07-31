@@ -12,7 +12,7 @@ void Write::execute(CommandInfo commandInfo)
 {
 	sync();
 	map[commandInfo.lba] = commandInfo.value;
-	flush();
+	mapUpdate();
 	return;
 }
 
@@ -44,7 +44,7 @@ void Write::sync()
 
 }
 
-void Write::flush()
+void Write::mapUpdate()
 {
 	std::ofstream file(nand, std::ios::out | std::ios::trunc);
 

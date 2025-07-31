@@ -87,15 +87,15 @@ TEST_F(FlushTS, TC1)
 {
 	Flush flush;
 
-	makeCommandBuffer(1, CommandInfo{ 0, 1, 1 });
-	makeCommandBuffer(2, CommandInfo{ 0, 2, 2 });
-	makeCommandBuffer(3, CommandInfo{ 0, 3, 3 });
-	makeCommandBuffer(4, CommandInfo{ 0, 4, 4 });
-	makeCommandBuffer(5, CommandInfo{ 0, 5, 5 });
+	makeCommandBuffer(1, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), 1, 1 });
+	makeCommandBuffer(2, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), 2, 2 });
+	makeCommandBuffer(3, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), 3, 3 });
+	makeCommandBuffer(4, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), 4, 4 });
+	makeCommandBuffer(5, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), 5, 5 });
 
 	CommandBufferManager::getInstance().syncCommandBuffer();
 
-	flush.execute();
+	flush.execute(CommandInfo {});
 
 	std::string actual;
 	actual = directAccessNand(1);
@@ -115,15 +115,15 @@ TEST_F(FlushTS, TC2)
 {
 	Flush flush;
 
-	makeCommandBuffer(1, CommandInfo{ 0, 1, 0xFFFF });
-	makeCommandBuffer(2, CommandInfo{ 5, 2, 0xFFFF });
-	makeCommandBuffer(3, CommandInfo{ 0, 3, 0x12345678 });
-	makeCommandBuffer(4, CommandInfo{ 5, 4, 4 });
-	makeCommandBuffer(5, CommandInfo{ 0, 5, 0xFFFFFFFF});
+	makeCommandBuffer(1, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), 1, 0xFFFF });
+	makeCommandBuffer(2, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID), 2, 0xFFFF });
+	makeCommandBuffer(3, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), 3, 0x12345678 });
+	makeCommandBuffer(4, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID), 4, 4 });
+	makeCommandBuffer(5, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), 5, 0xFFFFFFFF});
 
 	CommandBufferManager::getInstance().syncCommandBuffer();
 
-	flush.execute();
+	flush.execute(CommandInfo{});
 
 	std::string actual;
 	actual = directAccessNand(1);
@@ -139,15 +139,15 @@ TEST_F(FlushTS, TC3)
 {
 	Flush flush;
 
-	makeCommandBuffer(1, CommandInfo{ 0, 1, 0xFFFF });
-	makeCommandBuffer(2, CommandInfo{ 5, 2, 0xFFFF });
-	makeCommandBuffer(3, CommandInfo{ 0, 3, 0x12345678 });
-	makeCommandBuffer(4, CommandInfo{ 0, 4, 4 });
-	makeCommandBuffer(5, CommandInfo{ 2, 0, 10 });
+	makeCommandBuffer(1, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), 1, 0xFFFF });
+	makeCommandBuffer(2, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID), 2, 0xFFFF });
+	makeCommandBuffer(3, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), 3, 0x12345678 });
+	makeCommandBuffer(4, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), 4, 4 });
+	makeCommandBuffer(5, CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE), 0, 10 });
 
 	CommandBufferManager::getInstance().syncCommandBuffer();
 
-	flush.execute();
+	flush.execute(CommandInfo{});
 
 	std::string actual;
 	actual = directAccessNand(1);

@@ -7,26 +7,26 @@
 
 namespace fs = std::filesystem;
 
-struct CommandBufferInfo
+struct DetailedCommandInfo
 {
-	unsigned int cmd;
-	unsigned int param1;
-	unsigned int param2;
+	CommandInfo commandInfo;
 	std::shared_ptr<ICommand> commandStructure;
 };
 
 class CommandBufferManager
 {
 public:
-	std::vector<CommandBufferInfo> commandBufferList;
+	static const unsigned int NUM_COMMAND_BUFFER = 5;
+
+	std::vector<DetailedCommandInfo> commandBufferList;
 
 	static CommandBufferManager& getInstance();
-	std::vector<CommandBufferInfo> getCommandBufferList();
+	std::vector<DetailedCommandInfo> getCommandBufferList();
 	void flush();
 	void run();
 	void syncCommandBuffer();
-	CommandBufferInfo string2CommandBufferInfo(std::string str);
-	std::string commandBufferInfo2String(CommandBufferInfo commnadBufferInfo);
+	DetailedCommandInfo string2CommandBufferInfo(std::string str);
+	std::string commandBufferInfo2String(DetailedCommandInfo commnadBufferInfo);
 	void optimizeCommandBuffer();
 	void updateCommandBuffer();
 	void clearCommandBuffer();
