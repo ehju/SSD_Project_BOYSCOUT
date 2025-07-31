@@ -27,6 +27,9 @@ bool TestScenario::execute(unsigned int num1, unsigned int num2)
 	else if (scenarioNum == SCENARIO::WriteReadAgingScenario) {
 		return writeReadAging();
 	}
+	else if (scenarioNum == SCENARIO::EraseWriteAgingScenario) {
+		return eraseWriteAging();
+	}
 	return false;
 }
 
@@ -90,6 +93,31 @@ bool TestScenario::writeReadAging() {
 		if (!ssd->write(99, randvalue)) return false;
 		if (!readCompare(0, randvalue)) return false;
 		if (!readCompare(99, randvalue)) return false;
+	}
+	return true;
+}
+
+bool TestScenario::eraseWriteAging()
+{
+	unsigned int randvalue;
+	if (!ssd->erase(0, 3)) return false;
+	const int loopcount = 30;
+	for (int loop = 0; loop < loopcount; loop++) {
+		for (int i = 2; i < 99; i += 2) {
+			randvalue = getRandomUnsignedInt();
+			if (!ssd->write(i, randvalue)) return false;
+			if (!ssd->write(i, randvalue)) return false;
+			if (!ssd->erase(i, 1)) return false;
+			if (!ssd->erase(i + 1, 1)) return false;
+			if (i + 2 <= 99) {
+				if (!ssd->erase(i + 2, 1)) return  false;
+			}
+			if (!readCompare(i, 0)) return false;
+			if (!readCompare(i + 1, 0)) return false;
+			if (i + 2 <= 99) {
+				if (!readCompare(i + 2, 0)) return  false;
+			}
+		}
 	}
 	return true;
 }
