@@ -1,8 +1,11 @@
 #include <iostream>
-#include "command_interface.h"
+#include <filesystem>
+#include <string>
+#include "flush.h"
 
-class Flush : public ICommand
+void Flush::execute()
 {
-public :
 
-};
+}
+
+

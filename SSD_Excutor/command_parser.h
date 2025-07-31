@@ -6,6 +6,8 @@ enum class SSDCommand
 {
 	SSDCommand_WRITE = 0,
 	SSDCommand_READ,
+	SSDCommand_ERASE,
+	SSDCommand_FLUSH,
 	SSDCommand_Count,
 	SSDCommand_INVALID,
 };
