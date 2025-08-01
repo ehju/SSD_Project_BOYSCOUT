@@ -2,10 +2,12 @@
 
 bool EraseRange::execute(CommandInfo cmdInfo)
 {
+	log->print(__FUNCTION__, "called");
 	unsigned int start_lba = cmdInfo.lba;
 	unsigned int end_lba = cmdInfo.value;
 	if (start_lba > end_lba) {
 		std::swap(start_lba, end_lba);
+		log->print(__FUNCTION__, "lba address swap");
 	}
 	if (start_lba < LBA_MIN) start_lba = LBA_MIN;
 	else if (start_lba > LBA_MAX) start_lba = LBA_MAX;
