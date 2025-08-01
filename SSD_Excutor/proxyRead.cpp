@@ -17,12 +17,12 @@ void ProxyRead::execute(CommandInfo commandInfo) {
 }
 std::string ProxyRead::getHexValueFromBuffer(unsigned int address)
 {
-	std::vector<DetailedCommandInfo>commandBufferVector = cbm->getCommandBufferList();
+	std::vector<CommandInfo>commandBufferVector = cbm->getCommandBufferList();
 
 	int vectorSize = static_cast<int>(commandBufferVector.size());
 	for (int i = vectorSize - 1; i >= 0; --i) {
 		if (isBufferHitWriteCommand(commandBufferVector[i], address)) {
-			return toHexString(commandBufferVector[i].commandInfo.value);
+			return toHexString(commandBufferVector[i].value);
 		}
 		else if (isBufferHitEraseCommand(commandBufferVector[i], address)) {
 			return "0x00000000";
@@ -31,23 +31,23 @@ std::string ProxyRead::getHexValueFromBuffer(unsigned int address)
 	return "";
 }
 
-bool ProxyRead::isBufferHitWriteCommand(const DetailedCommandInfo& detailedCommandInfo, unsigned int address) {
-	if (detailedCommandInfo.commandInfo.command == static_cast<int>(SSDCommand::SSDCommand_WRITE)) {
-		if (detailedCommandInfo.commandInfo.lba == address) return true;
+bool ProxyRead::isBufferHitWriteCommand(const CommandInfo& commandInfo, unsigned int address) {
+	if (commandInfo.command == static_cast<int>(SSDCommand::SSDCommand_WRITE)) {
+		if (commandInfo.lba == address) return true;
 	}
 	return false;
 }
 
-bool ProxyRead::isBufferHitEraseCommand(const DetailedCommandInfo& detailedCommandInfo, unsigned int address) {
-	if (detailedCommandInfo.commandInfo.command == static_cast<int>(SSDCommand::SSDCommand_ERASE)) {
-		if (detailedCommandInfo.commandInfo.lba <= address && detailedCommandInfo.commandInfo.lba + detailedCommandInfo.commandInfo.value > address)
+bool ProxyRead::isBufferHitEraseCommand(const CommandInfo& commandInfo, unsigned int address) {
+	if (commandInfo.command == static_cast<int>(SSDCommand::SSDCommand_ERASE)) {
+		if (commandInfo.lba <= address && commandInfo.lba + commandInfo.value > address)
 			return true;
 	}
 	return false;
 }
 
 bool ProxyRead::bufferHit(unsigned int address) {
-	std::vector<DetailedCommandInfo>commandBufferVector = cbm->getCommandBufferList();
+	std::vector<CommandInfo>commandBufferVector = cbm->getCommandBufferList();
 
 	int vectorSize = static_cast<int>(commandBufferVector.size());
 	for (int i = vectorSize - 1; i >= 0; --i) {
