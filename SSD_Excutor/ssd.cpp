@@ -13,7 +13,10 @@ void SSD::run(int argc, char* argv[])
 
 	CommandInfo commandInfo = commandParser->parse(argc, argv);
 
-	CommandBufferManager::getInstance().run();
+	if (CommandBufferManager::getInstance().inputCommandBuffer(commandInfo))
+	{
+		return;
+	}
 
 	commandFactory.CreateCommand(commandInfo.command)->execute(commandInfo);
 }

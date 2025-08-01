@@ -54,6 +54,12 @@
     <ClCompile Include="ShellTestScenario_test.cpp">
       <Filter>테스트파일</Filter>
     </ClCompile>
+    <ClCompile Include="ShellRunner_test.cpp">
+      <Filter>테스트파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ShellRunner.cpp">
+      <Filter>소스코드</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -104,6 +110,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="ShellEraseRange.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ShellRunner.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

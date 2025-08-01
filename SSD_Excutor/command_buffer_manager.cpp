@@ -26,7 +26,7 @@ void CommandBufferManager::syncCommandBuffer()
 
 		fs::create_directory(folderPath);
 
-		for (int i = 1; i <= NUM_COMMAND_BUFFER; ++i) {
+		for (int i = 0; i < NUM_COMMAND_BUFFER; ++i) {
 			fs::path filePath = folderPath / (std::to_string(i) + "_empty");
 			std::ofstream outFile(filePath);
 			outFile.close();
@@ -44,11 +44,32 @@ void CommandBufferManager::syncCommandBuffer()
 		
 	}
 
+	fs::remove_all(folderPath);
+
 }
 
-std::string CommandBufferManager::commandBufferInfo2String(DetailedCommandInfo commandBufferInfo)
+std::string CommandBufferManager::commandBufferInfo2String(unsigned int bufferIndex, DetailedCommandInfo commandBufferInfo)
 {
-	return "";
+	std::string line = "";
+	std::string value = "";
+
+	if (commandBufferInfo.commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
+	{
+		std::ostringstream ss;
+		ss << "0x" << std::uppercase << std::setfill('0') << std::setw(8) << std::hex << commandBufferInfo.commandInfo.value;
+		value = ss.str();
+		line = std::to_string(bufferIndex) + "_" + commandParser.getCommandFormat(commandBufferInfo.commandInfo.command).cmd + "_" + std::to_string(commandBufferInfo.commandInfo.lba) + "_" + value;
+	}
+	else if (commandBufferInfo.commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
+	{
+		value = std::to_string(commandBufferInfo.commandInfo.value);
+		line = std::to_string(bufferIndex) + "_" + commandParser.getCommandFormat(commandBufferInfo.commandInfo.command).cmd + "_" + std::to_string(commandBufferInfo.commandInfo.lba) + "_" + value;
+	}
+	else
+	{
+		line = std::to_string(bufferIndex) + "_empty";
+	}
+	return line;
 }
 
 DetailedCommandInfo CommandBufferManager::string2CommandBufferInfo(std::string str)
@@ -85,7 +106,24 @@ void CommandBufferManager::optimizeCommandBuffer()
 
 void CommandBufferManager::updateCommandBuffer()
 {
-	
+	for (int bufferIdx = 0; bufferIdx < NUM_COMMAND_BUFFER; bufferIdx++)
+	{
+		std::string line = "";
+		if (bufferIdx < commandBufferList.size())
+		{
+			line = commandBufferInfo2String(bufferIdx, commandBufferList[bufferIdx]);
+		}
+		else
+		{
+			line = std::to_string(bufferIdx) + "_empty";
+		}
+
+		fs::create_directory(folderPath);
+
+		fs::path filePath = folderPath / (line);
+		std::ofstream outFile(filePath);
+		outFile.close();
+	}
 }
 
 void CommandBufferManager::clearCommandBuffer()
@@ -97,9 +135,30 @@ void CommandBufferManager::clearCommandBuffer()
 	commandBufferList.clear();
 }
 
-void CommandBufferManager::run()
+bool CommandBufferManager::inputCommandBuffer(CommandInfo commandInfo)
 {
 	syncCommandBuffer();
+
+	if (bufferEnbledCommand[commandInfo.command] == false)
+	{
+		return false;
+	}
+
+	if (commandBufferList.size() == NUM_COMMAND_BUFFER)
+	{
+		flush();
+		clearCommandBuffer();
+	}
+
+	CommandFactory cmdFactory;
+	DetailedCommandInfo detailedCommanderInfo = { commandInfo, cmdFactory.CreateCommand(commandInfo.command) };
+
+	commandBufferList.push_back(detailedCommanderInfo);
+
+	updateCommandBuffer();
+
+	return true;
+
 }
 
 void CommandBufferManager::flush()
@@ -110,4 +169,9 @@ void CommandBufferManager::flush()
 	}
 
 	clearCommandBuffer();
+}
+
+void CommandBufferManager::initialize()
+{
+	commandBufferList.clear();
 }

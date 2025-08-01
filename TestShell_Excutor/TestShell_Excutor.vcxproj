@@ -143,6 +143,8 @@
     <ClCompile Include="ShellFullRead.cpp" />
     <ClCompile Include="ShellFullWrite.cpp" />
     <ClCompile Include="ShellRead.cpp" />
+    <ClCompile Include="ShellRunner.cpp" />
+    <ClCompile Include="ShellRunner_test.cpp" />
     <ClCompile Include="ShellTestScenarios.cpp" />
     <ClCompile Include="ShellTestScenario_test.cpp" />
     <ClCompile Include="ShellWrite.cpp" />
@@ -164,6 +166,7 @@
     <ClInclude Include="ShellFullRead.h" />
     <ClInclude Include="ShellFullWrite.h" />
     <ClInclude Include="ShellRead.h" />
+    <ClInclude Include="ShellRunner.h" />
     <ClInclude Include="ShellTestScenarios.h" />
     <ClInclude Include="ShellWrite.h" />
     <ClInclude Include="TS_function.h" />
