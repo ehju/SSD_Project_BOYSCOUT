@@ -13,4 +13,8 @@ public:
     std::string getHexValueFromBuffer(unsigned int address);
     std::string toHexString(unsigned int value);
     CommandBufferManager* cbm;
+
+private:
+	bool isBufferHitWriteCommand(const DetailedCommandInfo& detailedCommandInfo, unsigned int address);
+    bool isBufferHitEraseCommand(const DetailedCommandInfo& detailedCommandInfo, unsigned int address);
 };
