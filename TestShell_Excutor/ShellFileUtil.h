@@ -16,4 +16,5 @@ private:
     static std::string makeTimestampedFilename();
     inline static const int DELETE_SUCCESS = 0;
     inline static const std::string OUTPUT_FILE = "latest.log";
+
 };
