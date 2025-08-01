@@ -17,7 +17,7 @@ public:
     SSDHelper ssdHelper;
     Read readCommand;
     Write writeCommand;
-    MockCommandBufferManager mock;
+    NiceMock<MockCommandBufferManager> mock;
     ProxyRead proxyRead{ &mock };
 };
 
@@ -29,7 +29,7 @@ TEST_F(ProxyReadTestFixture, HitBuffer)
     unsigned int cmd = 0;
     unsigned int param1 = 0x1;
     unsigned int param2 = 0x2;
-    std::shared_ptr<ICommand> stubCmd = std::make_shared<Read>();
+    std::shared_ptr<ICommand> stubCmd = std::make_shared<Write>();
     stubList.push_back(DetailedCommandInfo{ CommandInfo{cmd, param1,param2}, stubCmd });
 
     EXPECT_CALL(mock, getCommandBufferList)
@@ -44,10 +44,11 @@ TEST_F(ProxyReadTestFixture, FailToHitBuffer)
     unsigned int cmd = 0;
     unsigned int param1 = 0x1;
     unsigned int param2 = 0x2;
-    std::shared_ptr<ICommand> stubCmd = std::make_shared<Read>();
+    std::shared_ptr<ICommand> stubCmd = std::make_shared<Write>();
     stubList.push_back(DetailedCommandInfo{ CommandInfo{cmd, param1,param2}, stubCmd });
-
-    EXPECT_EQ(proxyRead.bufferHit((unsigned int)0x0), false);
+    EXPECT_CALL(mock, getCommandBufferList)
+        .WillOnce(Return(stubList));
+    EXPECT_EQ(proxyRead.bufferHit((unsigned int)0x2), false);
 }
 
 // Read From buffer
@@ -55,10 +56,14 @@ TEST_F(ProxyReadTestFixture, ReadFromBuffer)
 {
     std::vector<DetailedCommandInfo> stubList;
     unsigned int cmd = 0;
-    unsigned int param1 = 0x1;
-    unsigned int param2 = 0x2;
-    std::shared_ptr<ICommand> stubCmd = std::make_shared<Read>();
+    unsigned int param1 = 0x31;
+    unsigned int param2 = 0x32;
+    std::shared_ptr<ICommand> stubCmd = std::make_shared<Write>();
     stubList.push_back(DetailedCommandInfo{ CommandInfo{ cmd, param1,param2}, stubCmd });
 
-    EXPECT_EQ(proxyRead.getHexValueFromBuffer(param1), "0x00000002");
+    EXPECT_CALL(mock, getCommandBufferList)
+        .WillRepeatedly(Return(stubList));
+
+    EXPECT_EQ(proxyRead.getHexValueFromBuffer(param1), "0x00000032");
+    EXPECT_THAT(proxyRead.getHexValueFromBuffer(param1), Ne(""));
 }

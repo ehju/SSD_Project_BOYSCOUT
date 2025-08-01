@@ -11,5 +11,6 @@ public:
     Read realRead;
     bool bufferHit(unsigned int address);
     std::string getHexValueFromBuffer(unsigned int address);
+    std::string toHexString(unsigned int value);
     CommandBufferManager* cbm;
 };
