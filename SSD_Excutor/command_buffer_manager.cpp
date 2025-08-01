@@ -261,10 +261,6 @@ void CommandBufferManager::updateCommandBuffer()
 		std::ofstream outFile(filePath);
 		outFile.close();
 	}
-
-	//for unit test
-	optimizedCommandBufferList.clear();
-	commandBufferList.clear();
 }
 
 void CommandBufferManager::clearCommandBuffer()
@@ -282,6 +278,7 @@ bool CommandBufferManager::inputCommandBuffer(CommandInfo commandInfo)
 
 	if (bufferEnbledCommand[commandInfo.command] == false)
 	{
+		updateCommandBuffer();
 		return false;
 	}
 
