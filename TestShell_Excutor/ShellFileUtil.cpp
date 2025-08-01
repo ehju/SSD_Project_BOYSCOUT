@@ -4,17 +4,6 @@
 
 namespace fs = std::filesystem;
 
-void ShellFileUtil::deletePrevOutputFile()
-{
-    if (file_exists(OUTPUT_FILE)) {
-        if (deleteFile(OUTPUT_FILE) == DELETE_SUCCESS) {
-        }
-        else {
-            std::cout << "fail to delete " << OUTPUT_FILE << std::endl;
-        }
-    }
-}
-
 void ShellFileUtil::writeOutputFile(std::string& writeString)
 {
     const std::size_t MAX_SIZE =  10 * 1024;
@@ -26,15 +15,11 @@ void ShellFileUtil::writeOutputFile(std::string& writeString)
         out << writeString << std::endl;
         out.close();
     }
-    else {
-        std::cout << "fail to create output file";
-    }
 }
 
 void ShellFileUtil::renameLogFile()
 {
     if (!fs::exists(OUTPUT_FILE)) {
-        std::cout << "No log file to rename: " << OUTPUT_FILE << std::endl;
         return;
     }
 
@@ -67,20 +52,15 @@ void ShellFileUtil::renameLogFile()
 
         try {
             fs::rename(existingUntilLog, zipPath);
-            std::cout << "Existing until_*.log renamed to: " << zipPath << std::endl;
         }
         catch (const std::exception& e) {
-            std::cerr << "Failed to rename existing until_*.log to zip: " << e.what() << std::endl;
-            return;
         }
     }
 
     try {
         fs::rename(OUTPUT_FILE, newPath);
-        std::cout << "Log file renamed: " << OUTPUT_FILE << " -> " << newPath << std::endl;
     }
     catch (const std::exception& e) {
-        std::cerr << "Failed to rename latest.log: " << e.what() << std::endl;
     }
 }
 
@@ -95,10 +75,6 @@ bool ShellFileUtil::isFileTooLarge(const std::string& filename, std::size_t maxS
 bool ShellFileUtil::file_exists(const std::string& filename) {
     std::ifstream file(filename);
     return file.good();
-}
-int ShellFileUtil::deleteFile(const std::string& fileName)
-{
-    return std::remove(fileName.c_str());
 }
 
 std::string ShellFileUtil::makeTimestampedFilename()
