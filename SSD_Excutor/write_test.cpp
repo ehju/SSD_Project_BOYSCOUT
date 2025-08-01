@@ -5,7 +5,7 @@
 #include <sstream>
 #include "write.h"
 #include <filesystem>
-
+#ifdef _DEBUG
 namespace fs = std::filesystem;
 
 class WriteCommandTS : public testing::Test
@@ -94,3 +94,4 @@ TEST_F(WriteCommandTS, FullWriteAndVerifyTC)
 		checkData(i, i + 1, actual);
 	}
 }
+#endif

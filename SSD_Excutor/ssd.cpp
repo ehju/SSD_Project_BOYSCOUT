@@ -7,6 +7,11 @@ SSD::SSD(CommandParser* commandParser) :
 {
 }
 
+void SSD::initialize()
+{
+	CommandBufferManager::getInstance().initialize();
+}
+
 void SSD::run(int argc, char* argv[])
 {
 	FileUtil::deletePrevOutputFile();
