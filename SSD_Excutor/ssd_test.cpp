@@ -81,79 +81,26 @@ TEST_F(SSDTS, WriteAndEraseSimpleTC1)
 	EXPECT_EQ("", actual);
 }
 
-//TEST_F(SSDTS, SsdWriteTC1)
-//{
-//	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
-//		.WillRepeatedly(testing::Return(CommandInfo{ 0, 1, 4 }));
-//
-//	ssd->run(dummyArgc, dummyArgv);
-//
-//	std::string actual;
-//
-//	file.open(nand);
-//	actual = directAccessNand(1);
-//	checkData(1, 4, actual);
-//}
-//
-//TEST_F(SSDTS, SsdWriteTC2)
-//{
-//	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
-//		.WillOnce(testing::Return(CommandInfo{ 0, 2, 4 }))
-//		.WillOnce(testing::Return(CommandInfo{ 0, 5, 2 }));
-//
-//	ssd->run(dummyArgc, dummyArgv);
-//	ssd->run(dummyArgc, dummyArgv);
-//
-//	std::string actual;
-//
-//	file.open(nand);
-//	actual = directAccessNand(2);
-//	checkData(2, 4, actual);
-//
-//	actual = directAccessNand(5);
-//	checkData(5, 2, actual);
-//}
-//
-//TEST_F(SSDTS, SsdWriteTC3)
-//{
-//	CommandInfo mockReturned = { 0, 2, 4 };
-//	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
-//		.WillOnce(testing::Return(CommandInfo{ 0, 2, 4 }))
-//		.WillOnce(testing::Return(CommandInfo{ 0, 5, 2 }));
-//
-//	ssd->run(dummyArgc, dummyArgv);
-//	ssd->run(dummyArgc, dummyArgv);
-//
-//	std::string actual;
-//
-//	file.open(nand);
-//	actual = directAccessNand(2);
-//	checkData(2, 4, actual);
-//
-//	actual = directAccessNand(5);
-//	checkData(5, 2, actual);
-//}
-//
-//TEST_F(SSDTS, SsdReadAfterWrite)
-//{
-//	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
-//		.WillOnce(testing::Return(CommandInfo{ WRITE_CMD, 1, (unsigned int)0x1 }))
-//		.WillOnce(testing::Return(CommandInfo{ WRITE_CMD, 2, (unsigned int)0x2 }))
-//		.WillOnce(testing::Return(CommandInfo{ READ_CMD, 1, 0xFFFFFFFF }))
-//		.WillOnce(testing::Return(CommandInfo{ READ_CMD, 2, 0xFFFFFFFF }));
-//
-//	ssd->run(dummyArgc, dummyArgv);
-//	ssd->run(dummyArgc, dummyArgv);
-//	ssd->run(dummyArgc, dummyArgv);
-//	EXPECT_EQ(ssdHelper.getReadResultFromFile(), "0x00000001");
-//	ssd->run(dummyArgc, dummyArgv);
-//	EXPECT_EQ(ssdHelper.getReadResultFromFile(), "0x00000002");
-//}
-//
-//TEST_F(SSDTS, SSDInavlidCommandShouldPrintOutputError)
-//{
-//	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
-//		.WillOnce(testing::Return(CommandInfo{ INVALID_CMD, 0xFFFFFFFF, 0xFFFFFFFF }));
-//	ssd->run(dummyArgc, dummyArgv);
-//	EXPECT_EQ(ssdHelper.getReadResultFromFile(), "ERROR");
-//}
+TEST_F(SSDTS, DISABLED_SsdReadAfterWrite)
+{
+	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
+		.WillOnce(testing::Return(CommandInfo{ WRITE_CMD, 1, (unsigned int)0x1 }))
+		.WillOnce(testing::Return(CommandInfo{ WRITE_CMD, 2, (unsigned int)0x2 }))
+		.WillOnce(testing::Return(CommandInfo{ READ_CMD, 1, 0xFFFFFFFF }))
+		.WillOnce(testing::Return(CommandInfo{ READ_CMD, 2, 0xFFFFFFFF }));
+
+	ssd->run(dummyArgc, dummyArgv);
+	ssd->run(dummyArgc, dummyArgv);
+	ssd->run(dummyArgc, dummyArgv);
+	EXPECT_EQ(ssdHelper.getReadResultFromFile(), "0x00000001");
+	ssd->run(dummyArgc, dummyArgv);
+	EXPECT_EQ(ssdHelper.getReadResultFromFile(), "0x00000002");
+}
+
+TEST_F(SSDTS, SSDInavlidCommandShouldPrintOutputError)
+{
+	EXPECT_CALL(commandParserMock, parse(testing::_, testing::_))
+		.WillOnce(testing::Return(CommandInfo{ INVALID_CMD, 0xFFFFFFFF, 0xFFFFFFFF }));
+	ssd->run(dummyArgc, dummyArgv);
+	EXPECT_EQ(ssdHelper.getReadResultFromFile(), "ERROR");
+}
