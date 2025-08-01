@@ -52,7 +52,11 @@ bool ShellRunner::runShellCommand(CommandInfo cmdInfo) {
 	if (it != commandMap.end()) {
 		result = it->second->execute(cmdInfo);
 	}	
-	return result;
+#ifdef _DEBUG
+	return type;
+#else
+	return (int)result;
+#endif
 }
 
 int ShellRunner::runScriptFile(const char* filename) {
