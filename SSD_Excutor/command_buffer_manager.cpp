@@ -114,9 +114,14 @@ void CommandBufferManager::updateOptimizedBufferListToOriginalBufferList()
 	}
 }
 
-bool CommandBufferManager::isEraseCommandHasMaxSize(unsigned int size)
+bool CommandBufferManager::isEraseCommandHasMaxSize(CommandInfo commandInfo)
 {
-	return (size == MAX_ERASE_SIZE);
+	return (commandInfo.value == MAX_ERASE_SIZE);
+}
+
+bool CommandBufferManager::isEraseMaxLba(CommandInfo commandInfo)
+{
+	return (commandInfo.lba + commandInfo.value == 100);
 }
 
 void CommandBufferManager::optimizeCommandBuffer()
@@ -176,7 +181,7 @@ void CommandBufferManager::optimizeCommandBuffer()
 
 			if (mapForOptimizeCommand[i] != nullptr)
 			{
-				if (isEraseCommandHasMaxSize(waitingCommandInfo.value))
+				if (isEraseCommandHasMaxSize(waitingCommandInfo) || isEraseMaxLba(waitingCommandInfo))
 				{
 					optimizedCommandBufferList.push_back(waitingCommandInfo);
 					waitingCommandInfo = CommandInfo{0, 0, 0};
@@ -209,7 +214,7 @@ void CommandBufferManager::optimizeCommandBuffer()
 
 			if (mapForOptimizeCommand[i] != nullptr)
 			{
-				if (isEraseCommandHasMaxSize(waitingCommandInfo.value))
+				if (isEraseCommandHasMaxSize(waitingCommandInfo) || isEraseMaxLba(waitingCommandInfo))
 				{
 					optimizedCommandBufferList.push_back(waitingCommandInfo);
 					waitingCommandInfo = CommandInfo{0, 0, 0};
@@ -271,7 +276,6 @@ void CommandBufferManager::clearCommandBuffer()
 bool CommandBufferManager::inputCommandBuffer(CommandInfo commandInfo)
 {
 	syncCommandBuffer();
-
 	if (bufferEnbledCommand[commandInfo.command] == false)
 	{
 		updateCommandBuffer();
@@ -287,7 +291,6 @@ bool CommandBufferManager::inputCommandBuffer(CommandInfo commandInfo)
 	commandBufferList.push_back(commandInfo);
 
 	optimizeCommandBuffer();
-
 	updateCommandBuffer();
 
 	return true;
