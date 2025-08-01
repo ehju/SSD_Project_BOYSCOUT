@@ -1,0 +1,18 @@
+read 0
+read 99
+read 999
+read -1
+fullwrite 0xFFFFFFFF
+write 99 0x99999999
+write 88 0x88888888
+write 77 0x77777777
+write 66 0x66666666
+write 55 0x55555555
+write 44 0x44444444
+write 33 0x33333333
+write 22 0x22222222
+write 11 0x11111111
+write 0 0x00000000
+fullread
+fullwrite 0x12345678
+fullread
