@@ -17,23 +17,17 @@ bool TestScenario::readCompare(int lba, unsigned int writtenData) {
 };
 bool TestScenario::execute(CommandInfo cmdInfo)
 {
-	unsigned int scenarioNum = cmdInfo.command;
-	if (scenarioNum == CommandType::CMD_TS_FullWriteAndReadCompare) {
-		return fullWriteAndReadCompare();
+	auto it = scenarioMap.find(cmdInfo.command);
+	bool isSuccess = false;
+	if (it != scenarioMap.end()) {
+		isSuccess = it->second(); 
 	}
-	else if (scenarioNum == CommandType::CMD_TS_PartialLBAWrite) {
-		return partialLBAWrite();
-	}
-	else if (scenarioNum == CommandType::CMD_TS_WriteReadAging) {
-		return writeReadAging();
-	}
-	else if (scenarioNum == CommandType::CMD_TS_EraseWriteAging) {
-		return eraseWriteAging();
-	}
-	return false;
+	printScenarioResult(isSuccess);
+	return isSuccess;
 }
 
 bool TestScenario::fullWriteAndReadCompare() {
+
 	unsigned int writeData = DUMMY_WRITE_DATA;
 	unsigned int readData = writeData;
 	int curWriteLBA = LBA_MIN;
@@ -118,4 +112,21 @@ bool TestScenario::eraseWriteAging()
 		}
 	}
 	return true;
+}
+
+void TestScenario::initScenarioMap() {
+	scenarioMap = {
+		{ CommandType::CMD_TS_FullWriteAndReadCompare, [this]() { return fullWriteAndReadCompare(); } },
+		{ CommandType::CMD_TS_PartialLBAWrite,         [this]() { return partialLBAWrite(); } },
+		{ CommandType::CMD_TS_WriteReadAging,          [this]() { return writeReadAging(); } },
+		{ CommandType::CMD_TS_EraseWriteAging,         [this]() { return eraseWriteAging(); } }
+	};
+}
+void TestScenario::printScenarioResult(bool isSuccess) {
+	if (isSuccess) {
+		std::cout << "Pass" << "\n";
+	}
+	else {
+		std::cout << "FAIL!" << "\n";
+	}
 }
