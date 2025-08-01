@@ -301,7 +301,6 @@ bool CommandBufferManager::inputCommandBuffer(CommandInfo commandInfo)
 	updateCommandBuffer();
 
 	return true;
-
 }
 
 void CommandBufferManager::flush()
