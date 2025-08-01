@@ -21,32 +21,33 @@ struct CommandFormat
 {
 	string cmd;
 	int paramnum;
-	bool isUseLBA;
-	bool isUseValue;
-	bool isUseSize;
-	bool isUseEndLBA;
+	int lbaIndex;
+	int valueIndex;
+	int sizeIndex;
+	int endLbaIndex;
 	string usage;
 };
 
 class CommandParser {
 public:
 	vector<CommandFormat> commandlist = {
-		{"write",2,true,true,false,false," <LBA> <VALUE> : LBA = 0~99 , VALUE = 0x00000000~0xFFFFFFFF(10 Digit)// Write Value @LBA"},
-		{"read",1,true,false,false,false," <LBA>         : LBA = 0~99 // Read @LBA"},
-		{"erase",2,true,false,true,false," <LBA> <SIZE> : LBA = 0~99 , SIZE = (+/-Decimal)// Erase Value @LBA ~@LBA+SIZE"},
-		{"erase_range",2,true,false,false,true," <START_LBA> <END_LBA>: LBA = 0~99 // Erase @ STARTLBA~ENDLBA"},
-		{"fullwrite",1,false,true,false,false," <VALUE>  : VALUE = 0x00000000~0xFFFFFFFF(10 Digit) // Write Value @ALL LBA"},
-		{"fullread",0,false,false,false,false,"          : No Param //Read Full Range"},
-		{"1_FullWriteAndReadCompare",0,false,false,false,false," : No Param //Write and Read Compare @ AllRange"},
-		{"1_",0,false,false,false,false,"		: No Param//Write and Read Compare @ AllRange"},
-		{"2_PartialLBAWrite",0,false,false,false,false," : No Param //(Write 0x12345678 @LBA_0~4 & ReadCompare) * 30 times"},
-		{"2_",0,false,false,false,false,"		: No Param//(Write 0x12345678++ @LBA_0~4 & ReadCompare) * 30 times"},
-		{"3_WriteReadAging",0,false,false,false,false," : No Param //(Write RandomValue @LBA_9 and @LBA_99) * 200 times"},
-		{"3_",0,false,false,false,false,"		: No Param//(Write RandomValue @LBA_9 and @LBA_99) * 200 times"},
-		{"4_EraseAndWriteAging",0,false,false,false,false," : No Param //(Write/OverWrite/Erase)* 30 times"},
-		{"4_",0,false,false,false,false,"		: No Param////(Write/OverWrite/Erase)* 30 times"},
-		{"exit",0,false,false,false,false,"		: No Param//Terminate Shell" },
-		{"help",0,false,false,false,false,"		: No Param//Print Command Usage"},
+
+		{"write",2,1,2,0,0," <LBA> <VALUE> : LBA = 0~99 , VALUE = 0x00000000~0xFFFFFFFF(10 Digit)// Write Value @LBA"},
+		{"read",1,1,0,0,0," <LBA>         : LBA = 0~99 // Read @LBA"},
+		{"erase",2,1,0,2,0," <LBA> <SIZE> : LBA = 0~99 , SIZE = (+/-Decimal)// Erase Value @LBA ~@LBA+SIZE"},
+		{"erase_range",2,1,0,0,2," <START_LBA> <END_LBA>: LBA = 0~99 // Erase @ STARTLBA~ENDLBA"},
+		{"fullwrite",1,0,1,0,0," <VALUE>  : VALUE = 0x00000000~0xFFFFFFFF(10 Digit) // Write Value @ALL LBA"},
+		{"fullread",0,0,0,0,0,"          : No Param //Read Full Range"},
+		{"1_FullWriteAndReadCompare",0,0,0,0,0," : No Param //Write and Read Compare @ AllRange"},
+		{"1_",0,0,0,0,0,"		: No Param//Write and Read Compare @ AllRange"},
+		{"2_PartialLBAWrite",0,0,0,0,0," : No Param //(Write 0x12345678 @LBA_0~4 & ReadCompare) * 30 times"},
+		{"2_",0,0,0,0,0,"		: No Param//(Write 0x12345678++ @LBA_0~4 & ReadCompare) * 30 times"},
+		{"3_WriteReadAging",0,0,0,0,0," : No Param //(Write RandomValue @LBA_9 and @LBA_99) * 200 times"},
+		{"3_",0,0,0,0,0,"		: No Param//(Write RandomValue @LBA_9 and @LBA_99) * 200 times"},
+		{"4_EraseAndWriteAging",0,0,0,0,0," : No Param //(Write/OverWrite/Erase)* 30 times"},
+		{"4_",0,0,0,0,0,"		: No Param////(Write/OverWrite/Erase)* 30 times"},
+		{"exit",0,0,0,0,0,"		: No Param//Terminate Shell" },
+		{"help",0,0,0,0,0,"		: No Param//Print Command Usage"},
 	};
 	
 
@@ -65,10 +66,7 @@ public:
 	int runCommandTestScenario(int type);
 private:
 	const int CMDINDEX = 0;
-	const int LBAINDEX =1;
-	const int ENDLBAINDEX = 2;
-	const int VALUEINDEX = 2;
-	const int SIZEINDEX = 2;
+	
 	const int LBAMAXLENGTH = 2;
 	const int HEXSTART = 2;
 	const int VALUELENGTH = 10;
@@ -105,8 +103,8 @@ private:
 	bool checkValiEndLBA(vector<string> cmdSplits);
 
 	CommandInfo MakeInvalidCmdData();
-	unsigned int getLBA(const CommandFormat& cmddata, const std::vector<std::string>& strlist);
-	unsigned int getEndLBA(const CommandFormat& cmddata, const std::vector<std::string>& strlist);
+	unsigned int getLBA(int lbaIndex, const std::vector<std::string>& strlist);
+	//unsigned int getEndLBA(const CommandFormat& cmddata, const std::vector<std::string>& strlist);
 
 	unsigned int getSize(const CommandFormat& cmddata, const std::vector<std::string>& strlist);
 	int getSignedDecimal(const string& str);

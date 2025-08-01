@@ -37,11 +37,12 @@ CommandInfo CommandParser::createCommandData(const string cmd)
 		if (cmddata.cmd == cmdParms[CMDINDEX])
 		{
 			ret.command = getCommandType(cmdParms[0]);
-			ret.lba = getLBA(cmddata, cmdParms);
-			if (cmddata.isUseValue)
+			ret.lba = getLBA(cmddata.lbaIndex, cmdParms);
+			//value is used for HexValue and EndLBA
+			if (cmddata.valueIndex > 0)
 				ret.value = getHexValue(cmddata, cmdParms);
-			else if (cmddata.isUseEndLBA)
-				ret.value = getEndLBA(cmddata, cmdParms);
+			else if (cmddata.endLbaIndex >0 )
+				ret.value = getLBA(cmddata.endLbaIndex, cmdParms);
 			else
 				ret.value = 0xFFFFFFFF;
 
@@ -71,8 +72,8 @@ bool CommandParser::isValidCommand(vector<string> cmdSplits)
 		return false;
 	if (checkValidSize(cmdSplits) == false)
 		return false;
-	if (checkValiEndLBA(cmdSplits) == false)
-		return false;
+	/*if (checkValiEndLBA(cmdSplits) == false)
+		return false;*/
 	return true;
 }
 
@@ -109,17 +110,27 @@ bool CommandParser::checkValidLBA(vector<string> cmdSplits)
 	{
 		if (cmddata.cmd == cmdSplits[CMDINDEX])
 		{
-			if (cmddata.isUseLBA)
+			if (cmddata.lbaIndex>0)
 			{
 
-				string lbastr = cmdSplits[LBAINDEX];
+				string lbastr = cmdSplits[cmddata.lbaIndex];
+				if (lbastr.size() <= 0 || lbastr.size() > LBAMAXLENGTH)
+					return false;
+
+				if (isNumber(lbastr) == false)
+					return false;
+			}
+
+			if (cmddata.endLbaIndex>0)
+			{
+				string lbastr = cmdSplits[cmddata.endLbaIndex];
 				if (lbastr.size() <= 0 || lbastr.size() > LBAMAXLENGTH)
 					return false;
 
 				return isNumber(lbastr);
 			}
-			else
-				return true;
+
+			return true;
 		}
 	}
 	return false;
@@ -127,19 +138,20 @@ bool CommandParser::checkValidLBA(vector<string> cmdSplits)
 
 bool CommandParser::checkValiEndLBA(vector<string> cmdSplits)
 {
-	for (CommandFormat cmddata : commandlist)
+	/*for (CommandFormat cmddata : commandlist)
 	{
 		if (cmddata.cmd == cmdSplits[CMDINDEX])
 		{
-			if (cmddata.isUseEndLBA)
+			if (cmddata.endLbaIndex>0)
 			{
-				string lbastr = cmdSplits[VALUEINDEX];
+				string lbastr = cmdSplits[cmddata.endLbaIndex];
 				return isNumber(lbastr);
 			}
 			else
 				return true;
 		}
 	}
+	return false;*/
 	return false;
 }
 
@@ -154,10 +166,9 @@ bool CommandParser::checkValidValue(vector<string> cmdSplits)
 	{
 		if (cmddata.cmd == cmdSplits[CMDINDEX])
 		{
-			if (cmddata.isUseValue)
+			if (cmddata.valueIndex>0)
 			{
-				int valueIndex = cmddata.paramnum; //value is lastindex
-				string valueStr = cmdSplits[valueIndex];
+				string valueStr = cmdSplits[cmddata.valueIndex];
 				if (valueStr.size() != VALUELENGTH)
 					return false;
 				return isHex(valueStr);
@@ -283,9 +294,9 @@ bool CommandParser::checkValidSize(vector<string> cmdSplits)
 	{
 		if (cmddata.cmd == cmdSplits[CMDINDEX])
 		{
-			if (cmddata.isUseSize)
+			if (cmddata.sizeIndex>0)
 			{
-				string sizestr = cmdSplits[SIZEINDEX];
+				string sizestr = cmdSplits[cmddata.sizeIndex];
 				if (sizestr[0] == '-')
 				{
 					return isNumber(sizestr.substr(1, sizestr.length()));
@@ -331,27 +342,20 @@ bool CommandParser::isHex(const std::string& str)
 	return true;
 }
 
-unsigned int CommandParser::getLBA(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
+unsigned int CommandParser::getLBA(int lbaIndex, const std::vector<std::string>& cmdSplits)
 {
-	if (cmddata.isUseLBA)
+	if (lbaIndex>0 )
 	{
-		return getDecimal(cmdSplits[LBAINDEX]);
+		return getDecimal(cmdSplits[lbaIndex]);
 	}
 	return 0xFFFFFFFF;
 }
-unsigned int CommandParser::getEndLBA(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
-{
-	if (cmddata.isUseEndLBA)
-	{
-		return getDecimal(cmdSplits[VALUEINDEX]);
-	}
-	return 0xFFFFFFFF;
-}
+
 unsigned int CommandParser::getSize(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
 {
-	if (cmddata.isUseSize)
+	if (cmddata.sizeIndex>0)
 	{
-		return getSignedDecimal(cmdSplits[SIZEINDEX]);
+		return getSignedDecimal(cmdSplits[cmddata.sizeIndex]);
 	}
 	return -1;
 }
@@ -389,11 +393,11 @@ int  CommandParser::getSignedDecimal(const string& str)
 unsigned int CommandParser::getHexValue(const CommandFormat& cmddata, const std::vector<std::string>& cmdSplits)
 {
 
-	if (cmddata.isUseValue)
+	if (cmddata.valueIndex>0 )
 	{
 		try {
 
-			return std::stoul(cmdSplits[VALUEINDEX], nullptr, 16);
+			return std::stoul(cmdSplits[cmddata.valueIndex], nullptr, 16);
 		}
 		catch (const std::invalid_argument& e) {
 			std::cerr << "Invalid argument: " << e.what() << std::endl;
