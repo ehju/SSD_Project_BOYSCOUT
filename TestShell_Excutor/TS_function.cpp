@@ -22,6 +22,7 @@ unsigned int SSDExecutor::read(int lba) {
 	return 0;
 }
 bool SSDExecutor::write(int lba, unsigned int data) {
+	Logger::getInstance()->print(__FUNCTION__, "lba:%d data:%d", lba, data);
 	cmd = SSDEXCUTE + " W " + std::to_string(lba) + " " + (toHex(data));
 	int result = std::system(cmd.c_str());
 	if (result == 0) {
@@ -40,6 +41,7 @@ bool SSDExecutor::write(int lba, unsigned int data) {
 
 bool SSDExecutor::erase(int lba, int size)
 {
+	Logger::getInstance()->print(__FUNCTION__, "lba:%d size:%d", lba, size);
 	cmd = SSDEXCUTE + " E " + std::to_string(lba) + " " + std::to_string(size);
 
 	int result = std::system(cmd.c_str());
