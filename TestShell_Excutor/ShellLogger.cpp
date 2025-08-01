@@ -55,3 +55,6 @@ void Logger::splitFunctionSignature(const std::string& fullFunc, std::string& cl
         functionName = fullFunc;
     }
 }
+
+Logger* Logger::instance = nullptr;
+std::mutex Logger::mtx;

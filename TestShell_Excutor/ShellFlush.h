@@ -9,5 +9,4 @@ public:
 	bool execute(CommandInfo cmdInfo) override;
 private:
 	iTS_SSD* ssd;
-	Logger* log;
 };

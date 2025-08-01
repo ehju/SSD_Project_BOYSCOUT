@@ -34,7 +34,6 @@ private:
 	bool runShellCommand(CommandInfo cmdInfo);
 
 	CommandParser cp;
-	Logger* log;
 
 #ifdef _DEBUG
 	testing::NiceMock<MockRunnerSSD> ssd;
