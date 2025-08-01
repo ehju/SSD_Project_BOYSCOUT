@@ -1,6 +1,4 @@
 #pragma once
-#include "gmock/gmock.h"
-#include "ShellCommand.h"
 #include "CommandData.h"
 #include <vector>
 #include <iostream>
@@ -8,14 +6,6 @@
 #include <unordered_map>
 using std::string;
 using std::vector;
-
-class MockSSD : public iTS_SSD {
-public:
-	MOCK_METHOD(unsigned int, read, (int lba), (override));
-	MOCK_METHOD(bool, write, (int lba, unsigned int data), (override));
-	MOCK_METHOD(bool, erase, (int lba, int size), (override));
-	MOCK_METHOD(bool, flush, (), (override));
-};
 
 struct CommandFormat
 {
@@ -48,21 +38,13 @@ public:
 		{"exit",0,false,false,false,false,"		: No Param//Terminate Shell" },
 		{"help",0,false,false,false,false,"		: No Param//Print Command Usage"},
 	};
-	
 
 	CommandInfo createCommandData(const string cmd);
 	unsigned int getCommandType(const string cmd);
 	bool isValidCommand(vector<string> str);
 
-	int runCommand(const string cmd);
-	int runSubCommands(vector<string> cmdParms, int type);//CommandInfo cmddata
-	bool runCommandWrite(const string lba, const string value);
-	int runCommandRead(const string lba);
-	void printReadResult(int lba, unsigned int value);
 	void runCommandHelp(void);
-	bool runCommandFullWrite(const string value);
-	int runCommandFullRead(void);
-	int runCommandTestScenario(int type);
+;
 private:
 	const int CMDINDEX = 0;
 	const int LBAINDEX =1;
@@ -114,9 +96,4 @@ private:
 	unsigned int getHexValue(const CommandFormat& cmddata, const vector<string>& strlist);
 	bool isNumber(const string& str);
 	bool isHex(const string& str);
-#ifdef _DEBUG
-	ShellCommand shell{ new testing::NiceMock<MockSSD>()};
-#else
-	ShellCommand shell{ new SSDExecutor()};
-#endif
 };
