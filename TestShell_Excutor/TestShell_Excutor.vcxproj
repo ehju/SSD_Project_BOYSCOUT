@@ -132,10 +132,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CommandFactory.cpp" />
-<<<<<<< HEAD
-=======
-    <ClCompile Include="CommandFanctory.cpp" />
->>>>>>> f80abda5a69d08ece583353c00b58a3419971c9f
     <ClCompile Include="CommandParser.cpp" />
     <ClCompile Include="CommandParser_test.cpp" />
     <ClCompile Include="InvalidCmd_test.cpp" />
