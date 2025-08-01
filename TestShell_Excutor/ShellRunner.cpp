@@ -11,7 +11,7 @@ void ShellRunner::initCommandMap() {
 		{ CommandType::CMD_BASIC_FLUSH, cmdMaker.MakeCommandItem((unsigned int)CommandType::CMD_BASIC_FLUSH, &ssd)},
 		{ CommandType::CMD_BASIC_FULLWRITE, cmdMaker.MakeCommandItem((unsigned int)CommandType::CMD_BASIC_FULLWRITE, &ssd)},
 		{ CommandType::CMD_BASIC_FULLREAD, cmdMaker.MakeCommandItem((unsigned int)CommandType::CMD_BASIC_FULLREAD, &ssd)},
-		{ CommandType::CMD_TS_EraseWriteAging, cmdMaker.MakeCommandItem((unsigned int)CommandType::CMD_TS_EraseWriteAging, &ssd)},
+		{ CommandType::CMD_TS_FullWriteAndReadCompare, cmdMaker.MakeCommandItem((unsigned int)CommandType::CMD_TS_FullWriteAndReadCompare, &ssd)},
 		{ CommandType::CMD_TS_PartialLBAWrite, cmdMaker.MakeCommandItem((unsigned int)CommandType::CMD_TS_PartialLBAWrite, &ssd)},
 		{ CommandType::CMD_TS_WriteReadAging, cmdMaker.MakeCommandItem((unsigned int)CommandType::CMD_TS_WriteReadAging, &ssd)},
 		{ CommandType::CMD_TS_EraseWriteAging, cmdMaker.MakeCommandItem((unsigned int)CommandType::CMD_TS_EraseWriteAging, &ssd)},
