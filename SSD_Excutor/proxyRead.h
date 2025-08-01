@@ -15,6 +15,6 @@ public:
     CommandBufferManager* cbm;
 
 private:
-	bool isBufferHitWriteCommand(const DetailedCommandInfo& detailedCommandInfo, unsigned int address);
-    bool isBufferHitEraseCommand(const DetailedCommandInfo& detailedCommandInfo, unsigned int address);
+	bool isBufferHitWriteCommand(const CommandInfo& commandInfo, unsigned int address);
+    bool isBufferHitEraseCommand(const CommandInfo& commandInfo, unsigned int address);
 };
