@@ -2,7 +2,7 @@
 #include <memory>
 #include "command_interface.h"
 #include "command_parser.h"
-#include "read.h"
+#include "proxyRead.h"
 #include "write.h"
 #include "erase.h"
 #include "flush.h"

@@ -1,7 +1,7 @@
 #include "command_buffer_manager.h"
 #include "erase.h"
 #include "write.h"
-#include "read.h"
+#include "proxyRead.h"
 #include "command_factory.h"
 #include <iostream>
 #include <sstream>
