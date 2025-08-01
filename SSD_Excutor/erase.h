@@ -8,5 +8,6 @@ public:
     void execute(CommandInfo commandInfo) override;
 
 private:
+    void doErase(unsigned int address);
     Write write;
 };

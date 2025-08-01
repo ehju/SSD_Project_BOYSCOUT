@@ -9,7 +9,6 @@
 class Write : public ICommand {
 public:
     Write();
-
     void execute(CommandInfo commandInfo) override;
 
 private:

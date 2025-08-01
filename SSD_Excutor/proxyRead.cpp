@@ -13,15 +13,21 @@ void ProxyRead::execute(CommandInfo commandInfo) {
 }
 std::string ProxyRead::getHexValueFromBuffer(unsigned int address)
 {
-	std::vector<CommandInfo>commandBufferVector = cbm->getCommandBufferList();
+	std::string ret = getValueIfHitBuffer(address);
+	return ret;
+}
 
+std::string ProxyRead::getValueIfHitBuffer(unsigned int address) {
+	std::vector<CommandInfo>commandBufferVector = cbm->getCommandBufferList();
 	int vectorSize = static_cast<int>(commandBufferVector.size());
+	const std::string ERASED_VALUE = "0x00000000";
+
 	for (int i = vectorSize - 1; i >= 0; --i) {
 		if (isBufferHitWriteCommand(commandBufferVector[i], address)) {
 			return toHexString(commandBufferVector[i].value);
 		}
 		else if (isBufferHitEraseCommand(commandBufferVector[i], address)) {
-			return "0x00000000";
+			return ERASED_VALUE;
 		}
 	}
 	return "";
