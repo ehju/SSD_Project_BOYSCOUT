@@ -3,6 +3,7 @@
 #include "SSDHelper.h"
 #include "command_buffer_manager.h"
 #include <filesystem>
+
 #ifdef _DEBUG
 namespace fs = std::filesystem;
 
@@ -18,16 +19,7 @@ protected:
 	void SetUp() override
 	{
 		ssd = std::make_shared<SSD>(&commandParserMock);
-		if (fs::exists(nand))
-		{
-			fs::remove(nand);
-		}
-		CommandBufferManager::getInstance().clearCommandBuffer();
-	}
-
-	void TearDown() override
-	{
-		file.close();
+		ssdHelper.resetSSD();
 	}
 
 public:
@@ -35,29 +27,7 @@ public:
 	std::shared_ptr<SSD> ssd;
 	int dummyArgc{ 0 };
 	char** dummyArgv{ nullptr };
-	std::string nand{ "ssd_nand.txt" };
-	std::ifstream file;
 	SSDHelper ssdHelper;
-
-	void checkData(unsigned int expectedLba, unsigned int expectedValue, std::string actual)
-	{
-		std::string expected = "";
-		std::ostringstream ss;
-		ss << "0x" << std::uppercase << std::setfill('0') << std::setw(8) << std::hex << expectedValue;
-		expected = std::to_string(expectedLba) + " " + ss.str();
-		EXPECT_EQ(expected, actual);
-	}
-
-	std::string directAccessNand(unsigned int lba)
-	{
-		std::string line = "";
-		file.seekg(0);
-		for (unsigned int i = 0; i <= lba; i++)
-		{
-			getline(file, line);
-		}
-		return line;
-	}
 };
 
 TEST_F(SSDTS, WriteAndEraseSimpleTC1)
@@ -73,11 +43,10 @@ TEST_F(SSDTS, WriteAndEraseSimpleTC1)
 
 	std::string actual;
 
-	file.open(nand);
-	actual = directAccessNand(0);
+	actual = ssdHelper.directAccessNand(0);
 	EXPECT_EQ("", actual);
 
-	actual = directAccessNand(1);
+	actual = ssdHelper.directAccessNand(1);
 	EXPECT_EQ("", actual);
 }
 
@@ -100,17 +69,21 @@ TEST_F(SSDTS, WriteAndEraseSimpleTC2)
 
 	std::string actual;
 
-	file.open(nand);
-	actual = directAccessNand(0);
-	checkData(0, 0x7, actual);
-	actual = directAccessNand(1);
-	checkData(1, 0x0, actual);
-	actual = directAccessNand(2);
-	checkData(2, 0x0, actual);
-	actual = directAccessNand(3);
-	checkData(3, 0x7777, actual);
-	actual = directAccessNand(10);
-	checkData(10, 0xFFFF, actual);
+	actual = ssdHelper.directAccessNand(0);
+	EXPECT_EQ(ssdHelper.makeExpectedNandString(0, 0x7), actual);
+
+	actual = ssdHelper.directAccessNand(1);
+	EXPECT_EQ(ssdHelper.makeExpectedNandString(1, 0x0), actual);
+
+	actual = ssdHelper.directAccessNand(2);
+	EXPECT_EQ(ssdHelper.makeExpectedNandString(2, 0x0), actual);
+
+	actual = ssdHelper.directAccessNand(3);
+	EXPECT_EQ(ssdHelper.makeExpectedNandString(3, 0x7777), actual);
+
+	actual = ssdHelper.directAccessNand(10);
+	EXPECT_EQ(ssdHelper.makeExpectedNandString(10, 0xFFFF), actual);
+
 }
 
 TEST_F(SSDTS, DISABLED_SsdReadAfterWrite)

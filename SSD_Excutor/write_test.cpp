@@ -5,6 +5,8 @@
 #include <sstream>
 #include "write.h"
 #include <filesystem>
+#include "SSDHelper.h"
+
 #ifdef _DEBUG
 namespace fs = std::filesystem;
 
@@ -26,28 +28,7 @@ public:
 	Write write;
 	std::string nand = "ssd_nand.txt";
 	std::ifstream file;
-
-	void checkData(unsigned int expectedLba, unsigned int expectedValue, std::string actual)
-	{
-		std::string expected = "";
-		std::ostringstream ss;
-		ss << "0x" << std::uppercase << std::setfill('0') << std::setw(8) << std::hex << expectedValue;
-		expected = std::to_string(expectedLba) + " " + ss.str();
-		EXPECT_EQ(expected, actual);
-	}
-
-	std::string directAccessNand(unsigned int lba)
-	{
-		file.open(nand);
-		std::string line = "";
-		file.seekg(0);
-		for (unsigned int i = 0; i <= lba; i++)
-		{
-			getline(file, line);
-		}
-		file.close();
-		return line;
-	}
+	SSDHelper ssdHelper;
 };
 
 TEST_F(WriteCommandTS, FirstWriteAndCreateSsdNandTxtTC)
@@ -62,8 +43,8 @@ TEST_F(WriteCommandTS, OneWrite)
 
 	std::string actual;
 
-	actual = directAccessNand(0);
-	checkData(0, 1, actual);
+	actual = ssdHelper.directAccessNand(0);
+	EXPECT_EQ(ssdHelper.makeExpectedNandString(0, 1), actual);
 
 }
 
@@ -74,8 +55,8 @@ TEST_F(WriteCommandTS, OverWriteTC)
 
 	std::string actual;
 
-	actual = directAccessNand(0);
-	checkData(0, 3, actual);
+	actual = ssdHelper.directAccessNand(0);
+	EXPECT_EQ(ssdHelper.makeExpectedNandString(0, 3), actual);
 }
 
 TEST_F(WriteCommandTS, FullWriteAndVerifyTC)
@@ -90,8 +71,8 @@ TEST_F(WriteCommandTS, FullWriteAndVerifyTC)
 
 	for (int i = 0; i < 100; i++)
 	{
-		actual = directAccessNand(i);
-		checkData(i, i + 1, actual);
+		actual = ssdHelper.directAccessNand(i);
+		EXPECT_EQ(ssdHelper.makeExpectedNandString(i, i + 1), actual);
 	}
 }
 #endif
