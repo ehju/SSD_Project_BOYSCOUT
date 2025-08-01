@@ -148,7 +148,7 @@ TEST_F(TestScenarioFixture, PartialWriteLBA_WriteFail) {
 	checkBufferOutput("FAIL!\n");
 }
 
-TEST_F(TestScenarioFixture, PartialWriteLBA_ReadFail) {
+TEST_F(TestScenarioFixture, PartialWriteLBA_ReadCompareFail) {
 	setUpPartialWriteLBA();
 	unsigned int writtenData = 0x12345678;
 	unsigned int readData = 0x87654321;
@@ -163,6 +163,7 @@ TEST_F(TestScenarioFixture, PartialWriteLBA_ReadFail) {
 
 	checkBufferOutput("FAIL!\n");
 }
+
 
 TEST_F(TestScenarioFixture, ReturnsSameInstance) {
 	TestScenario* a = TestScenario::GetInstance(&ssd);
