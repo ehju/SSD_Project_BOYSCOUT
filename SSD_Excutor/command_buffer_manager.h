@@ -11,8 +11,6 @@ namespace fs = std::filesystem;
 class CommandBufferManager
 {
 public:
-	static const unsigned int NUM_COMMAND_BUFFER = 5;
-
 	static CommandBufferManager& getInstance();
 	void initialize();
 	virtual std::vector<CommandInfo> getCommandBufferList();
@@ -25,7 +23,8 @@ private:
 #ifndef _DEBUG
 	CommandBufferManager() = default;
 #endif
-	const unsigned int MAX_ERASE_SIZE = 10ul;
+	const unsigned int MAX_ERASE_SIZE = 10;
+	static const unsigned int NUM_COMMAND_BUFFER = 5;
 
 	CommandParser commandParser;
 	fs::path folderPath = fs::current_path() / "buffer";
