@@ -87,7 +87,6 @@ TEST_F(CommandBufferMangerTS, TC2)
 	
 	for (int i = 0; i < 5; i++)
 	{
-		CommandBufferManager::getInstance().initialize();
 		ssd->run(dummyArgc, dummyArgv);
 	}
 
@@ -112,7 +111,6 @@ TEST_F(CommandBufferMangerTS, OptimizeCommandBUfferTC1)
 
 	for (int i = 0; i < 2; i++)
 	{
-		CommandBufferManager::getInstance().initialize();
 		ssd->run(dummyArgc, dummyArgv);
 	}
 
@@ -138,7 +136,6 @@ TEST_F(CommandBufferMangerTS, OptimizeCommandBUfferTC2)
 
 	for (int i = 0; i < 3; i++)
 	{
-		CommandBufferManager::getInstance().initialize();
 		ssd->run(dummyArgc, dummyArgv);
 	}
 
@@ -163,7 +160,6 @@ TEST_F(CommandBufferMangerTS, OptimizeCommandBUfferTC3)
 
 	for (int i = 0; i < 2; i++)
 	{
-		CommandBufferManager::getInstance().initialize();
 		ssd->run(dummyArgc, dummyArgv);
 	}
 
@@ -188,7 +184,6 @@ TEST_F(CommandBufferMangerTS, OptimizeCommandBUfferTC4)
 
 	for (int i = 0; i < 2; i++)
 	{
-		CommandBufferManager::getInstance().initialize();
 		ssd->run(dummyArgc, dummyArgv);
 	}
 
@@ -214,7 +209,6 @@ TEST_F(CommandBufferMangerTS, OptimizeCommandBUfferTC5)
 
 	for (int i = 0; i < 3; i++)
 	{
-		CommandBufferManager::getInstance().initialize();
 		ssd->run(dummyArgc, dummyArgv);
 	}
 
@@ -239,7 +233,6 @@ TEST_F(CommandBufferMangerTS, OptimizeCommandBUfferTC6)
 
 	for (int i = 0; i < 2; i++)
 	{
-		CommandBufferManager::getInstance().initialize();
 		ssd->run(dummyArgc, dummyArgv);
 	}
 

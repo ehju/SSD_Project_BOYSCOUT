@@ -14,6 +14,7 @@ void SSD::initialize()
 
 void SSD::run(int argc, char* argv[])
 {
+	initialize();
 	FileUtil::deletePrevOutputFile();
 
 	CommandInfo commandInfo = commandParser->parse(argc, argv);

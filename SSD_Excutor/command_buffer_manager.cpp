@@ -9,11 +9,6 @@ CommandBufferManager& CommandBufferManager::getInstance()
 {
 	static CommandBufferManager commandBufferManager;
 
-	for (int i = 0;i < 100;i++)
-	{
-		commandBufferManager.mapForOptimizeCommand[i] = nullptr;
-	}
-
 	return commandBufferManager;
 }
 
@@ -327,6 +322,18 @@ void CommandBufferManager::initialize()
 	for (int i = 0; i < 100; i++)
 	{
 		mapForOptimizeCommand[i] = nullptr;
+	}
+
+	for (unsigned int i = 0; i < static_cast<unsigned int>(SSDCommand::SSDCommand_Count); i++)
+	{
+		if (i == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE) || i == static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
+		{
+			bufferEnbledCommand.push_back(true);
+		}
+		else
+		{
+			bufferEnbledCommand.push_back(false);
+		}
 	}
 
 	checkOptimizePossible = 0;

@@ -37,10 +37,6 @@ public:
 	char** dummyArgv{ nullptr };
 	std::string nand{ "ssd_nand.txt" };
 	std::ifstream file;
-
-	const unsigned int WRITE_CMD = 0;
-	const unsigned int READ_CMD = 1;
-	const unsigned int INVALID_CMD = 5;
 	SSDHelper ssdHelper;
 
 	void checkData(unsigned int expectedLba, unsigned int expectedValue, std::string actual)
@@ -72,7 +68,6 @@ TEST_F(SSDTS, WriteAndEraseSimpleTC1)
 
 	for (int i = 0; i < 2; i++)
 	{
-		ssd->initialize();
 		ssd->run(dummyArgc, dummyArgv);
 	}
 
@@ -100,7 +95,6 @@ TEST_F(SSDTS, WriteAndEraseSimpleTC2)
 	
 	for (int i = 0; i < 8; i++)
 	{
-		ssd->initialize();
 		ssd->run(dummyArgc, dummyArgv);
 	}
 
