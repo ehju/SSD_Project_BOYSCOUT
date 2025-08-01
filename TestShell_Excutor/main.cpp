@@ -13,18 +13,23 @@ int main(int argc, char* argv[]) {
 	string command;
 	ShellRunner shell;
 
-	while (true) {
-		cout << "Shell> ";
-		getline(std::cin, command);
-		int type = shell.runCommand(command);
+	if (argc == 1) {
+		while (true) {
+			cout << "Shell> ";
+			getline(std::cin, command);
+			int type = shell.runCommand(command);
 
-		switch (type) {
-		case CMD_NOT_SUPPORTED:
-			cout << "INVALID COMMAND\n";
-			break;
-		case CMD_BASIC_EXIT:
-			return 0;
+			switch (type) {
+			case CMD_NOT_SUPPORTED:
+				cout << "INVALID COMMAND\n";
+				break;
+			case CMD_BASIC_EXIT:
+				return 0;
+			}
 		}
+	}
+	else if (argc == 2) {
+		shell.runScriptFile(argv[1]);
 	}
 
     return 0;
