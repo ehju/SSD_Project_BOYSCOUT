@@ -16,8 +16,7 @@ ShellCommandItem* CommandFactory::MakeCommandItem(unsigned int type, iTS_SSD* ss
 	else if (type == CMD_BASIC_FULLREAD) { return new FullRead(ssd); }
 
 	else if (type == CMD_BASIC_FLUSH) { return new Flush(ssd); }
-
-	return new TestScenario(ssd);
-
+	
+	return TestScenario::GetInstance(ssd);
 }
 

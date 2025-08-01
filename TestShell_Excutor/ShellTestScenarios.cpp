@@ -1,5 +1,7 @@
 #include "ShellTestScenarios.h"
 
+TestScenario* TestScenario::instance = nullptr;
+std::mutex TestScenario::mtx;
 
 unsigned int TestScenario::getRandomUnsignedInt() {
 	unsigned int high = static_cast<unsigned int>(std::rand()) << 16;

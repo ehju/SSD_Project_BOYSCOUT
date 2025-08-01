@@ -40,7 +40,8 @@ public:
 		EXPECT_EQ(output, expected);
 	}
 	MockSSD ssd;
-	TestScenario shell{ &ssd };
+	TestScenario* shell = TestScenario::GetInstance(&ssd);
+	//TestScenario shell{ &ssd };
 	CommandInfo cmdInfo;
 	int lba = 0;
 	unsigned int data = 0x12345678;
@@ -54,7 +55,7 @@ TEST_F(TestScenarioFixture, ReadCompareCallSSDRead) {
 		.Times(1)
 		.WillRepeatedly(Return(readData));
 
-	EXPECT_EQ(true, shell.readCompare(lba, readData));
+	EXPECT_EQ(true, shell->readCompare(lba, readData));
 }
 
 TEST_F(TestScenarioFixture, ReadCompareDifferentDataFail) {
@@ -65,7 +66,7 @@ TEST_F(TestScenarioFixture, ReadCompareDifferentDataFail) {
 		.Times(1)
 		.WillRepeatedly(Return(readData));
 
-	EXPECT_EQ(false, shell.readCompare(lba, writtenData));
+	EXPECT_EQ(false, shell->readCompare(lba, writtenData));
 }
 
 TEST_F(TestScenarioFixture, DISABLED_FullWriteAndReadCompareShouldCallFullRangeSSDcommand) {
@@ -80,7 +81,7 @@ TEST_F(TestScenarioFixture, DISABLED_FullWriteAndReadCompareShouldCallFullRangeS
 		.Times(100)
 		.WillRepeatedly(Return(readData));
 
-	EXPECT_EQ(true, shell.execute(cmdInfo));
+	EXPECT_EQ(true, shell->execute(cmdInfo));
 	checkBufferOutput("Pass\n");
 }
 
@@ -96,7 +97,7 @@ TEST_F(TestScenarioFixture, FullWriteAndReadCompare_WriteFail) {
 
 	EXPECT_CALL(ssd, read(_))
 		.WillRepeatedly(Return(writtenData));
-	EXPECT_EQ(false, shell.execute(cmdInfo));
+	EXPECT_EQ(false, shell->execute(cmdInfo));
 	checkBufferOutput("FAIL!\n");
 }
 
@@ -111,7 +112,7 @@ TEST_F(TestScenarioFixture, FullWriteAndReadCompare_ReadFail) {
 	EXPECT_CALL(ssd, read(_))
 		.WillOnce(Return(writtenData))
 		.WillRepeatedly(Return(readData));
-	EXPECT_EQ(false, shell.execute(cmdInfo));
+	EXPECT_EQ(false, shell->execute(cmdInfo));
 	checkBufferOutput("FAIL!\n");
 }
 
@@ -127,7 +128,7 @@ TEST_F(TestScenarioFixture, PartialWriteLBA_behaviorTest) {
 		.Times(150)
 		.WillRepeatedly(Return(readData));
 
-	EXPECT_EQ(true, shell.execute(cmdInfo));
+	EXPECT_EQ(true, shell->execute(cmdInfo));
 	checkBufferOutput("Pass\n");
 }
 
@@ -143,7 +144,7 @@ TEST_F(TestScenarioFixture, PartialWriteLBA_WriteFail) {
 
 	EXPECT_CALL(ssd, read(_))
 		.WillRepeatedly(Return(writtenData));
-	EXPECT_EQ(false, shell.execute(cmdInfo));
+	EXPECT_EQ(false, shell->execute(cmdInfo));
 	checkBufferOutput("FAIL!\n");
 }
 
@@ -158,7 +159,15 @@ TEST_F(TestScenarioFixture, PartialWriteLBA_ReadFail) {
 		.WillOnce(Return(writtenData))
 		.WillRepeatedly(Return(readData));
 
-	EXPECT_EQ(false, shell.execute(cmdInfo));
+	EXPECT_EQ(false, shell->execute(cmdInfo));
 
 	checkBufferOutput("FAIL!\n");
 }
+
+TEST_F(TestScenarioFixture, ReturnsSameInstance) {
+	TestScenario* a = TestScenario::GetInstance(&ssd);
+	TestScenario* b = TestScenario::GetInstance(&ssd);
+
+	EXPECT_EQ(a, b);  // 悼老茄 林家咯具 窃
+}
+
