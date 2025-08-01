@@ -45,7 +45,7 @@ CommandInfo CommandParser::MakeCommandInfo(std::vector<std::string> cmdSplits)
 			else if (cmddata.isUseSize)
 			{
 				unsigned int size = getSize(cmddata, cmdSplits);
-				if ((ret.lba + size) >= 0 && (ret.lba + size) <= 99)
+				if ((ret.lba + size) >= 0 && (ret.lba + size-1) <= 99)
 				{
 					ret.value = size;
 				}

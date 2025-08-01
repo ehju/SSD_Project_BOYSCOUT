@@ -1,6 +1,5 @@
 #include "CommandFactory.h"
 
-
 ShellCommandItem* CommandFactory::MakeCommandItem(unsigned int type, iTS_SSD* ssd)
 {
 	if (type == CMD_BASIC_WRITE) { return new Write(ssd); }

@@ -1,0 +1,137 @@
+[25.08.01 14:59] ShellRunner.runCommand( )                     : called
+[25.08.01 14:59] ShellRunner.runCommand( )                     : called
+[25.08.01 14:59] ShellRunner.runCommand( )                     : called
+[25.08.01 14:59] ShellRunner.runShellCommand( )                : called
+[25.08.01 14:59] Write.execute( )                              : called
+[25.08.01 14:59] ShellRunner.runCommand( )                     : called
+[25.08.01 14:59] ShellRunner.runShellCommand( )                : called
+[25.08.01 14:59] Read.execute( )                               : called
+[25.08.01 14:59] Read.printReadResult( )                       : [Read] LBA 0 : 0x00000000 
+[25.08.01 14:59] ShellRunner.runCommand( )                     : called
+[25.08.01 14:59] ShellRunner.runShellCommand( )                : called
+[25.08.01 14:59] Erase.execute( )                              : called
+[25.08.01 14:59] ShellRunner.runCommand( )                     : called
+[25.08.01 14:59] ShellRunner.runShellCommand( )                : called
+[25.08.01 14:59] EraseRange.execute( )                         : called
+[25.08.01 14:59] ShellRunner.runCommand( )                     : called
+[25.08.01 14:59] ShellRunner.runShellCommand( )                : called
+[25.08.01 14:59] FullRead.execute( )                           : called
+[25.08.01 14:59] ShellRunner.runCommand( )                     : called
+[25.08.01 14:59] ShellRunner.runShellCommand( )                : called
+[25.08.01 14:59] FullWrite.execute( )                          : called
+[25.08.01 14:59] FullWrite.execute( )                          : error on write 0 -1431651397
+[25.08.01 14:59] ShellRunner.runCommand( )                     : called
+[25.08.01 14:59] ShellRunner.runShellCommand( )                : called
+[25.08.01 14:59] ShellRunner.runCommand( )                     : called
+[25.08.01 14:59] ShellRunner.runShellCommand( )                : called
+[25.08.01 14:59] ShellRunner.runCommand( )                     : called
+[25.08.01 14:59] ShellRunner.runShellCommand( )                : called
+[25.08.01 14:59] ShellRunner.runCommand( )                     : called
+[25.08.01 14:59] ShellRunner.runCommand( )                     : called
+[25.08.01 14:59] TestScenario.execute( )                       : called
+[25.08.01 14:59] TestScenario.fullWriteAndReadCompare( )       : called
+[25.08.01 14:59] TestScenario.printScenarioResult( )           : Fail
+[25.08.01 14:59] TestScenario.execute( )                       : called
+[25.08.01 14:59] TestScenario.fullWriteAndReadCompare( )       : called
+[25.08.01 14:59] TestScenario.printScenarioResult( )           : Fail
+[25.08.01 14:59] TestScenario.execute( )                       : called
+[25.08.01 14:59] TestScenario.partialLBAWrite( )               : called
+[25.08.01 14:59] TestScenario.printScenarioResult( )           : Pass
+[25.08.01 14:59] TestScenario.execute( )                       : called
+[25.08.01 14:59] TestScenario.partialLBAWrite( )               : called
+[25.08.01 14:59] TestScenario.printScenarioResult( )           : Fail
+[25.08.01 14:59] TestScenario.execute( )                       : called
+[25.08.01 14:59] TestScenario.partialLBAWrite( )               : called
+[25.08.01 14:59] TestScenario.printScenarioResult( )           : Fail
+[25.08.01 15:01] Write.execute( )                              : called
+[25.08.01 15:01] Read.execute( )                               : called
+[25.08.01 15:01] Read.printReadResult( )                       : [Read] LBA 0 : 0x00000000 
+[25.08.01 15:01] Write.execute( )                              : called
+[25.08.01 15:01] Write.execute( )                              : out of range for lba
+[25.08.01 15:01] Write.execute( )                              : called
+[25.08.01 15:01] Write.execute( )                              : out of range for lba
+[25.08.01 15:01] FullRead.execute( )                           : called
+[25.08.01 15:01] FullWrite.execute( )                          : called
+[25.08.01 15:01] FullWrite.execute( )                          : called
+[25.08.01 15:01] FullWrite.execute( )                          : error on write 4 -1412562945
+[25.08.01 15:01] ShellRunner.runCommand( )                     : called
+[25.08.01 15:01] ShellRunner.runCommand( )                     : called
+[25.08.01 15:01] ShellRunner.runCommand( )                     : called
+[25.08.01 15:01] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:01] Write.execute( )                              : called
+[25.08.01 15:01] ShellRunner.runCommand( )                     : called
+[25.08.01 15:01] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:01] Read.execute( )                               : called
+[25.08.01 15:01] Read.printReadResult( )                       : [Read] LBA 0 : 0x00000000 
+[25.08.01 15:01] ShellRunner.runCommand( )                     : called
+[25.08.01 15:01] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:01] Erase.execute( )                              : called
+[25.08.01 15:01] ShellRunner.runCommand( )                     : called
+[25.08.01 15:01] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:01] EraseRange.execute( )                         : called
+[25.08.01 15:01] ShellRunner.runCommand( )                     : called
+[25.08.01 15:01] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:01] FullRead.execute( )                           : called
+[25.08.01 15:01] ShellRunner.runCommand( )                     : called
+[25.08.01 15:01] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:01] FullWrite.execute( )                          : called
+[25.08.01 15:01] FullWrite.execute( )                          : error on write 0 -1431651397
+[25.08.01 15:01] ShellRunner.runCommand( )                     : called
+[25.08.01 15:01] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:01] ShellRunner.runCommand( )                     : called
+[25.08.01 15:01] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:01] ShellRunner.runCommand( )                     : called
+[25.08.01 15:01] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:07] Write.execute( )                              : called
+[25.08.01 15:07] Read.execute( )                               : called
+[25.08.01 15:07] Read.printReadResult( )                       : [Read] LBA 0 : 0x00000000 
+[25.08.01 15:07] Write.execute( )                              : called
+[25.08.01 15:07] Write.execute( )                              : out of range for lba
+[25.08.01 15:07] Write.execute( )                              : called
+[25.08.01 15:07] Write.execute( )                              : out of range for lba
+[25.08.01 15:07] FullRead.execute( )                           : called
+[25.08.01 15:07] FullWrite.execute( )                          : called
+[25.08.01 15:07] FullWrite.execute( )                          : called
+[25.08.01 15:07] FullWrite.execute( )                          : error on write 4 -1412562945
+[25.08.01 15:07] ShellRunner.runCommand( )                     : called
+[25.08.01 15:07] ShellRunner.runCommand( )                     : called
+[25.08.01 15:07] ShellRunner.runCommand( )                     : called
+[25.08.01 15:07] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:07] Write.execute( )                              : called
+[25.08.01 15:07] ShellRunner.runCommand( )                     : called
+[25.08.01 15:07] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:07] Read.execute( )                               : called
+[25.08.01 15:07] Read.printReadResult( )                       : [Read] LBA 0 : 0x00000000 
+[25.08.01 15:07] ShellRunner.runCommand( )                     : called
+[25.08.01 15:07] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:07] Erase.execute( )                              : called
+[25.08.01 15:07] ShellRunner.runCommand( )                     : called
+[25.08.01 15:07] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:07] EraseRange.execute( )                         : called
+[25.08.01 15:07] ShellRunner.runCommand( )                     : called
+[25.08.01 15:07] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:07] FullRead.execute( )                           : called
+[25.08.01 15:07] ShellRunner.runCommand( )                     : called
+[25.08.01 15:07] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:07] FullWrite.execute( )                          : called
+[25.08.01 15:07] FullWrite.execute( )                          : error on write 0 -1431651397
+[25.08.01 15:07] ShellRunner.runCommand( )                     : called
+[25.08.01 15:07] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:07] ShellRunner.runCommand( )                     : called
+[25.08.01 15:07] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:07] TestScenario.execute( )                       : called
+[25.08.01 15:07] TestScenario.partialLBAWrite( )               : called
+[25.08.01 15:07] TestScenario.printScenarioResult( )           : Fail
+[25.08.01 15:07] ShellRunner.runCommand( )                     : called
+[25.08.01 15:07] ShellRunner.runShellCommand( )                : called
+[25.08.01 15:07] TestScenario.execute( )                       : called
+[25.08.01 15:07] TestScenario.writeReadAging( )                : called
+[25.08.01 15:07] TestScenario.printScenarioResult( )           : Fail
+[25.08.01 15:07] ShellRunner.runCommand( )                     : called
+[25.08.01 15:07] ShellRunner.runCommand( )                     : called
+[25.08.01 15:07] TestScenario.execute( )                       : called
+[25.08.01 15:07] TestScenario.fullWriteAndReadCompare( )       : called
+[25.08.01 15:07] TestScenario.printScenarioResult( )           : Fail
+[25.08.01 15:07] TestScenario.execute( )                       : called
+[25.08.01 15:07] TestScenario.fullWriteAndReadCompare( )       : called
+[25.08.01 15:07] TestScenario.printScenarioResult( )           : Fail
