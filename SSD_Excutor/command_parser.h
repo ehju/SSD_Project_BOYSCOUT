@@ -9,8 +9,8 @@ enum class SSDCommand
 	SSDCommand_READ,
 	SSDCommand_ERASE,
 	SSDCommand_FLUSH,
-	SSDCommand_Count,
 	SSDCommand_INVALID,
+	SSDCommand_Count,
 };
 
 struct CommandInfo

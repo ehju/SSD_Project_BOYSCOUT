@@ -4,23 +4,21 @@
 #include <string>
 #include <sstream>
 #include "write.h"
+#include <filesystem>
+#ifdef _DEBUG
+namespace fs = std::filesystem;
 
 class WriteCommandTS : public testing::Test
 {
 protected:
 	void SetUp() override
 	{
-		file.open(nand);
-
-		if (file.is_open() == false)
-		{
-			FAIL();
-		}
+		fs::remove(nand);
 	}
 
 	void TearDown() override
 	{
-		file.close();
+		
 	}
 
 public:
@@ -40,12 +38,14 @@ public:
 
 	std::string directAccessNand(unsigned int lba)
 	{
+		file.open(nand);
 		std::string line = "";
 		file.seekg(0);
-		for (int i = 0; i <= lba; i++)
+		for (unsigned int i = 0; i <= lba; i++)
 		{
 			getline(file, line);
 		}
+		file.close();
 		return line;
 	}
 };
@@ -53,8 +53,7 @@ public:
 TEST_F(WriteCommandTS, FirstWriteAndCreateSsdNandTxtTC)
 {
 	write.execute(CommandInfo{ static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE), static_cast<unsigned int>(0x0), static_cast<unsigned int>(0x1) });
-
-	EXPECT_TRUE(file.is_open());
+	EXPECT_TRUE(fs::exists(nand));
 }
 
 TEST_F(WriteCommandTS, OneWrite)
@@ -95,3 +94,4 @@ TEST_F(WriteCommandTS, FullWriteAndVerifyTC)
 		checkData(i, i + 1, actual);
 	}
 }
+#endif

@@ -1,6 +1,6 @@
 #pragma once
 #include "ShellCommand.h"
-
+#include "ShellLogger.h"
 class FullRead : public ShellCommandItem {
 public:
 	FullRead() {}

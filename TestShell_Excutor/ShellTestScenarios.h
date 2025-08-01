@@ -1,5 +1,6 @@
 #pragma once
 #include "ShellCommand.h"
+#include "ShellLogger.h"
 #include <unordered_map>
 #include <functional>
 enum SCENARIO

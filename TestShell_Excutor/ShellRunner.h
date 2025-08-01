@@ -12,6 +12,7 @@
 #include "ShellRead.h"
 #include "ShellTestScenarios.h"
 #include "ShellWrite.h"
+#include "ShellLogger.h"
 
 #ifdef _DEBUG
 class MockRunnerSSD : public iTS_SSD {
@@ -33,6 +34,7 @@ private:
 	bool runShellCommand(CommandInfo cmdInfo);
 
 	CommandParser cp;
+
 #ifdef _DEBUG
 	testing::NiceMock<MockRunnerSSD> ssd;
 #else

@@ -1,5 +1,6 @@
 #pragma once
 #include "ShellCommand.h"
+#include "ShellLogger.h"
 
 class Write : public ShellCommandItem {
 public:

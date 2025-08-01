@@ -4,7 +4,7 @@
 #include "write.h"
 #include "erase.h"
 #include "SSDHelper.h"
-
+#ifdef _DEBUG
 using namespace testing;
 
 class EraseTestFixture : public Test {
@@ -46,7 +46,7 @@ TEST_F(EraseTestFixture, EraseAfterWrite) {
     readValue = std::stoul(ssdHelper.getReadResultFromFile(), nullptr, 16);
     EXPECT_EQ(readValue, expectErasedValue);
 }
-
+#endif
 
 
 

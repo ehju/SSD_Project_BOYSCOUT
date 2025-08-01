@@ -1,6 +1,6 @@
 #pragma once
 #include "ShellCommand.h"
-
+#include "ShellLogger.h"
 class Erase : public ShellCommandItem {
 public:
 	Erase() {}

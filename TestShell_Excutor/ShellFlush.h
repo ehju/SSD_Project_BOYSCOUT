@@ -1,5 +1,6 @@
 #pragma once
 #include "ShellCommand.h"
+#include "ShellLogger.h"
 
 class Flush : public ShellCommandItem {
 public:

@@ -31,14 +31,14 @@ std::string ProxyRead::getHexValueFromBuffer(unsigned int address)
 	return "";
 }
 
-bool ProxyRead::isBufferHitWriteCommand(const DetailedCommandInfo& detailedCommandInfo, int address) {
+bool ProxyRead::isBufferHitWriteCommand(const DetailedCommandInfo& detailedCommandInfo, unsigned int address) {
 	if (detailedCommandInfo.commandInfo.command == static_cast<int>(SSDCommand::SSDCommand_WRITE)) {
 		if (detailedCommandInfo.commandInfo.lba == address) return true;
 	}
 	return false;
 }
 
-bool ProxyRead::isBufferHitEraseCommand(const DetailedCommandInfo& detailedCommandInfo, int address) {
+bool ProxyRead::isBufferHitEraseCommand(const DetailedCommandInfo& detailedCommandInfo, unsigned int address) {
 	if (detailedCommandInfo.commandInfo.command == static_cast<int>(SSDCommand::SSDCommand_ERASE)) {
 		if (detailedCommandInfo.commandInfo.lba <= address && detailedCommandInfo.commandInfo.lba + detailedCommandInfo.commandInfo.value > address)
 			return true;

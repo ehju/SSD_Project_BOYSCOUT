@@ -1,5 +1,6 @@
 #include "gmock/gmock.h"
 #include "ssd.h"
+#ifdef _DEBUG
 using namespace testing;
 class CommandParserTS :public Test {
 public:
@@ -29,7 +30,7 @@ TEST_F(CommandParserTS, InvalidCommandTC1)
 {
 	char argu1[32]="T";	
 	setInput(2, argu1,nullptr, nullptr);
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFF , 0xFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, static_cast<unsigned int>(0xFFFFFFFF)  , static_cast<unsigned int>(0xFFFFFFFF)  };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 }
@@ -56,7 +57,7 @@ TEST_F(CommandParserTS, WriteTC2)
 
 	setInput(4, argu1, argu2, argu3);
 
-	CommandInfo expected = {(unsigned int) SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = {(unsigned int) SSDCommand::SSDCommand_INVALID,  static_cast<unsigned int>(0xFFFFFFFF) ,  static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
@@ -72,7 +73,7 @@ TEST_F(CommandParserTS, WriteTC3)
 	setInput(4, argu1, argu2, argu3);
 
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID,  static_cast<unsigned int>(0xFFFFFFFF) ,  static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
@@ -87,7 +88,7 @@ TEST_F(CommandParserTS, WriteTC4)
 	setInput(4, argu1, argu2, argu3);
 
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID,  static_cast<unsigned int>(0xFFFFFFFF) ,  static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
@@ -102,7 +103,7 @@ TEST_F(CommandParserTS, WriteTC5)
 	setInput(4, argu1, argu2, argu3);
 
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID,  static_cast<unsigned int>(0xFFFFFFFF) ,  static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
@@ -117,7 +118,7 @@ TEST_F(CommandParserTS, WriteTC6)
 	setInput(4, argu1, argu2, argu3);
 
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID,  static_cast<unsigned int>(0xFFFFFFFF) ,  static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
@@ -127,7 +128,7 @@ TEST_F(CommandParserTS, WriteTC7)
 {
 	char argu1[32] = "W";
 	setInput(2, argu1, nullptr, nullptr);
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID,  static_cast<unsigned int>(0xFFFFFFFF) ,  static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
@@ -142,7 +143,7 @@ TEST_F(CommandParserTS, ReadTC1)
 	setInput(3, argu1, argu2, nullptr);
 
 
-	CommandInfo expected = { 1, 0 , 0xFFFFFFFF };
+	CommandInfo expected = { 1, 0 , static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 }
@@ -155,7 +156,7 @@ TEST_F(CommandParserTS, ReadTC2)
 
 	setInput(4, argu1, argu2, argu3);
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, static_cast<unsigned int>(0xFFFFFFFF)  , static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
@@ -166,7 +167,7 @@ TEST_F(CommandParserTS, ReadTC3)
 	char argu1[32] = "R";
 	setInput(2, argu1, nullptr, nullptr);
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, static_cast<unsigned int>(0xFFFFFFFF)  , static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
@@ -178,7 +179,7 @@ TEST_F(CommandParserTS, ReadTC4)
 	char argu2[32] = "101";
 
 	setInput(3, argu1, argu2, nullptr);
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, static_cast<unsigned int>(0xFFFFFFFF)  , static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
@@ -190,7 +191,7 @@ TEST_F(CommandParserTS, EraseTC1)
 	char argu2[32] = "0";
 	setInput(3, argu1, argu2, nullptr);
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFF , 0xFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, static_cast<unsigned int>(0xFFFFFFFF)  , static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 }
@@ -203,7 +204,7 @@ TEST_F(CommandParserTS, EraseTC2)
 
 	setInput(4, argu1, argu2, argu3);
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, static_cast<unsigned int>(0xFFFFFFFF)  , static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
@@ -217,7 +218,7 @@ TEST_F(CommandParserTS, EraseTC3)
 
 	setInput(4, argu1, argu2, argu3);
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID,0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID,static_cast<unsigned int>(0xFFFFFFFF)  , static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 }
@@ -230,7 +231,7 @@ TEST_F(CommandParserTS, EraseTC4)
 
 	setInput(4, argu1, argu2, argu3);
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, static_cast<unsigned int>(0xFFFFFFFF)  , static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
@@ -268,7 +269,7 @@ TEST_F(CommandParserTS, EraseTC7)
 
 	setInput(4, argu1, argu2, argu3);
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, static_cast<unsigned int>(0xFFFFFFFF)  , static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
@@ -281,7 +282,7 @@ TEST_F(CommandParserTS, FlushTC1)
 
 	setInput(2, argu1, nullptr, nullptr);
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_FLUSH, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_FLUSH, static_cast<unsigned int>(0xFFFFFFFF)  , static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
@@ -293,8 +294,9 @@ TEST_F(CommandParserTS, FlushTC2)
 
 	setInput(3, argu1, argu2, nullptr);
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, 0xFFFFFFFFF , 0xFFFFFFFFF };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_INVALID, static_cast<unsigned int>(0xFFFFFFFF)  , static_cast<unsigned int>(0xFFFFFFFF) };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 
 }
+#endif

@@ -11,6 +11,7 @@ class SSD {
 public:
     SSD(CommandParser* commandParser);
     void run(int argc, char* argv[]);
+    void initialize();
 
 private:
     CommandParser* commandParser;
