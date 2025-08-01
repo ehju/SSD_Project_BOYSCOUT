@@ -5,15 +5,14 @@ unsigned int SSDExecutor::read(int lba) {
 	cmd = SSDEXCUTE + " R " + std::to_string(lba);
 	int result = std::system(cmd.c_str());
 	if (result == 0) {
-		//throw std::exception("Error System Call read");
-		//std::cout << "Error System Call read\n ";
+		Logger::getInstance()->print(__FUNCTION__, "system call error");
 		return 0;
 	}
 
 	if (file_exists(OUTFILE)) {
 		string result_str = getReadResultFromFile(OUTFILE);
 		if (result_str == "ERROR") {
-			std::cout << "Error Read\n ";
+			Logger::getInstance()->print(__FUNCTION__, "found ERROR result");
 			return 0;
 		}
 		unsigned int readValue = (unsigned int)std::stoul(result_str, nullptr, 16);
@@ -26,29 +25,34 @@ bool SSDExecutor::write(int lba, unsigned int data) {
 	cmd = SSDEXCUTE + " W " + std::to_string(lba) + " " + (toHex(data));
 	int result = std::system(cmd.c_str());
 	if (result == 0) {
+		Logger::getInstance()->print(__FUNCTION__, "system call error");
 		return false;
 	}
 	if (file_exists(OUTFILE)) {
 		string result_str = getReadResultFromFile(OUTFILE);
-		if (result_str == "ERROR") return false;
+		if (result_str == "ERROR") {
+			Logger::getInstance()->print(__FUNCTION__, "found ERROR result");
+			return false;
+		}
 	}
-
 	return true;
 }
 
 bool SSDExecutor::erase(int lba, int size)
 {
 	cmd = SSDEXCUTE + " E " + std::to_string(lba) + " " + std::to_string(size);
-	//std::cout << cmd << "\n";
 
 	int result = std::system(cmd.c_str());
 	if (result == 0) {
-    //std::cout << "Error System Call erase\n";
-	return false;
+		Logger::getInstance()->print(__FUNCTION__, "system call error");
+		return false;
 	}
 	if (file_exists(OUTFILE)) {
 		string result_str = getReadResultFromFile(OUTFILE);
-		if (result_str == "ERROR") return false;
+		if (result_str == "ERROR") {
+			Logger::getInstance()->print(__FUNCTION__, "found ERROR result");
+			return false;
+		}
 	}
 	return true;
 }
@@ -56,10 +60,9 @@ bool SSDExecutor::erase(int lba, int size)
 bool SSDExecutor::flush()
 {
 	cmd = SSDEXCUTE + " F";
-	//std::cout << cmd << "\n";
 	int result = std::system(cmd.c_str());
 	if (result == 0) {
-		//std::cout << "Error System Call flush\n";
+		Logger::getInstance()->print(__FUNCTION__, "system call error");
 		return false;
 	}
 	return true;

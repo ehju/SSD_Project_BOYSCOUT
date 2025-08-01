@@ -12,6 +12,7 @@ bool TestScenario::readCompare(int lba, unsigned int writtenData) {
 		return true;
 	}
 	else {
+		Logger::getInstance()->print(__FUNCTION__, " Fail: lba:%d, written:%d, read:%d" , lba, writtenData, readData);
 		return false;
 	}
 };
