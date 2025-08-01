@@ -6,7 +6,7 @@
 #include "proxyRead.h"
 
 using namespace testing;
-
+#ifdef _DEBUG
 class MockCommandBufferManager : public CommandBufferManager {
 public:
     MOCK_METHOD(std::vector<DetailedCommandInfo>, getCommandBufferList,(), (override));
@@ -67,3 +67,4 @@ TEST_F(ProxyReadTestFixture, ReadFromBuffer)
     EXPECT_EQ(proxyRead.getHexValueFromBuffer(param1), "0x00000032");
     EXPECT_THAT(proxyRead.getHexValueFromBuffer(param1), Ne(""));
 }
+#endif
