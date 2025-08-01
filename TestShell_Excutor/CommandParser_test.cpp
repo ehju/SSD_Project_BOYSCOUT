@@ -68,6 +68,14 @@ TEST_F(CommandParserTS, Read1)
 	CommandInfo actual = commandParser.createCommandData(command);
 	checkExpected(expected, actual);
 }
+TEST_F(CommandParserTS, Read2)
+{
+	const string command = "read 200";
+
+	CommandInfo expected = { (unsigned int)CommandType::CMD_NOT_SUPPORTED, 0xFFFFFFFF , 0xFFFFFFFF,-1 };
+	CommandInfo actual = commandParser.createCommandData(command);
+	checkExpected(expected, actual);
+}
 TEST_F(CommandParserTS, Erase)
 {
 	const string command = "erase 50 -10";
@@ -76,16 +84,78 @@ TEST_F(CommandParserTS, Erase)
 	CommandInfo actual = commandParser.createCommandData(command);
 	checkExpected(expected, actual);
 }
-
-TEST_F(CommandParserTS, EraseRange)
+TEST_F(CommandParserTS, Erase1)
 {
-	const string command = "erase_range 90 100";
+	const string command = "erase 50 0x10";
 
-	CommandInfo expected = { (unsigned int)CommandType::CMD_BASIC_ERASE_RANGE, 90 , 100,-1 };
+	CommandInfo expected = { (unsigned int)CommandType::CMD_NOT_SUPPORTED, 0xFFFFFFFF , 0xFFFFFFFF,-1 };
 	CommandInfo actual = commandParser.createCommandData(command);
 	checkExpected(expected, actual);
 }
+TEST_F(CommandParserTS, Erase2)
+{
+	const string command = "erase 50 1000";
 
+	CommandInfo expected = { (unsigned int)CommandType::CMD_BASIC_ERASE, 50 , 0xFFFFFFFF,1000 };
+	CommandInfo actual = commandParser.createCommandData(command);
+	checkExpected(expected, actual);
+}
+TEST_F(CommandParserTS, EraseRange)
+{
+	const string command = "erase_range 0 99";
+
+	CommandInfo expected = { (unsigned int)CommandType::CMD_BASIC_ERASE_RANGE, 0 , 99,-1 };
+	CommandInfo actual = commandParser.createCommandData(command);
+	checkExpected(expected, actual);
+}
+TEST_F(CommandParserTS, EraseRange1)
+{
+	const string command = "erase_range 90 1000";
+
+	CommandInfo expected = { (unsigned int)CommandType::CMD_NOT_SUPPORTED, 0xFFFFFFFF , 0xFFFFFFFF,-1 };
+	CommandInfo actual = commandParser.createCommandData(command);
+	checkExpected(expected, actual);
+}
+TEST_F(CommandParserTS, FullWrite)
+{
+	const string command = "fullwrite 0x12345678";
+
+	CommandInfo expected = { (unsigned int)CommandType::CMD_BASIC_FULLWRITE, 0xFFFFFFFF , 0x12345678,-1 };
+	CommandInfo actual = commandParser.createCommandData(command);
+	checkExpected(expected, actual);
+}
+TEST_F(CommandParserTS, FullWrite1)
+{
+	const string command = "fullwrite 0x12345678DDD";
+
+	CommandInfo expected = { (unsigned int)CommandType::CMD_NOT_SUPPORTED, 0xFFFFFFFF , 0xFFFFFFFF,-1 };
+	CommandInfo actual = commandParser.createCommandData(command);
+	checkExpected(expected, actual);
+}
+TEST_F(CommandParserTS, FullWrite2)
+{
+	const string command = "fullwrite 10";
+
+	CommandInfo expected = { (unsigned int)CommandType::CMD_NOT_SUPPORTED, 0xFFFFFFFF , 0xFFFFFFFF,-1 };
+	CommandInfo actual = commandParser.createCommandData(command);
+	checkExpected(expected, actual);
+}
+TEST_F(CommandParserTS, Fullread)
+{
+	const string command = "fullread 10";
+
+	CommandInfo expected = { (unsigned int)CommandType::CMD_NOT_SUPPORTED, 0xFFFFFFFF , 0xFFFFFFFF,-1 };
+	CommandInfo actual = commandParser.createCommandData(command);
+	checkExpected(expected, actual);
+}
+TEST_F(CommandParserTS, Fullread1)
+{
+	const string command = "fullread";
+
+	CommandInfo expected = { (unsigned int)CommandType::CMD_BASIC_FULLREAD, 0xFFFFFFFF , 0xFFFFFFFF,-1 };
+	CommandInfo actual = commandParser.createCommandData(command);
+	checkExpected(expected, actual);
+}
 TEST_F(CommandParserTS, TS1)
 {
 	const string command = "1_";

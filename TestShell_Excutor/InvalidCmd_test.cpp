@@ -228,6 +228,8 @@ TEST(INVALIDCMD, ERASERANGEFAIL)
 	vector<vector<string>> invalidcmdlist = {		
 		{ "erase_range","95","-5" },//FAIL	
 		{ "erase_range","-5","10" },//FAIL	
+		{ "erase_range","0","100" },//pass
+
 	};
 	int passIndex = 0;
 	for (vector<string> cmd : invalidcmdlist)
@@ -237,7 +239,7 @@ TEST(INVALIDCMD, ERASERANGEFAIL)
 		passIndex++;
 	}
 
-	EXPECT_EQ(2, passIndex);
+	EXPECT_EQ(3, passIndex);
 }
 
 TEST(INVALIDCMD, ERASERANGEPASS)
@@ -247,7 +249,6 @@ TEST(INVALIDCMD, ERASERANGEPASS)
 		{ "erase_range","95","5" },//PASS	
 		{ "erase_range","93","97" },//pass
 		{ "erase_range","0","97" },//pass
-		{ "erase_range","0","100" },//pass
 
 	};
 	int passIndex = 0;
@@ -258,5 +259,5 @@ TEST(INVALIDCMD, ERASERANGEPASS)
 		passIndex++;
 	}
 
-	EXPECT_EQ(4, passIndex);
+	EXPECT_EQ(3, passIndex);
 }
