@@ -44,5 +44,6 @@ private:
 	void updateMapForCommand(CommandInfo* commandInfo);
 	CommandInfo updateCommandInfo(unsigned int command, unsigned int lba, unsigned int value);
 	void updateOptimizedBufferListToOriginalBufferList();
-	bool isEraseCommandHasMaxSize(unsigned int size);
+	bool isEraseCommandHasMaxSize(CommandInfo commandInfo);
+	bool isEraseMaxLba(CommandInfo commandInfo);
 };
