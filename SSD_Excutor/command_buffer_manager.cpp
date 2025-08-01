@@ -75,7 +75,6 @@ CommandInfo CommandBufferManager::string2CommandBufferInfo(std::string str)
 	std::stringstream ss(str);
 	std::string item;
 	std::vector<std::string> result;
-	CommandFactory cmdFactory;
 
 	while (std::getline(ss, item, '_')) {
 		result.push_back(item);
@@ -96,6 +95,30 @@ CommandInfo CommandBufferManager::string2CommandBufferInfo(std::string str)
 	return commandInfo;
 }
 
+CommandInfo CommandBufferManager::updateCommandInfo(unsigned int command, unsigned int lba, unsigned int value)
+{
+	return CommandInfo{ command, lba, value };
+}
+
+void CommandBufferManager::updateOptimizedBufferListToOriginalBufferList()
+{
+	if (commandBufferList.size() > optimizedCommandBufferList.size())
+	{
+		commandBufferList.clear();
+
+		for (int i = 0; optimizedCommandBufferList.size(); i++)
+		{
+			commandBufferList.push_back(optimizedCommandBufferList.back());
+			optimizedCommandBufferList.pop_back();
+		}
+	}
+}
+
+bool CommandBufferManager::isEraseCommandHasMaxSize(unsigned int size)
+{
+	return (size == MAX_ERASE_SIZE);
+}
+
 void CommandBufferManager::optimizeCommandBuffer()
 {
 	for (int i = 0;i < commandBufferList.size();i++)
@@ -103,9 +126,7 @@ void CommandBufferManager::optimizeCommandBuffer()
 		updateMapForCommand(&commandBufferList[i]);
 	}
 
-	CommandInfo waitingDetailedCommandInfo = CommandInfo{0, 0, 0};
-
-	CommandFactory cmdFactory;
+	CommandInfo waitingCommandInfo = CommandInfo{0, 0, 0};
 
 	for (int i = 0;i < 100;i++)
 	{
@@ -119,54 +140,46 @@ void CommandBufferManager::optimizeCommandBuffer()
 		{
 			if (mapForOptimizeCommand[i]->command == static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
 			{
-				waitingDetailedCommandInfo.command = mapForOptimizeCommand[i]->command;
-				waitingDetailedCommandInfo.lba = i;
-				waitingDetailedCommandInfo.value = 1;
+				waitingCommandInfo = updateCommandInfo(mapForOptimizeCommand[i]->command, i, 1);
 
 				checkOptimizePossible++;
 			}
 			else if (mapForOptimizeCommand[i]->command == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
 			{
-				waitingDetailedCommandInfo.command = mapForOptimizeCommand[i]->command;
-				waitingDetailedCommandInfo.lba = mapForOptimizeCommand[i]->lba;
-				waitingDetailedCommandInfo.value = mapForOptimizeCommand[i]->value;
+				waitingCommandInfo = updateCommandInfo(mapForOptimizeCommand[i]->command, mapForOptimizeCommand[i]->lba, mapForOptimizeCommand[i]->value);
 
-				optimizedCommandBufferList.push_back(waitingDetailedCommandInfo);
-				waitingDetailedCommandInfo = CommandInfo{0, 0, 0};
+				optimizedCommandBufferList.push_back(waitingCommandInfo);
+				waitingCommandInfo = CommandInfo{0, 0, 0};
 			}
 		}
 		else if (checkOptimizePossible == 1)
 		{
 			if (mapForOptimizeCommand[i] == nullptr)
 			{
-				optimizedCommandBufferList.push_back(waitingDetailedCommandInfo);
-				waitingDetailedCommandInfo = CommandInfo{0, 0, 0};
+				optimizedCommandBufferList.push_back(waitingCommandInfo);
+				waitingCommandInfo = CommandInfo{0, 0, 0};
 				checkOptimizePossible = 0;
 			}
 			else if (mapForOptimizeCommand[i]->command == static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
 			{
-				waitingDetailedCommandInfo.value++;
+				waitingCommandInfo.value++;
 
 			}
 			else if (mapForOptimizeCommand[i]->command == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
 			{
-				CommandInfo noOptimizedInfo;
-
-				noOptimizedInfo.command = mapForOptimizeCommand[i]->command;
-				noOptimizedInfo.lba = mapForOptimizeCommand[i]->lba;
-				noOptimizedInfo.value = mapForOptimizeCommand[i]->value;
-
-				waitingDetailedCommandInfo.value++;
+				CommandInfo noOptimizedInfo = updateCommandInfo(mapForOptimizeCommand[i]->command, mapForOptimizeCommand[i]->lba, mapForOptimizeCommand[i]->value);
+				
+				waitingCommandInfo.value++;
 				optimizedCommandBufferList.push_back(noOptimizedInfo);
 				checkOptimizePossible++;
 			}
 
 			if (mapForOptimizeCommand[i] != nullptr)
 			{
-				if (waitingDetailedCommandInfo.value == 10)
+				if (isEraseCommandHasMaxSize(waitingCommandInfo.value))
 				{
-					optimizedCommandBufferList.push_back(waitingDetailedCommandInfo);
-					waitingDetailedCommandInfo = CommandInfo{0, 0, 0};
+					optimizedCommandBufferList.push_back(waitingCommandInfo);
+					waitingCommandInfo = CommandInfo{0, 0, 0};
 					checkOptimizePossible = 0;
 				}
 			}
@@ -175,50 +188,38 @@ void CommandBufferManager::optimizeCommandBuffer()
 		{
 			if (mapForOptimizeCommand[i] == nullptr)
 			{
-				optimizedCommandBufferList.push_back(waitingDetailedCommandInfo);
-				waitingDetailedCommandInfo = CommandInfo{0, 0, 0};
+				optimizedCommandBufferList.push_back(waitingCommandInfo);
+				waitingCommandInfo = CommandInfo{0, 0, 0};
 				checkOptimizePossible = 0;
 			}
 			else if (mapForOptimizeCommand[i]->command == static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
 			{
-				waitingDetailedCommandInfo.value++;
+				waitingCommandInfo.value++;
 			}
 			else if (mapForOptimizeCommand[i]->command == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
 			{
-				CommandInfo noOptimizedInfo;
+				CommandInfo noOptimizedInfo = updateCommandInfo(mapForOptimizeCommand[i]->command, mapForOptimizeCommand[i]->lba, mapForOptimizeCommand[i]->value);
 
-				noOptimizedInfo.command = mapForOptimizeCommand[i]->command;
-				noOptimizedInfo.lba = mapForOptimizeCommand[i]->lba;
-				noOptimizedInfo.value = mapForOptimizeCommand[i]->value;
 				optimizedCommandBufferList.push_back(noOptimizedInfo);
 
-				optimizedCommandBufferList.push_back(waitingDetailedCommandInfo);
-				waitingDetailedCommandInfo = CommandInfo{0, 0, 0};
+				optimizedCommandBufferList.push_back(waitingCommandInfo);
+				waitingCommandInfo = CommandInfo{0, 0, 0};
 				checkOptimizePossible = 0;
 			}
 
 			if (mapForOptimizeCommand[i] != nullptr)
 			{
-				if (waitingDetailedCommandInfo.value == 10)
+				if (isEraseCommandHasMaxSize(waitingCommandInfo.value))
 				{
-					optimizedCommandBufferList.push_back(waitingDetailedCommandInfo);
-					waitingDetailedCommandInfo = CommandInfo{0, 0, 0};
+					optimizedCommandBufferList.push_back(waitingCommandInfo);
+					waitingCommandInfo = CommandInfo{0, 0, 0};
 					checkOptimizePossible = 0;
 				}
 			}
 		}
 	}
 
-	if (commandBufferList.size() > optimizedCommandBufferList.size())
-	{
-		commandBufferList.clear();
-
-		for (int i = 0;optimizedCommandBufferList.size();i++)
-		{
-			commandBufferList.push_back(optimizedCommandBufferList.back());
-			optimizedCommandBufferList.pop_back();
-		}
-	}
+	updateOptimizedBufferListToOriginalBufferList();
 }
 
 void CommandBufferManager::updateMapForCommand(CommandInfo* commandInfo)
@@ -238,6 +239,8 @@ void CommandBufferManager::updateMapForCommand(CommandInfo* commandInfo)
 
 void CommandBufferManager::updateCommandBuffer()
 {
+	fs::create_directory(folderPath);
+
 	for (int bufferIdx = 0; bufferIdx < NUM_COMMAND_BUFFER; bufferIdx++)
 	{
 		std::string line = "";
@@ -249,8 +252,6 @@ void CommandBufferManager::updateCommandBuffer()
 		{
 			line = std::to_string(bufferIdx) + "_empty";
 		}
-
-		fs::create_directory(folderPath);
 
 		fs::path filePath = folderPath / (line);
 		std::ofstream outFile(filePath);
@@ -283,10 +284,7 @@ bool CommandBufferManager::inputCommandBuffer(CommandInfo commandInfo)
 		clearCommandBuffer();
 	}
 
-	CommandFactory cmdFactory;
-	CommandInfo detailedCommanderInfo = { commandInfo };
-
-	commandBufferList.push_back(detailedCommanderInfo);
+	commandBufferList.push_back(commandInfo);
 
 	optimizeCommandBuffer();
 

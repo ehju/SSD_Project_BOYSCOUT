@@ -25,13 +25,7 @@ private:
 #ifndef _DEBUG
 	CommandBufferManager() = default;
 #endif
-	CommandInfo string2CommandBufferInfo(std::string str);
-	std::string commandBufferInfo2String(unsigned int bufferIndex, CommandInfo commandInfo);
-
-	void updateCommandBuffer();
-
-	void optimizeCommandBuffer();
-	void updateMapForCommand(CommandInfo* commandInfo);
+	const unsigned int MAX_ERASE_SIZE = 10ul;
 
 	CommandParser commandParser;
 	fs::path folderPath = fs::current_path() / "buffer";
@@ -41,4 +35,15 @@ private:
 	int checkOptimizePossible{ 0 };
 
 	std::array<CommandInfo*, 100> mapForOptimizeCommand;
+
+	CommandInfo string2CommandBufferInfo(std::string str);
+	std::string commandBufferInfo2String(unsigned int bufferIndex, CommandInfo commandInfo);
+
+	void updateCommandBuffer();
+
+	void optimizeCommandBuffer();
+	void updateMapForCommand(CommandInfo* commandInfo);
+	CommandInfo updateCommandInfo(unsigned int command, unsigned int lba, unsigned int value);
+	void updateOptimizedBufferListToOriginalBufferList();
+	bool isEraseCommandHasMaxSize(unsigned int size);
 };
