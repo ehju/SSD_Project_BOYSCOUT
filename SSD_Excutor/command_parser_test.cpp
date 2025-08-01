@@ -240,12 +240,12 @@ TEST_F(CommandParserTS, EraseTC4)
 TEST_F(CommandParserTS, EraseTC5)
 {
 	char argu1[32] = "E";
-	char argu2[32] = "80";
-	char argu3[32] = "0";
+	char argu2[32] = "99";
+	char argu3[32] = "1";
 
 	setInput(4, argu1, argu2, argu3);
 
-	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_ERASE, 80 , 0 };
+	CommandInfo expected = { (unsigned int)SSDCommand::SSDCommand_ERASE, 99 , 1 };
 	CommandInfo actual = commandParser.parse(argumentNum, argumentPointer);
 	checkExpected(expected, actual);
 }

@@ -22,12 +22,13 @@ class CommandParser {
 public:
 	vector<CommandFormat> commandlist = {
 
-		{"write",2,1,2,0,0," <LBA> <VALUE> : LBA = 0~99 , VALUE = 0x00000000~0xFFFFFFFF(10 Digit)// Write Value @LBA"},
-		{"read",1,1,0,0,0," <LBA>         : LBA = 0~99 // Read @LBA"},
-		{"erase",2,1,0,2,0," <LBA> <SIZE> : LBA = 0~99 , SIZE = (+/-Decimal)// Erase Value @LBA ~@LBA+SIZE"},
+		{"write",2,1,2,0,0," <LBA> <VALUE> \t: LBA = 0~99 , VALUE = 0x00000000~0xFFFFFFFF(10 Digit)// Write Value @LBA"},
+		{"read",1,1,0,0,0," <LBA>          \t: LBA = 0~99 // Read @LBA"},
+		{"erase",2,1,0,2,0," <LBA> <SIZE>  \t: LBA = 0~99 , SIZE = (+/-Decimal)// Erase Value @LBA ~@LBA+SIZE"},
 		{"erase_range",2,1,0,0,2," <START_LBA> <END_LBA>: LBA = 0~99 // Erase @ STARTLBA~ENDLBA"},
-		{"fullwrite",1,0,1,0,0," <VALUE>  : VALUE = 0x00000000~0xFFFFFFFF(10 Digit) // Write Value @ALL LBA"},
-		{"fullread",0,0,0,0,0,"          : No Param //Read Full Range"},
+		{"fullwrite",1,0,1,0,0," <VALUE>   \t: VALUE = 0x00000000~0xFFFFFFFF(10 Digit) // Write Value @ALL LBA"},
+		{"fullread",0,0,0,0,0,"            \t: No Param //Read Full Range"},
+		{"flush",0,0,0,0,0,"               \t: No Param //Flush Buffer"},
 		{"1_FullWriteAndReadCompare",0,0,0,0,0," : No Param //Write and Read Compare @ AllRange"},
 		{"1_",0,0,0,0,0,"		: No Param//Write and Read Compare @ AllRange"},
 		{"2_PartialLBAWrite",0,0,0,0,0," : No Param //(Write 0x12345678 @LBA_0~4 & ReadCompare) * 30 times"},
@@ -38,6 +39,8 @@ public:
 		{"4_",0,0,0,0,0,"		: No Param////(Write/OverWrite/Erase)* 30 times"},
 		{"exit",0,0,0,0,0,"		: No Param//Terminate Shell" },
 		{"help",0,0,0,0,0,"		: No Param//Print Command Usage"},
+
+		
 	};
 
 	CommandInfo createCommandData(const string cmd);
@@ -66,13 +69,14 @@ private:
 		{"help", CMD_BASIC_HELP },
 		{"fullwrite", CMD_BASIC_FULLWRITE },
 		{"fullread", CMD_BASIC_FULLREAD },
+		{"flush", CMD_BASIC_FLUSH },
 		{"1_FullWriteAndReadCompare", CMD_TS_FullWriteAndReadCompare },
 		{"1_", CMD_TS_FullWriteAndReadCompare },
 		{"2_PartialLBAWrite", CMD_TS_PartialLBAWrite },
 		{"2_", CMD_TS_PartialLBAWrite },
 		{"3_WriteReadAging", CMD_TS_WriteReadAging },
 		{"3_", CMD_TS_WriteReadAging },
-		{"4_WriteReadAging", CMD_TS_EraseWriteAging },
+		{"4_EraseAndWriteAging", CMD_TS_EraseWriteAging },
 		{"4_", CMD_TS_EraseWriteAging },
 	};
 	vector<string> getCommandParams(const std::string& cmd);

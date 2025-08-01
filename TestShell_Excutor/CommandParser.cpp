@@ -17,6 +17,8 @@ vector<string> CommandParser::getCommandParams(const string& cmd)
 CommandInfo CommandParser::createCommandData(const string cmd)
 {
 	vector<string> cmdParms = getCommandParams(cmd);
+	if(cmdParms.size()==0)
+		return MakeInvalidCmdData();
 	if (isValidCommand(cmdParms) == false)
 		return MakeInvalidCmdData();
 

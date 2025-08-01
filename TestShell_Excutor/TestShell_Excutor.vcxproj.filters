@@ -60,6 +60,13 @@
     <ClCompile Include="ShellFileUtil.cpp">
       <Filter>소스코드</Filter>
     </ClCompile>
+    <ClCompile Include="CommandFactory.cpp">
+      <Filter>소스코드</Filter>
+    </ClCompile>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="CommandFanctory.cpp" />
+>>>>>>> f80abda5a69d08ece583353c00b58a3419971c9f
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -119,6 +126,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="ShellFileUtil.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandFactory.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
