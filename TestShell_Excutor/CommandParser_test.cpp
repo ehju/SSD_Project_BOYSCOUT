@@ -172,3 +172,12 @@ TEST_F(CommandParserTS, TS4)
 	CommandInfo actual = commandParser.createCommandData(command);
 	checkExpected(expected, actual);
 }
+
+TEST_F(CommandParserTS, FLUSH)
+{
+	const string command = "flush";
+
+	CommandInfo expected = { (unsigned int)CommandType::CMD_BASIC_FLUSH, 0xFFFFFFFF , 0xFFFFFFFF,-1 };
+	CommandInfo actual = commandParser.createCommandData(command);
+	checkExpected(expected, actual);
+}

@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CommandFactory.cpp" />
     <ClCompile Include="CommandParser.cpp" />
     <ClCompile Include="CommandParser_test.cpp" />
     <ClCompile Include="InvalidCmd_test.cpp" />
@@ -156,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandData.h" />
+    <ClInclude Include="CommandFactory.h" />
     <ClInclude Include="CommandParser.h" />
     <ClInclude Include="ShellCommand.h" />
     <ClInclude Include="ShellErase.h" />
