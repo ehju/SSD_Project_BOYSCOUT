@@ -1,9 +1,5 @@
 #include "proxyRead.h"
 
-ProxyRead::ProxyRead() {
-	cbm = &(CommandBufferManager::getInstance());
-}
-
 ProxyRead::ProxyRead(CommandBufferManager* ptr) : cbm{ ptr } {}
 
 void ProxyRead::execute(CommandInfo commandInfo) {
