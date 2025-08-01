@@ -1,11 +1,19 @@
 #include "gmock/gmock.h"
 #include "ShellCommand.h"
+#include "ShellRead.h"
+#include "ShellWrite.h"
+#include "ShellFullRead.h"
+#include "ShellFullWrite.h"
+#include "ShellFlush.h"
+#include "ShellErase.h"
+#include "ShellEraseRange.h"
+#include "ShellTestScenarios.h"
 #include <vector>
 
 using namespace testing;
 using std::vector;
 
-#define REAL_DEBUG 0
+#define REAL_DEBUG 1
 class MockSSD : public iTS_SSD {
 public:
 	MOCK_METHOD(unsigned int, read, (int lba), (override));
@@ -14,100 +22,138 @@ public:
 	MOCK_METHOD(bool, flush, (), (override));
 };
 
-class SSDFixture : public Test {
+class ShellCommandTest : public Test {
 public:
+	void SetupRead(){
+		command = std::make_shared<Read>(&ssd);
+		cmdInfo.lba = lba;
+	}
+	void SetupWrite() {
+
+		command = std::make_shared<Write>(&ssd);
+		cmdInfo.lba = lba;
+		cmdInfo.value = DUMMY_DATA;
+	}
+	void SetupFullRead() {
+		command = std::make_shared<FullRead>(&ssd);
+		cmdInfo.lba = lba;
+	}
+	void SetupFullWrite() {
+		command = std::make_shared<FullWrite>(&ssd);
+		cmdInfo.lba = lba;
+		cmdInfo.value = DUMMY_DATA;
+	}
+	void redirectBufferSetup() {
+		old = std::cout.rdbuf(buffer.rdbuf());
+	}
+	void checkBufferOutput(std::string expected) {
+		std::cout.rdbuf(old);
+		string output = buffer.str();
+		EXPECT_EQ(output, expected);
+	}
 	MockSSD ssd;
-	ShellCommand shell{ &ssd };
+	std::shared_ptr<ShellCommandItem> command;
 	int lba = 0;
-	unsigned int data = 0x12345678;
+	unsigned int data;
+	const unsigned int DUMMY_DATA = 0x12345678;
+	CommandInfo cmdInfo;
+	std::stringstream buffer;
+	std::streambuf* old;
 };
 
-TEST_F(SSDFixture, WriteBasic) {
-
-	EXPECT_CALL(ssd, write(lba, data))
-		.Times(1)
-		.WillOnce(Return(true));
-
-	EXPECT_EQ(true, shell.write(lba, data));
-}
-
 // SSD Read function should be called
-TEST_F(SSDFixture, ReadMockTest) {
+TEST_F(ShellCommandTest, ReadBasic) {
+	SetupRead();
 	EXPECT_CALL(ssd, read(lba))
 		.Times(1);
 
-	unsigned int ret = shell.read(lba);
+	bool ret = command->execute(cmdInfo);
+	EXPECT_EQ(true, ret);
 }
-
 
 // Read Test state test
-TEST_F(SSDFixture, DISABLED_ReadMockResultTest) {
+TEST_F(ShellCommandTest,ReadMockResultTest) {
+	SetupRead();
+	cmdInfo.lba = 10;
+	redirectBufferSetup();
 
-	lba = 10;
-
-	EXPECT_CALL(ssd, read(lba))
+	EXPECT_CALL(ssd, read(cmdInfo.lba))
 		.Times(1)
-		.WillOnce(testing::Return(1000));
+		.WillOnce(testing::Return(DUMMY_DATA));
 
-	unsigned int ret = shell.read(lba);
+	bool ret = command->execute(cmdInfo);
+	
+	checkBufferOutput("[Read] LBA 10 : 0x12345678\n");
+}
+TEST_F(ShellCommandTest, WriteBasic) {
+	SetupWrite();
+	redirectBufferSetup();
+	EXPECT_CALL(ssd, write(cmdInfo.lba, cmdInfo.value))
+		.Times(1)
+		.WillOnce(Return(true));
 
-	EXPECT_EQ(ret, 1000);
+	EXPECT_EQ(true, command->execute(cmdInfo));
+	checkBufferOutput("[Write] Done\n");
 }
 
-TEST_F(SSDFixture, NoWriteOutOfRangeLBA1) {
-	lba = 100;
+TEST_F(ShellCommandTest, NoWriteOutOfRangeLBA1) {
+	SetupWrite();
+	cmdInfo.lba = 100;
 
-	EXPECT_CALL(ssd, write(lba, data))
+	EXPECT_CALL(ssd, write(cmdInfo.lba, cmdInfo.value))
 		.Times(0);
-	shell.write(lba, data);
+
+	EXPECT_EQ(false, command->execute(cmdInfo));
 }
 
-TEST_F(SSDFixture, NoWriteOutOfRangeLBA2) {
-	lba = -2;
+TEST_F(ShellCommandTest, NoWriteOutOfRangeLBA2) {
+	SetupWrite();
+	cmdInfo.lba = -2;
 
-	EXPECT_CALL(ssd, write(lba, data))
+
+	EXPECT_CALL(ssd, write(cmdInfo.lba, cmdInfo.value))
 		.Times(0);
-	shell.write(lba, data);
+	EXPECT_EQ(false, command->execute(cmdInfo));
 }
-
-TEST_F(SSDFixture, ReadFullReadTest) {
-
-	vector<unsigned int> result;
+TEST_F(ShellCommandTest, ReadFullReadTest) {
+	SetupFullRead();
+	bool ret;
 	EXPECT_CALL(ssd, read(_))
 		.Times(100);
 
-	result = shell.fullread();
+	EXPECT_EQ(true, command->execute(cmdInfo));
 }
 
-TEST_F(SSDFixture, DISABLED_ReadFullReadTestExpectedReturn) {
-	unsigned int data = 0x00000000;
-
-	vector<unsigned int> expected_result;
-	vector<unsigned int> result;
+TEST_F(ShellCommandTest, ReadFullReadTestExpectedReturn) {
+	SetupFullRead();
+	data = 0; // start from 0
 	for (int lba = 0; lba < 100; lba++) {
-		expected_result.push_back(data);
 		EXPECT_CALL(ssd, read(lba))
 			.Times(1)
 			.WillRepeatedly(Return(data));
 		data++;
 	}
+	//expected Result Making 
 
-	result = shell.fullread();
-	EXPECT_EQ(expected_result, result);
+	EXPECT_EQ(true, command->execute(cmdInfo));
 }
 
-TEST_F(SSDFixture, FullWriteNormal) {
-	data = 0xABCDFFFF;
-	EXPECT_CALL(ssd, write(_, data))
+TEST_F(ShellCommandTest, FullWriteNormal) {
+	SetupFullWrite();
+	redirectBufferSetup();
+	cmdInfo.value = 0xABCDFFFF;
+	EXPECT_CALL(ssd, write(_, cmdInfo.value))
 		.Times(100)
 		.WillRepeatedly(Return(true));
 
-	EXPECT_EQ(true, shell.fullwrite(data));
+	EXPECT_EQ(true, command->execute(cmdInfo));
+	checkBufferOutput("[Write] Done\n");
 }
 
-TEST_F(SSDFixture, FullWriteFail) {
-	data = 0xABCDFFFF;
-	EXPECT_CALL(ssd, write(_, data))
+TEST_F(ShellCommandTest, FullWriteFail) {
+	SetupFullWrite();
+	cmdInfo.value = 0xABCDFFFF;
+	EXPECT_CALL(ssd, write(_, cmdInfo.value))
 		.Times(5)
 		.WillOnce(Return(true))
 		.WillOnce(Return(true))
@@ -115,22 +161,6 @@ TEST_F(SSDFixture, FullWriteFail) {
 		.WillOnce(Return(true))
 		.WillRepeatedly(Return(false));
 
-	EXPECT_EQ(false, shell.fullwrite(data));
-}
+	EXPECT_EQ(false, command->execute(cmdInfo));
 
-#if REAL_DEBUG
-TEST_F(SSDFixture, SSDExWrite_Normal) {
-	SSDExecutor ssde;
-	ShellCommand shell(&ssde);
-	bool expected = true;
-
-	EXPECT_EQ(expected, shell.write(lba, data));
 }
-
-TEST_F(SSDFixture, SSDExRead_Normal) {
-	SSDExecutor ssde;
-	ShellCommand shell(&ssde);
-	bool expected = 0;
-	EXPECT_EQ(expected, shell.read(lba));
-}
-#endif

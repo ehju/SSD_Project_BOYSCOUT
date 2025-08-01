@@ -41,7 +41,7 @@ private:
 	SSDExecutor ssd;
 #endif
 
-	ShellCommand shell{ &ssd };
+	//ShellCommand shell{ &ssd };
 
 	Read read{ &ssd };
 	Write write{ &ssd };

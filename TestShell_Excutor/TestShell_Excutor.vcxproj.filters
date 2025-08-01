@@ -4,9 +4,6 @@
     <ClCompile Include="InvalidCmd_test.cpp">
       <Filter>테스트파일</Filter>
     </ClCompile>
-    <ClCompile Include="TS_function_test.cpp">
-      <Filter>테스트파일</Filter>
-    </ClCompile>
     <ClCompile Include="CommandParser.cpp">
       <Filter>소스코드</Filter>
     </ClCompile>
@@ -40,9 +37,6 @@
       <Filter>소스코드</Filter>
     </ClCompile>
     <ClCompile Include="ShellTestScenarios.cpp">
-      <Filter>소스코드</Filter>
-    </ClCompile>
-    <ClCompile Include="ShellCommand.cpp">
       <Filter>소스코드</Filter>
     </ClCompile>
     <ClCompile Include="ShellCommand_test.cpp">
