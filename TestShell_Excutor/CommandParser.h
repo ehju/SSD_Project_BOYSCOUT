@@ -86,8 +86,6 @@ private:
 
 	CommandInfo MakeInvalidCmdData();
 	unsigned int getLBA(int lbaIndex, const std::vector<std::string>& strlist);
-	//unsigned int getEndLBA(const CommandFormat& cmddata, const std::vector<std::string>& strlist);
-
 	unsigned int getSize(const CommandFormat& cmddata, const std::vector<std::string>& strlist);
 	int getSignedDecimal(const string& str);
 	unsigned int getDecimal(const string& str);
