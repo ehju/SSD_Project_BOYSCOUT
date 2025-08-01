@@ -72,8 +72,7 @@ bool CommandParser::isValidCommand(vector<string> cmdSplits)
 		return false;
 	if (checkValidSize(cmdSplits) == false)
 		return false;
-	/*if (checkValiEndLBA(cmdSplits) == false)
-		return false;*/
+
 	return true;
 }
 
