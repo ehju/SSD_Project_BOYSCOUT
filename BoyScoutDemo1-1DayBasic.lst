@@ -1,0 +1,7 @@
+read 1
+write 1 0x11111111
+read 0
+write 55 0x55555555
+read 55
+write 99 0x99999999
+read 99
