@@ -1,5 +1,6 @@
 #include "gmock/gmock.h"
 #include "ssd.h"
+#ifdef _DEBUG
 using namespace testing;
 class CommandParserTS :public Test {
 public:
@@ -298,3 +299,4 @@ TEST_F(CommandParserTS, FlushTC2)
 	checkExpected(expected, actual);
 
 }
+#endif

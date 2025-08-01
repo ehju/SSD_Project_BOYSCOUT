@@ -6,6 +6,7 @@
 #include "write.h"
 
 #include "SSDHelper.h"
+#ifdef _DEBUG
 using namespace testing;
 
 const static std::string SSD_FILE_NAME = "ssd_nand.txt";
@@ -93,3 +94,4 @@ TEST_F(ReadTestFixture, OutputShouldContainsOnlyLastReadResult) {
     EXPECT_THAT(readValue, Ne(valueTwo));
     EXPECT_THAT(readValue, Eq(valueThree));
 }
+#endif

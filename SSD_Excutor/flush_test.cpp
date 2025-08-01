@@ -2,7 +2,7 @@
 #include "flush.h"
 #include "command_buffer_manager.h"
 #include <fstream>
-
+#ifdef _DEBUG
 namespace fs = std::filesystem;
 
 class FlushTS : public testing::Test {
@@ -158,3 +158,4 @@ TEST_F(FlushTS, TC3)
 	checkData(5, 0, actual);
 
 }
+#endif

@@ -2,6 +2,7 @@
 #include "command_buffer_manager.h"
 #include "ssd.h"
 
+#ifdef _DEBUG
 class CommandParserMock : public CommandParser
 {
 public:
@@ -254,3 +255,4 @@ TEST_F(CommandBufferMangerTS, OptimizeCommandBUfferTC6)
 	EXPECT_EQ(makeCommandBufferName(3, CommandInfo{ 5, 4, 0xABCE1234 }), bufferNameList[3]);
 	EXPECT_EQ(makeCommandBufferName(4, CommandInfo{ 5, 5, 0xAAAAAAAA }), bufferNameList[4]);
 }
+#endif
