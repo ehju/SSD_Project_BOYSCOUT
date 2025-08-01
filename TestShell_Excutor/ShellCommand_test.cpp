@@ -25,21 +25,21 @@ public:
 class ShellCommandTest : public Test {
 public:
 	void SetupRead(){
-		command = new Read(& ssd );
+		command = std::make_shared<Read>(&ssd);
 		cmdInfo.lba = lba;
 	}
 	void SetupWrite() {
 
-		command = new Write(&ssd);
+		command = std::make_shared<Write>(&ssd);
 		cmdInfo.lba = lba;
 		cmdInfo.value = DUMMY_DATA;
 	}
 	void SetupFullRead() {
-		command = new FullRead(&ssd);
+		command = std::make_shared<FullRead>(&ssd);
 		cmdInfo.lba = lba;
 	}
 	void SetupFullWrite() {
-		command = new FullWrite(&ssd);
+		command = std::make_shared<FullWrite>(&ssd);
 		cmdInfo.lba = lba;
 		cmdInfo.value = DUMMY_DATA;
 	}
@@ -52,7 +52,7 @@ public:
 		EXPECT_EQ(output, expected);
 	}
 	MockSSD ssd;
-	ShellCommandItem* command;
+	std::shared_ptr<ShellCommandItem> command;
 	int lba = 0;
 	unsigned int data;
 	const unsigned int DUMMY_DATA = 0x12345678;
