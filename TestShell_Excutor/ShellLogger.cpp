@@ -3,6 +3,7 @@
 #include <ctime>
 #include <iomanip>
 #include "ShellLogger.h"
+#include "ShellFileUtil.h"
 
 void Logger::print(const char* fullfunctionName, const char* fmt, ...)
 {
@@ -14,10 +15,14 @@ void Logger::print(const char* fullfunctionName, const char* fmt, ...)
     std::string className, functionName;
     splitFunctionSignature(fullfunctionName, className, functionName);
     std::ostringstream oss;
-    oss << className << "." << functionName << "()";
+    oss << GetTimestamp() << " " << std::left << std::setw(45) << (className + "." + functionName + "( )")
+     << " : " << message;
+    std::string outputLine = oss.str();
 
-    std::cout << GetTimestamp() << " " << std::left << std::setw(30) << oss.str() << " : " << message << std::endl;
+   // std::cout << outputLine << std::endl;
 
+    ShellFileUtil LogFile;
+    LogFile.writeOutputFile(outputLine);
 }
 
 std::string Logger::GetTimestamp()

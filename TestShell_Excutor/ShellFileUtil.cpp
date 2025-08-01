@@ -17,7 +17,7 @@ void ShellFileUtil::deletePrevOutputFile()
 
 void ShellFileUtil::writeOutputFile(std::string& writeString)
 {
-    const std::size_t MAX_SIZE = 10 * 1024;
+    const std::size_t MAX_SIZE =  10 * 1024;
     if (isFileTooLarge(OUTPUT_FILE, MAX_SIZE)) {
         renameLogFile();
     }
