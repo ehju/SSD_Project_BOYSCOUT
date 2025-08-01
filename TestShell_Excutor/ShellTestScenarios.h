@@ -3,13 +3,6 @@
 #include "ShellLogger.h"
 #include <unordered_map>
 #include <functional>
-enum SCENARIO
-{
-	FullWriteAndReadCompareScenario = 1,
-	PartialLBAWriteScenario,
-	WriteReadAgingScenario,
-	EraseWriteAgingScenario,
-};
 
 class TestScenario : public ShellCommandItem {
 public:
