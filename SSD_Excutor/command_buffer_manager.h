@@ -33,6 +33,7 @@ private:
 	std::vector<CommandInfo> optimizedCommandBufferList;
 	int checkOptimizePossible{ 0 };
 	unsigned int prevCommand{ static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID) };
+	CommandInfo waitingCommandInfo;
 
 	std::array<CommandInfo*, 100> mapForOptimizeCommand;
 
@@ -47,4 +48,6 @@ private:
 	void updateOptimizedBufferListToOriginalBufferList();
 	bool isEraseCommandHasMaxSize(CommandInfo commandInfo);
 	bool isEraseMaxLba(CommandInfo commandInfo);
+	void updatePrevCommand(unsigned int command);
+	void inputOptimizedBuffer();
 };

@@ -124,14 +124,29 @@ bool CommandBufferManager::isEraseMaxLba(CommandInfo commandInfo)
 	return (commandInfo.lba + commandInfo.value == 100);
 }
 
+void CommandBufferManager::updatePrevCommand(unsigned int command)
+{
+	if (prevCommand != command)
+	{
+		checkOptimizePossible++;
+		prevCommand = command;
+	}
+}
+
+void CommandBufferManager::inputOptimizedBuffer()
+{
+	optimizedCommandBufferList.push_back(waitingCommandInfo);
+	waitingCommandInfo = CommandInfo{ 0, 0, 0 };
+	checkOptimizePossible = 0;
+	prevCommand = static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID);
+}
+
 void CommandBufferManager::optimizeCommandBuffer()
 {
 	for (int i = 0;i < commandBufferList.size();i++)
 	{
 		updateMapForCommand(&commandBufferList[i]);
 	}
-
-	CommandInfo waitingCommandInfo = CommandInfo{0, 0, 0};
 
 	for (int i = 0;i < 100;i++)
 	{
@@ -147,37 +162,27 @@ void CommandBufferManager::optimizeCommandBuffer()
 			{
 				waitingCommandInfo = updateCommandInfo(mapForOptimizeCommand[i]->command, i, 1);
 
-				if (prevCommand != static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
-				{
-					checkOptimizePossible++;
-					prevCommand = static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE);
-				}
+				updatePrevCommand(static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE));
 
 			}
 			else if (mapForOptimizeCommand[i]->command == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
 			{
 				waitingCommandInfo = updateCommandInfo(mapForOptimizeCommand[i]->command, mapForOptimizeCommand[i]->lba, mapForOptimizeCommand[i]->value);
 
-				optimizedCommandBufferList.push_back(waitingCommandInfo);
-				waitingCommandInfo = CommandInfo{0, 0, 0};
+				inputOptimizedBuffer();
 			}
 		}
 		else if (checkOptimizePossible == 1)
 		{
 			if (mapForOptimizeCommand[i] == nullptr)
 			{
-				optimizedCommandBufferList.push_back(waitingCommandInfo);
-				waitingCommandInfo = CommandInfo{0, 0, 0};
-				checkOptimizePossible = 0;
+				inputOptimizedBuffer();
+				
 			}
 			else if (mapForOptimizeCommand[i]->command == static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
 			{
 				waitingCommandInfo.value++;
-				if (prevCommand != static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
-				{
-					checkOptimizePossible++;
-					prevCommand = static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE);
-				}
+				updatePrevCommand(static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE));
 
 			}
 			else if (mapForOptimizeCommand[i]->command == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
@@ -187,29 +192,19 @@ void CommandBufferManager::optimizeCommandBuffer()
 				waitingCommandInfo.value++;
 				optimizedCommandBufferList.push_back(noOptimizedInfo);
 
-				if (prevCommand != static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
-				{
-					checkOptimizePossible++;
-					prevCommand = static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE);
-				}
+				updatePrevCommand(static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE));
 			}
 		}
 		else if (checkOptimizePossible == 2)
 		{
 			if (mapForOptimizeCommand[i] == nullptr)
 			{
-				optimizedCommandBufferList.push_back(waitingCommandInfo);
-				waitingCommandInfo = CommandInfo{0, 0, 0};
-				checkOptimizePossible = 0;
+				inputOptimizedBuffer();
 			}
 			else if (mapForOptimizeCommand[i]->command == static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
 			{
 				waitingCommandInfo.value++;
-				if (prevCommand != static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
-				{
-					checkOptimizePossible++;
-					prevCommand = static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE);
-				}
+				updatePrevCommand(static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE));
 			}
 			else if (mapForOptimizeCommand[i]->command == static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
 			{
@@ -218,30 +213,20 @@ void CommandBufferManager::optimizeCommandBuffer()
 				waitingCommandInfo.value++;
 				optimizedCommandBufferList.push_back(noOptimizedInfo);
 
-				if (prevCommand != static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE))
-				{
-					checkOptimizePossible++;
-					prevCommand = static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE);
-				}
+				updatePrevCommand(static_cast<unsigned int>(SSDCommand::SSDCommand_WRITE));
 			}
 		}
 
 		if (checkOptimizePossible == 3)
 		{
-			optimizedCommandBufferList.push_back(waitingCommandInfo);
-			waitingCommandInfo = CommandInfo{ 0, 0, 0 };
-			checkOptimizePossible = 0;
-			prevCommand = static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID);
+			inputOptimizedBuffer();
 		}
 
 		if (mapForOptimizeCommand[i] != nullptr)
 		{
 			if (isEraseCommandHasMaxSize(waitingCommandInfo) || isEraseMaxLba(waitingCommandInfo))
 			{
-				optimizedCommandBufferList.push_back(waitingCommandInfo);
-				waitingCommandInfo = CommandInfo{ 0, 0, 0 };
-				checkOptimizePossible = 0;
-				prevCommand = static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID);
+				inputOptimizedBuffer();
 			}
 		}
 	}
@@ -354,4 +339,5 @@ void CommandBufferManager::initialize()
 
 	checkOptimizePossible = 0;
 	prevCommand = static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID);
+	waitingCommandInfo = CommandInfo{ 0, 0, 0 };
 }
