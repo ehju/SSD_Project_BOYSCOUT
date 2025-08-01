@@ -42,7 +42,7 @@ public:
 	{
 		std::string line = "";
 		file.seekg(0);
-		for (int i = 0; i <= lba; i++)
+		for (unsigned int i = 0; i <= lba; i++)
 		{
 			getline(file, line);
 		}

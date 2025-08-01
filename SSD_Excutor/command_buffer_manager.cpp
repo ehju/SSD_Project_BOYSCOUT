@@ -1,7 +1,4 @@
 #include "command_buffer_manager.h"
-#include "erase.h"
-#include "write.h"
-#include "read.h"
 #include "command_factory.h"
 #include <iostream>
 #include <sstream>
@@ -99,7 +96,7 @@ DetailedCommandInfo CommandBufferManager::string2CommandBufferInfo(std::string s
 		argv.push_back(const_cast<char*>(data.c_str()));
 	}
 
-	CommandInfo commandInfo = commandParser.parse(argv.size(), argv.data());
+	CommandInfo commandInfo = commandParser.parse(static_cast<int>(argv.size()), argv.data());
 	DetailedCommandInfo commandBufferInfo = {commandInfo, cmdFactory.CreateCommand(commandInfo.command)};
 
 	return commandBufferInfo;
@@ -242,7 +239,7 @@ void CommandBufferManager::updateMapForCommand(DetailedCommandInfo* detailedcomm
 	}
 	else if (detailedcommandInfo->commandInfo.command == static_cast<unsigned int>(SSDCommand::SSDCommand_ERASE))
 	{
-		for (int i = detailedcommandInfo->commandInfo.lba; i < detailedcommandInfo->commandInfo.lba + detailedcommandInfo->commandInfo.value; i++)
+		for (unsigned int i = detailedcommandInfo->commandInfo.lba; i < detailedcommandInfo->commandInfo.lba + detailedcommandInfo->commandInfo.value; i++)
 		{
 			mapForOptimizeCommand[i] = detailedcommandInfo;
 		}
