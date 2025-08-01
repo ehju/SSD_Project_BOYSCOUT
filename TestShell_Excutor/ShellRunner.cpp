@@ -2,6 +2,7 @@
 
 
 int ShellRunner::runCommand(const string cmd) {
+	log->print(__FUNCTION__, "called");
 	CommandInfo cmdInfo = cp.createCommandData(cmd);
 	int type = cmdInfo.command;
 	bool result;
@@ -25,6 +26,7 @@ int ShellRunner::runCommand(const string cmd) {
 
 
 bool ShellRunner::runShellCommand(CommandInfo cmdInfo) {
+	log->print(__FUNCTION__, "called");
 	int type = cmdInfo.command;
 	bool result;
 
