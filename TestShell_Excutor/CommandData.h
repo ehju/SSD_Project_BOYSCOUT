@@ -17,6 +17,7 @@ enum CommandType {
 	CMD_BASIC_HELP,
 	CMD_BASIC_FULLWRITE,
 	CMD_BASIC_FULLREAD,
+	CMD_BASIC_FLUSH,
 	CMD_TS_FullWriteAndReadCompare,
 	CMD_TS_PartialLBAWrite,
 	CMD_TS_WriteReadAging,

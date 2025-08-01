@@ -13,17 +13,18 @@ private:
 }; 
 
 TEST_F(SRFixture, RunCommandReturnType) {
+	checkCommandType(" ", CMD_NOT_SUPPORTED);
 	checkCommandType("exit", CMD_BASIC_EXIT);
 	checkCommandType("write 3 0xAAAABBBB", CMD_BASIC_WRITE);
 	checkCommandType("read 0", CMD_BASIC_READ);
 	checkCommandType("erase 0 1", CMD_BASIC_ERASE);
 	checkCommandType("erase_range 0 1", CMD_BASIC_ERASE_RANGE);
 	checkCommandType("fullread", CMD_BASIC_FULLREAD);
-	//checkCommandType("fullwrite 0xAAAABBBB", CMD_BASIC_FULLWRITE);
+	checkCommandType("fullwrite 0xAAAABBBB", CMD_BASIC_FULLWRITE);
 	checkCommandType("1_FullWriteAndReadCompare", CMD_TS_FullWriteAndReadCompare);
 	checkCommandType("2_PartialLBAWrite", CMD_TS_PartialLBAWrite);
 	checkCommandType("3_WriteReadAging", CMD_TS_WriteReadAging);
-	//checkCommandType("4_EraseWriteAging", CMD_TS_EraseWriteAging);
+	checkCommandType("4_EraseAndWriteAging", CMD_TS_EraseWriteAging);
 }
 
 TEST_F(SRFixture, DISABLED_RunCommandWritePassDefault) {
