@@ -17,7 +17,7 @@ bool TestScenario::readCompare(int lba, unsigned int writtenData) {
 };
 bool TestScenario::execute(CommandInfo cmdInfo)
 {
-	log->print(__FUNCTION__, "called");
+	Logger::getInstance()->print(__FUNCTION__, "called");
 	auto it = scenarioMap.find(cmdInfo.command);
 	bool isSuccess = false;
 	if (it != scenarioMap.end()) {
@@ -28,7 +28,7 @@ bool TestScenario::execute(CommandInfo cmdInfo)
 }
 
 bool TestScenario::fullWriteAndReadCompare() {
-	log->print(__FUNCTION__, "called");
+	Logger::getInstance()->print(__FUNCTION__, "called");
 	unsigned int writeData = DUMMY_WRITE_DATA;
 	unsigned int readData = writeData;
 	int curWriteLBA = LBA_MIN;
@@ -59,7 +59,7 @@ bool TestScenario::fullWriteAndReadCompare() {
 	return true;
 }
 bool TestScenario::partialLBAWrite() {
-	log->print(__FUNCTION__, "called");
+	Logger::getInstance()->print(__FUNCTION__, "called");
 	unsigned int writeData = DUMMY_WRITE_DATA;
 	queue <WrittenData> datas;
 	int loopcount = 30;
@@ -79,7 +79,7 @@ bool TestScenario::partialLBAWrite() {
 }
 
 bool TestScenario::writeReadAging() {
-	log->print(__FUNCTION__, "called");
+	Logger::getInstance()->print(__FUNCTION__, "called");
 	unsigned int randomData;
 	int loopcount = 200;
 	for (int i = 0; i < loopcount; i++) {
@@ -94,7 +94,7 @@ bool TestScenario::writeReadAging() {
 
 bool TestScenario::eraseWriteAging()
 {
-	log->print(__FUNCTION__, "called");
+	Logger::getInstance()->print(__FUNCTION__, "called");
 	unsigned int randomData;
 	if (!ssd->erase(0, 3)) return false;
 	const int loopcount = 30;
@@ -128,11 +128,11 @@ void TestScenario::initScenarioMap() {
 }
 void TestScenario::printScenarioResult(bool isSuccess) {
 	if (isSuccess) {
-		log->print(__FUNCTION__, "Pass");
+		Logger::getInstance()->print(__FUNCTION__, "Pass");
 		std::cout << "Pass" << "\n";
 	}
 	else {
-		log->print(__FUNCTION__, "Fail");
+		Logger::getInstance()->print(__FUNCTION__, "Fail");
 		std::cout << "FAIL!" << "\n";
 	}
 }
