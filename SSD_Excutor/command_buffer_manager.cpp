@@ -178,16 +178,6 @@ void CommandBufferManager::optimizeCommandBuffer()
 				optimizedCommandBufferList.push_back(noOptimizedInfo);
 				checkOptimizePossible++;
 			}
-
-			if (mapForOptimizeCommand[i] != nullptr)
-			{
-				if (isEraseCommandHasMaxSize(waitingCommandInfo) || isEraseMaxLba(waitingCommandInfo))
-				{
-					optimizedCommandBufferList.push_back(waitingCommandInfo);
-					waitingCommandInfo = CommandInfo{0, 0, 0};
-					checkOptimizePossible = 0;
-				}
-			}
 		}
 		else if (checkOptimizePossible == 2)
 		{
@@ -211,15 +201,15 @@ void CommandBufferManager::optimizeCommandBuffer()
 				waitingCommandInfo = CommandInfo{0, 0, 0};
 				checkOptimizePossible = 0;
 			}
+		}
 
-			if (mapForOptimizeCommand[i] != nullptr)
+		if (mapForOptimizeCommand[i] != nullptr)
+		{
+			if (isEraseCommandHasMaxSize(waitingCommandInfo) || isEraseMaxLba(waitingCommandInfo))
 			{
-				if (isEraseCommandHasMaxSize(waitingCommandInfo) || isEraseMaxLba(waitingCommandInfo))
-				{
-					optimizedCommandBufferList.push_back(waitingCommandInfo);
-					waitingCommandInfo = CommandInfo{0, 0, 0};
-					checkOptimizePossible = 0;
-				}
+				optimizedCommandBufferList.push_back(waitingCommandInfo);
+				waitingCommandInfo = CommandInfo{ 0, 0, 0 };
+				checkOptimizePossible = 0;
 			}
 		}
 	}
