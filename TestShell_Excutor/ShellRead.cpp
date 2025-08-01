@@ -3,7 +3,7 @@ bool Read::execute(CommandInfo cmdInfo)
 {
 	unsigned int lba = cmdInfo.lba;
 	unsigned int result;
-	if (lba < 0 || lba > 99) {
+	if (lba < LBA_MIN || lba > LBA_MAX) {
 		return false;
 	}
 	result = ssd->read(lba);

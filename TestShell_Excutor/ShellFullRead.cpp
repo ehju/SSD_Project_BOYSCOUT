@@ -3,7 +3,7 @@ bool FullRead::execute(CommandInfo cmdInfo)
 {
 	unsigned int lba = cmdInfo.lba;
 	unsigned int data;
-	for (int lba = 0; lba < 100; lba++) {
+	for (int lba = LBA_MIN; lba <= LBA_MAX; lba++) {
 		data = (ssd->read(lba));
 		printReadResult(lba, data);
 	}

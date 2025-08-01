@@ -15,10 +15,37 @@ public:
 
 class TestScenarioFixture : public Test {
 public:
+	void setUpFullWriteAndReadCompare(){
+		redirectBufferSetup();
+		cmdInfo.command = CommandType::CMD_TS_FullWriteAndReadCompare;
+	}
+	void setUpPartialWriteLBA() {
+		redirectBufferSetup();
+		cmdInfo.command = CommandType::CMD_TS_PartialLBAWrite;
+	}
+	void setUpWriteReadAging() {
+		redirectBufferSetup();
+		cmdInfo.command = CommandType::CMD_TS_WriteReadAging;
+	}
+	void setUpEraseWriteAging() {
+		redirectBufferSetup();
+		cmdInfo.command = CommandType::CMD_TS_EraseWriteAging;
+	}
+	void redirectBufferSetup() {
+		old = std::cout.rdbuf(buffer.rdbuf());
+	}
+	void checkBufferOutput(std::string expected) {
+		std::cout.rdbuf(old);
+		string output = buffer.str();
+		EXPECT_EQ(output, expected);
+	}
 	MockSSD ssd;
 	TestScenario shell{ &ssd };
+	CommandInfo cmdInfo;
 	int lba = 0;
 	unsigned int data = 0x12345678;
+	std::stringstream buffer;
+	std::streambuf* old;
 };
 TEST_F(TestScenarioFixture, ReadCompareCallSSDRead) {
 	unsigned int writtenData = 0x12345678;
@@ -42,6 +69,7 @@ TEST_F(TestScenarioFixture, ReadCompareDifferentDataFail) {
 }
 
 TEST_F(TestScenarioFixture, DISABLED_FullWriteAndReadCompareShouldCallFullRangeSSDcommand) {
+	setUpFullWriteAndReadCompare();
 	unsigned int writtenData = 0x12345678;
 	unsigned int readData = writtenData;
 	EXPECT_CALL(ssd, write(_, writtenData))
@@ -52,10 +80,12 @@ TEST_F(TestScenarioFixture, DISABLED_FullWriteAndReadCompareShouldCallFullRangeS
 		.Times(100)
 		.WillRepeatedly(Return(readData));
 
-	EXPECT_EQ(true, shell.fullWriteAndReadCompare());
+	EXPECT_EQ(true, shell.execute(cmdInfo));
+	checkBufferOutput("Pass\n");
 }
 
 TEST_F(TestScenarioFixture, FullWriteAndReadCompare_WriteFail) {
+	setUpFullWriteAndReadCompare();
 	unsigned int writtenData = 0x12345678;
 	unsigned int readData = writtenData;
 
@@ -66,10 +96,12 @@ TEST_F(TestScenarioFixture, FullWriteAndReadCompare_WriteFail) {
 
 	EXPECT_CALL(ssd, read(_))
 		.WillRepeatedly(Return(writtenData));
-	EXPECT_EQ(false, shell.fullWriteAndReadCompare());
+	EXPECT_EQ(false, shell.execute(cmdInfo));
+	checkBufferOutput("FAIL!\n");
 }
 
 TEST_F(TestScenarioFixture, FullWriteAndReadCompare_ReadFail) {
+	setUpFullWriteAndReadCompare();
 	unsigned int writtenData = 0x12345678;
 	unsigned int readData = 0x87654321;
 
@@ -79,10 +111,12 @@ TEST_F(TestScenarioFixture, FullWriteAndReadCompare_ReadFail) {
 	EXPECT_CALL(ssd, read(_))
 		.WillOnce(Return(writtenData))
 		.WillRepeatedly(Return(readData));
-	EXPECT_EQ(false, shell.fullWriteAndReadCompare());
+	EXPECT_EQ(false, shell.execute(cmdInfo));
+	checkBufferOutput("FAIL!\n");
 }
 
 TEST_F(TestScenarioFixture, PartialWriteLBA_behaviorTest) {
+	setUpPartialWriteLBA();
 	unsigned int writtenData = 0x12345678;
 	unsigned int readData = writtenData;
 	EXPECT_CALL(ssd, write(_, writtenData))
@@ -93,10 +127,12 @@ TEST_F(TestScenarioFixture, PartialWriteLBA_behaviorTest) {
 		.Times(150)
 		.WillRepeatedly(Return(readData));
 
-	EXPECT_EQ(true, shell.partialLBAWrite());
+	EXPECT_EQ(true, shell.execute(cmdInfo));
+	checkBufferOutput("Pass\n");
 }
 
 TEST_F(TestScenarioFixture, PartialWriteLBA_WriteFail) {
+	setUpPartialWriteLBA();
 	unsigned int writtenData = 0x12345678;
 	unsigned int readData = writtenData;
 
@@ -107,18 +143,22 @@ TEST_F(TestScenarioFixture, PartialWriteLBA_WriteFail) {
 
 	EXPECT_CALL(ssd, read(_))
 		.WillRepeatedly(Return(writtenData));
-	EXPECT_EQ(false, shell.partialLBAWrite());
+	EXPECT_EQ(false, shell.execute(cmdInfo));
+	checkBufferOutput("FAIL!\n");
 }
 
 TEST_F(TestScenarioFixture, PartialWriteLBA_ReadFail) {
+	setUpPartialWriteLBA();
 	unsigned int writtenData = 0x12345678;
 	unsigned int readData = 0x87654321;
-
 	EXPECT_CALL(ssd, write(_, _))
 		.WillRepeatedly(Return(true));
 
 	EXPECT_CALL(ssd, read(_))
 		.WillOnce(Return(writtenData))
 		.WillRepeatedly(Return(readData));
-	EXPECT_EQ(false, shell.partialLBAWrite());
+
+	EXPECT_EQ(false, shell.execute(cmdInfo));
+
+	checkBufferOutput("FAIL!\n");
 }

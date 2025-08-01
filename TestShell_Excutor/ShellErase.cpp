@@ -3,10 +3,8 @@ bool Erase::execute(CommandInfo cmdInfo)
 {
 	int size = cmdInfo.size;
 	int lba = cmdInfo.lba;
-	if (lba > 99 || lba < 0) return false;
+	if (lba > LBA_MAX || LBA_MIN < 0) return false;
 	if (size == 0) return true;
-	const int LBA_MAX = 99;
-	const int LBA_MIN = 0;
 	int tempsize;
 	if (size > 0) {
 		tempsize = size - 1;

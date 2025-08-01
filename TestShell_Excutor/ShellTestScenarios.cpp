@@ -17,27 +17,19 @@ bool TestScenario::readCompare(int lba, unsigned int writtenData) {
 };
 bool TestScenario::execute(CommandInfo cmdInfo)
 {
-	unsigned int scenarioNum = cmdInfo.command;
-	if (scenarioNum == CommandType::CMD_TS_FullWriteAndReadCompare) {
-		return fullWriteAndReadCompare();
+	auto it = scenarioMap.find(cmdInfo.command);
+	bool isSuccess = false;
+	if (it != scenarioMap.end()) {
+		isSuccess = it->second(); 
 	}
-	else if (scenarioNum == CommandType::CMD_TS_PartialLBAWrite) {
-		return partialLBAWrite();
-	}
-	else if (scenarioNum == CommandType::CMD_TS_WriteReadAging) {
-		return writeReadAging();
-	}
-	else if (scenarioNum == CommandType::CMD_TS_EraseWriteAging) {
-		return eraseWriteAging();
-	}
-	return false;
+	printScenarioResult(isSuccess);
+	return isSuccess;
 }
 
 bool TestScenario::fullWriteAndReadCompare() {
-	unsigned int writeData = 0x12345678;
+
+	unsigned int writeData = DUMMY_WRITE_DATA;
 	unsigned int readData = writeData;
-	int LBA_MAX = 99;
-	int LBA_MIN = 0;
 	int curWriteLBA = LBA_MIN;
 	int curReadLBA = LBA_MIN;
 	queue <WrittenData> datas;
@@ -66,7 +58,7 @@ bool TestScenario::fullWriteAndReadCompare() {
 	return true;
 }
 bool TestScenario::partialLBAWrite() {
-	unsigned int writeData = 0x12345678;
+	unsigned int writeData = DUMMY_WRITE_DATA;
 	queue <WrittenData> datas;
 	int loopcount = 30;
 	for (int i = 0; i < loopcount;i++) {
@@ -85,39 +77,56 @@ bool TestScenario::partialLBAWrite() {
 }
 
 bool TestScenario::writeReadAging() {
-	unsigned int randvalue;
+	unsigned int randomData;
 	int loopcount = 200;
 	for (int i = 0; i < loopcount; i++) {
-		randvalue = getRandomUnsignedInt();
-		if (!ssd->write(0, randvalue)) return false;
-		if (!ssd->write(99, randvalue)) return false;
-		if (!readCompare(0, randvalue)) return false;
-		if (!readCompare(99, randvalue)) return false;
+		randomData = getRandomUnsignedInt();
+		if (!ssd->write(0, randomData)) return false;
+		if (!ssd->write(99, randomData)) return false;
+		if (!readCompare(0, randomData)) return false;
+		if (!readCompare(99, randomData)) return false;
 	}
 	return true;
 }
 
 bool TestScenario::eraseWriteAging()
 {
-	unsigned int randvalue;
+	unsigned int randomData;
 	if (!ssd->erase(0, 3)) return false;
 	const int loopcount = 30;
 	for (int loop = 0; loop < loopcount; loop++) {
-		for (int i = 2; i < 99; i += 2) {
-			randvalue = getRandomUnsignedInt();
-			if (!ssd->write(i, randvalue)) return false;
-			if (!ssd->write(i, randvalue)) return false;
+		for (int i = 2; i < LBA_MAX; i += 2) {
+			randomData = getRandomUnsignedInt();
+			if (!ssd->write(i, randomData)) return false;
+			if (!ssd->write(i, randomData)) return false;
 			if (!ssd->erase(i, 1)) return false;
 			if (!ssd->erase(i + 1, 1)) return false;
-			if (i + 2 <= 99) {
+			if (i + 2 <= LBA_MAX) {
 				if (!ssd->erase(i + 2, 1)) return  false;
 			}
 			if (!readCompare(i, 0)) return false;
 			if (!readCompare(i + 1, 0)) return false;
-			if (i + 2 <= 99) {
+			if (i + 2 <= LBA_MAX) {
 				if (!readCompare(i + 2, 0)) return  false;
 			}
 		}
 	}
 	return true;
+}
+
+void TestScenario::initScenarioMap() {
+	scenarioMap = {
+		{ CommandType::CMD_TS_FullWriteAndReadCompare, [this]() { return fullWriteAndReadCompare(); } },
+		{ CommandType::CMD_TS_PartialLBAWrite,         [this]() { return partialLBAWrite(); } },
+		{ CommandType::CMD_TS_WriteReadAging,          [this]() { return writeReadAging(); } },
+		{ CommandType::CMD_TS_EraseWriteAging,         [this]() { return eraseWriteAging(); } }
+	};
+}
+void TestScenario::printScenarioResult(bool isSuccess) {
+	if (isSuccess) {
+		std::cout << "Pass" << "\n";
+	}
+	else {
+		std::cout << "FAIL!" << "\n";
+	}
 }
