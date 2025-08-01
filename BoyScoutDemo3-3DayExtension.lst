@@ -1,0 +1,7 @@
+fullwrite 0xFFFFFFFF
+erase 0 100
+fullread
+flush
+fullwrite 0x12345678
+erase_range 50 99
+fullread

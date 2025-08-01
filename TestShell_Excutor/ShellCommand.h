@@ -8,4 +8,5 @@ public:
 	ShellCommandItem() {}
 	ShellCommandItem(iTS_SSD* ssd){}
 	virtual bool execute(CommandInfo cmdInfo)=0;
+
 };

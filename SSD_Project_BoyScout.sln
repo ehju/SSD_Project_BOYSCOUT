@@ -8,6 +8,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루션 항목", "{F1F4EB2D-F840-4756-8634-76FEAE9B21E2}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		BoyScoutDemo1-1DayBasic.lst = BoyScoutDemo1-1DayBasic.lst
+		BoyScoutDemo2-1DayComplex.lst = BoyScoutDemo2-1DayComplex.lst
+		BoyScoutDemo3-3DayExtension.lst = BoyScoutDemo3-3DayExtension.lst
+		BoyScoutDemo4-3DayCommandBuffer.lst = BoyScoutDemo4-3DayCommandBuffer.lst
+		BoyScoutDemo5-TScenarioLoop.lst = BoyScoutDemo5-TScenarioLoop.lst
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SSD_Excutor", "SSD_Excutor\SSD_Excutor.vcxproj", "{8EBF04DB-C053-4169-8CA3-8ED95E868523}"

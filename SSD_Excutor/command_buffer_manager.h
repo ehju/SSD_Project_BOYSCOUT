@@ -8,12 +8,6 @@
 
 namespace fs = std::filesystem;
 
-struct DetailedCommandInfo
-{
-	CommandInfo commandInfo;
-	std::shared_ptr<ICommand> commandStructure;
-};
-
 class CommandBufferManager
 {
 public:
@@ -21,7 +15,7 @@ public:
 
 	static CommandBufferManager& getInstance();
 	void initialize();
-	virtual std::vector<DetailedCommandInfo> getCommandBufferList();
+	virtual std::vector<CommandInfo> getCommandBufferList();
 	void flush();
 	bool inputCommandBuffer(CommandInfo commandInfo);
 	void syncCommandBuffer();
@@ -31,20 +25,20 @@ private:
 #ifndef _DEBUG
 	CommandBufferManager() = default;
 #endif
-	DetailedCommandInfo string2CommandBufferInfo(std::string str);
-	std::string commandBufferInfo2String(unsigned int bufferIndex, DetailedCommandInfo commnadBufferInfo);
+	CommandInfo string2CommandBufferInfo(std::string str);
+	std::string commandBufferInfo2String(unsigned int bufferIndex, CommandInfo commandInfo);
 
 	void updateCommandBuffer();
 
 	void optimizeCommandBuffer();
-	void updateMapForCommand(DetailedCommandInfo* detailedcommandInfo);
+	void updateMapForCommand(CommandInfo* commandInfo);
 
 	CommandParser commandParser;
 	fs::path folderPath = fs::current_path() / "buffer";
 	std::vector<bool> bufferEnbledCommand;
-	std::vector<DetailedCommandInfo> commandBufferList;
-	std::vector<DetailedCommandInfo> optimizedCommandBufferList;
+	std::vector<CommandInfo> commandBufferList;
+	std::vector<CommandInfo> optimizedCommandBufferList;
 	int checkOptimizePossible{ 0 };
 
-	std::array<DetailedCommandInfo*, 100> mapForOptimizeCommand;
+	std::array<CommandInfo*, 100> mapForOptimizeCommand;
 };

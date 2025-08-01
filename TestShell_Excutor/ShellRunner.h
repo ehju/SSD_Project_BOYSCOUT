@@ -26,29 +26,35 @@ public:
 
 class ShellRunner {
 public:
-	ShellRunner() {};
+	ShellRunner() { initCommandMap(); };
 
 	int runCommand(const string cmd);
 	int runScriptFile(const char* filename);
 private:
-	bool runShellCommand(CommandInfo cmdInfo);
-
-	CommandParser cp;
-
 #ifdef _DEBUG
 	testing::NiceMock<MockRunnerSSD> ssd;
 #else
 	SSDExecutor ssd;
 #endif
+	bool runShellCommand(CommandInfo cmdInfo);
+	void initCommandMap();
+	CommandParser cp;
+<<<<<<< HEAD
+	std::unordered_map<unsigned int, ShellCommandItem*> commandMap;
 
-	//ShellCommand shell{ &ssd };
+=======
 
-	Read read{ &ssd };
-	Write write{ &ssd };
-	Erase erase{ &ssd };
-	EraseRange eraserange{ &ssd };
-	Flush flush{ &ssd };
-	FullWrite fullwrite{ &ssd };
-	FullRead fullread{ &ssd };
-	TestScenario ts{ &ssd };
+
+	std::unordered_map<unsigned int, ShellCommandItem*> commandMap;
+//	ShellCommand shell{ &ssd };
+
+	//Read read{ &ssd };
+	//Write write{ &ssd };
+	//Erase erase{ &ssd };
+	//EraseRange eraserange{ &ssd };
+	//Flush flush{ &ssd };
+	//FullWrite fullwrite{ &ssd };
+	//FullRead fullread{ &ssd };
+	//TestScenario ts{ &ssd };
+>>>>>>> f80abda5a69d08ece583353c00b58a3419971c9f
 };
