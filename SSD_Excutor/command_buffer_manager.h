@@ -32,6 +32,7 @@ private:
 	std::vector<CommandInfo> commandBufferList;
 	std::vector<CommandInfo> optimizedCommandBufferList;
 	int checkOptimizePossible{ 0 };
+	unsigned int prevCommand{ static_cast<unsigned int>(SSDCommand::SSDCommand_INVALID) };
 
 	std::array<CommandInfo*, 100> mapForOptimizeCommand;
 
