@@ -10,7 +10,7 @@ public:
 	virtual bool execute(CommandInfo cmdInfo)=0;
 };
 
-
+/*
 class ShellCommand {
 public:
 	ShellCommand(iTS_SSD* ssd) : ssd{ ssd } {
@@ -35,3 +35,4 @@ private:
 	iTS_SSD* ssd;
 	const int RAND_SEED = 1;
 };
+*/

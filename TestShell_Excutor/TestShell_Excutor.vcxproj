@@ -135,7 +135,6 @@
     <ClCompile Include="CommandParser_test.cpp" />
     <ClCompile Include="InvalidCmd_test.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ShellCommand.cpp" />
     <ClCompile Include="ShellCommand_test.cpp" />
     <ClCompile Include="ShellErase.cpp" />
     <ClCompile Include="ShellEraseRange.cpp" />
