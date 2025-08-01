@@ -164,25 +164,3 @@ TEST_F(ShellCommandTest, FullWriteFail) {
 	EXPECT_EQ(false, command->execute(cmdInfo));
 
 }
-
-
-
-/*
-#if REAL_DEBUG
-TEST(SSDExecutorInterface, SSDExWrite_Normal) {
-	SSDExecutor ssde;
-
-	ShellCommand shell(&ssde);
-	bool expected = true;
-
-	EXPECT_EQ(expected, command->execute(cmdInfo));
-}
-
-TEST(SSDExecutorInterface, SSDExRead_Normal) {
-	SSDExecutor ssde;
-	ShellCommand shell(&ssde);
-	bool expected = 0;
-	EXPECT_EQ(expected, command->execute(cmdInfo));
-}
-#endif
-*/

@@ -150,9 +150,6 @@
     <ClCompile Include="ShellTestScenario_test.cpp" />
     <ClCompile Include="ShellWrite.cpp" />
     <ClCompile Include="TS_function.cpp" />
-    <ClCompile Include="TS_function_test.cpp">
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"> %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
