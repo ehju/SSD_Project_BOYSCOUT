@@ -53,14 +53,14 @@ void ShellFileUtil::renameLogFile()
         try {
             fs::rename(existingUntilLog, zipPath);
         }
-        catch (const std::exception& e) {
+        catch (const std::exception&) {
         }
     }
 
     try {
         fs::rename(OUTPUT_FILE, newPath);
     }
-    catch (const std::exception& e) {
+    catch (const std::exception&) {
     }
 }
 

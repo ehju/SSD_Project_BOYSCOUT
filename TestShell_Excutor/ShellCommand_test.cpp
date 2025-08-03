@@ -146,7 +146,6 @@ TEST_F(ShellCommandTest, NoWriteOutOfRangeLBA2) {
 }
 TEST_F(ShellCommandTest, FullReadTest) {
 	SetupFullRead();
-	bool ret;
 	EXPECT_CALL(ssd, read(_))
 		.Times(100);
 
