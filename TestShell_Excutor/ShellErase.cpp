@@ -4,7 +4,7 @@ bool Erase::execute(CommandInfo cmdInfo)
 	Logger::getInstance()->print(__FUNCTION__, "called");
 	int size = cmdInfo.size;
 	int lba = cmdInfo.lba;
-	if (lba > LBA_MAX || LBA_MIN < 0) {
+	if (lba > LBA_MAX || lba < LBA_MIN) {
 		Logger::getInstance()->print(__FUNCTION__, "ERROR out of range");
 		return false;
 	}
