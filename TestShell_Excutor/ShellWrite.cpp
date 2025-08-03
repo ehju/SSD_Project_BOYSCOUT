@@ -3,7 +3,7 @@
 bool Write::execute(CommandInfo cmd) {
 	Logger::getInstance()->print(__FUNCTION__, "called");
 	bool ret;
-	if (cmd.lba > LBA_MAX || cmd.lba < LBA_MIN) {
+	if (cmd.lba > (unsigned int)LBA_MAX || cmd.lba < (unsigned int)LBA_MIN) {
 		Logger::getInstance()->print(__FUNCTION__, "out of range for lba");
 		return false;
 	}

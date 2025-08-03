@@ -4,7 +4,7 @@ bool Read::execute(CommandInfo cmdInfo)
 	Logger::getInstance()->print(__FUNCTION__, "called");
 	unsigned int lba = cmdInfo.lba;
 	unsigned int result;
-	if (lba < LBA_MIN || lba > LBA_MAX) {
+	if (lba < (unsigned int)LBA_MIN || lba > (unsigned int)LBA_MAX) {
 		Logger::getInstance()->print(__FUNCTION__, "ERROR out of range for read");
 		return false;
 	}
