@@ -9,7 +9,5 @@ public:
 private:
 	void printReadResult(int lba, unsigned int value);
 	iTS_SSD* ssd;
-	const int LBA_MAX = 99;
-	const int LBA_MIN = 0;
 };
 

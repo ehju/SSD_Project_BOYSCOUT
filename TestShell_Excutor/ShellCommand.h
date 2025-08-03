@@ -3,6 +3,9 @@
 #include "CommandData.h"
 
 
+const int LBA_MAX = 99;
+const int LBA_MIN = 0;
+
 interface ShellCommandItem {
 public:
 	ShellCommandItem() {}
