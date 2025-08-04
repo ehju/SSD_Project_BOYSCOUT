@@ -17,6 +17,10 @@ public:
 		}
 		return instance;
 	}
+	static void ResetInstance() {
+		delete instance;
+		instance = nullptr;
+	}
 	bool execute(CommandInfo cmdInfo) override;
 	unsigned int getRandomUnsignedInt();
 	bool readCompare(int lba, unsigned int writtenData);
