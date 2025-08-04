@@ -1,7 +1,7 @@
 #include "ShellFullRead.h"
 bool FullRead::execute(CommandInfo cmdInfo)
 {
-	//Logger::getInstance()->print(__FUNCTION__, "called");
+	Logger::getInstance()->print(__FUNCTION__, "called");
 	unsigned int lba = cmdInfo.lba;
 	unsigned int data;
 	for (int lba = LBA_MIN; lba <= LBA_MAX; lba++) {
