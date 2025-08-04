@@ -15,6 +15,13 @@ public:
 
 class TestScenarioFixture : public Test {
 public:
+	void SetUp() override {
+		TestScenario::ResetInstance();
+		shell = TestScenario::GetInstance(&ssd);
+	}
+	void TearDown() override {
+
+	}
 	void setUpFullWriteAndReadCompare(){
 		redirectBufferSetup();
 		cmdInfo.command = CommandType::CMD_TS_FullWriteAndReadCompare;
@@ -39,9 +46,8 @@ public:
 		string output = buffer.str();
 		EXPECT_EQ(output, expected);
 	}
-	MockSSD ssd;
-	TestScenario* shell = TestScenario::GetInstance(&ssd);
-	//TestScenario shell{ &ssd };
+	NiceMock<MockSSD> ssd;
+	TestScenario* shell;
 	CommandInfo cmdInfo;
 	int lba = 0;
 	unsigned int data = 0x12345678;

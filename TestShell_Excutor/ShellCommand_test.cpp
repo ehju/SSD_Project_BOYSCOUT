@@ -13,7 +13,6 @@
 using namespace testing;
 using std::vector;
 
-#define REAL_DEBUG 1
 class MockSSD : public iTS_SSD {
 public:
 	MOCK_METHOD(unsigned int, read, (int lba), (override));
@@ -24,49 +23,43 @@ public:
 
 class ShellCommandTest : public Test {
 public:
+	void SetUp() override{
+		old = std::cout.rdbuf(buffer.rdbuf());
+	}
+	void TearDown() override {
+		std::cout.rdbuf(old);
+	}
 	void SetupRead(){
 		command = std::make_shared<Read>(&ssd);
-		cmdInfo.lba = lba;
-		redirectBufferSetup();
+		cmdInfo.lba = DUMMY_LBA;
 	}
 	void SetupWrite() {
 		command = std::make_shared<Write>(&ssd);
-		cmdInfo.lba = lba;
+		cmdInfo.lba = DUMMY_LBA;
 		cmdInfo.value = DUMMY_DATA;
-		redirectBufferSetup();
 	}
 	void SetupFullRead() {
 		command = std::make_shared<FullRead>(&ssd);
-		cmdInfo.lba = lba;
-		redirectBufferSetup();
+		cmdInfo.lba = DUMMY_LBA;
 	}
 	void SetupFullWrite() {
 		command = std::make_shared<FullWrite>(&ssd);
-		cmdInfo.lba = lba;
+		cmdInfo.lba = DUMMY_LBA;
 		cmdInfo.value = DUMMY_DATA;
-		redirectBufferSetup();
 	}
 	void SetupErase() {
 		command = std::make_shared<Erase>(&ssd);
-		cmdInfo.lba = lba;
+		cmdInfo.lba = DUMMY_LBA;
 		cmdInfo.value = DUMMY_DATA;
-		redirectBufferSetup();
 	}
 	void SetupEraseRange() {
 		command = std::make_shared<EraseRange>(&ssd);
-		cmdInfo.lba = lba;
+		cmdInfo.lba = DUMMY_LBA;
 		cmdInfo.value = DUMMY_DATA;
-		redirectBufferSetup();
-	}
-	void redirectBufferSetup() {
-		old = std::cout.rdbuf(buffer.rdbuf());
 	}
 	void checkBufferOutput(std::string expected) {
 		string output = buffer.str();
 		EXPECT_EQ(output, expected);
-	}
-	void TearDown() {
-		std::cout.rdbuf(old);
 	}
 	std::string generateExpectedFullReadLog(unsigned int startData) {
 		std::ostringstream oss;
@@ -76,12 +69,11 @@ public:
 		}
 		return oss.str();
 	}
-
-	MockSSD ssd;
+	NiceMock<MockSSD> ssd;
 	std::shared_ptr<ShellCommandItem> command;
-	int lba = 0;
-	unsigned int data;
+	const int DUMMY_LBA = 0;
 	const unsigned int DUMMY_DATA = 0x12345678;
+	const unsigned int DIFFERENT_DATA = 0xABCDFFFF;
 	CommandInfo cmdInfo;
 	std::stringstream buffer;
 	std::streambuf* old;
@@ -90,12 +82,11 @@ public:
 // SSD Read function should be called
 TEST_F(ShellCommandTest, ReadBehaviorTest) {
 	SetupRead();
-	EXPECT_CALL(ssd, read(lba))
+	EXPECT_CALL(ssd, read(cmdInfo.lba))
 		.Times(1);
 
 	bool ret = command->execute(cmdInfo);
 	EXPECT_EQ(true, ret);
-	TearDown();
 }
 
 // Read Test state test
@@ -110,7 +101,6 @@ TEST_F(ShellCommandTest,ReadDummyDataTest) {
 	bool ret = command->execute(cmdInfo);
 	
 	checkBufferOutput("[Read] LBA 10 : 0x12345678\n");
-	TearDown();
 }
 TEST_F(ShellCommandTest, WriteBasic) {
 	SetupWrite();
@@ -120,7 +110,6 @@ TEST_F(ShellCommandTest, WriteBasic) {
 
 	EXPECT_EQ(true, command->execute(cmdInfo));
 	checkBufferOutput("[Write] Done\n");
-	TearDown();
 }
 
 TEST_F(ShellCommandTest, NoWriteOutOfRangeLBA1) {
@@ -131,7 +120,6 @@ TEST_F(ShellCommandTest, NoWriteOutOfRangeLBA1) {
 		.Times(0);
 
 	EXPECT_EQ(false, command->execute(cmdInfo));
-	TearDown();
 }
 
 TEST_F(ShellCommandTest, NoWriteOutOfRangeLBA2) {
@@ -150,39 +138,39 @@ TEST_F(ShellCommandTest, FullReadTest) {
 		.Times(100);
 
 	EXPECT_EQ(true, command->execute(cmdInfo));
-	TearDown();
 }
 
 TEST_F(ShellCommandTest, FullReadTestExpectedReturn) {
 	SetupFullRead();
-	data = 0; // start from 0
-	for (int lba = 0; lba < 100; lba++) {
-		EXPECT_CALL(ssd, read(lba))
-			.Times(1)
-			.WillRepeatedly(Return(data));
-		data++;
+	unsigned int data = 0;
+	{
+		InSequence seq;
+		for (int lba = 0; lba < 100; lba++) {
+			EXPECT_CALL(ssd, read(lba))
+				.Times(1)
+				.WillRepeatedly(Return(data));
+			data++;
+		}
 	}
 
 	EXPECT_EQ(true, command->execute(cmdInfo));
 	checkBufferOutput(generateExpectedFullReadLog(0));
-	TearDown();
 }
 
 TEST_F(ShellCommandTest, FullWriteNormal) {
 	SetupFullWrite();
-	cmdInfo.value = 0xABCDFFFF;
+	cmdInfo.value = DIFFERENT_DATA;
 	EXPECT_CALL(ssd, write(_, cmdInfo.value))
 		.Times(100)
 		.WillRepeatedly(Return(true));
 
 	EXPECT_EQ(true, command->execute(cmdInfo));
 	checkBufferOutput("[Write] Done\n");
-	TearDown();
 }
 
 TEST_F(ShellCommandTest, FullWriteFail) {
 	SetupFullWrite();
-	cmdInfo.value = 0xABCDFFFF;
+	cmdInfo.value = DIFFERENT_DATA;
 	EXPECT_CALL(ssd, write(_, cmdInfo.value))
 		.Times(5)
 		.WillOnce(Return(true))
@@ -192,19 +180,8 @@ TEST_F(ShellCommandTest, FullWriteFail) {
 		.WillRepeatedly(Return(false));
 
 	EXPECT_EQ(false, command->execute(cmdInfo));
-	// Fail : print Nothing
-	TearDown();
+	checkBufferOutput("");
 }
-/*
-struct CommandInfo
-{
-	unsigned int command; //CommandType
-	unsigned int lba; //param1
-	unsigned int value; //param2
-	int size; //param3
-};
-*/
-
 
 TEST_F(ShellCommandTest, ERASE_RANGE_BASIC_TEST) {
 	SetupEraseRange();
@@ -215,7 +192,6 @@ TEST_F(ShellCommandTest, ERASE_RANGE_BASIC_TEST) {
 		.WillRepeatedly(Return(true));
 
 	EXPECT_EQ(true, command->execute(cmdInfo));
-	TearDown();
 }
 
 TEST_F(ShellCommandTest, ERASE_RANGE_21_TEST) {
@@ -227,7 +203,6 @@ TEST_F(ShellCommandTest, ERASE_RANGE_21_TEST) {
 		.WillRepeatedly(Return(true));
 
 	EXPECT_EQ(true, command->execute(cmdInfo));
-	TearDown();
 }
 
 TEST_F(ShellCommandTest, ERASE_RANGE_OPPOSITE_TEST) {
@@ -239,5 +214,4 @@ TEST_F(ShellCommandTest, ERASE_RANGE_OPPOSITE_TEST) {
 		.WillRepeatedly(Return(true));
 
 	EXPECT_EQ(true, command->execute(cmdInfo));
-	TearDown();
 }
