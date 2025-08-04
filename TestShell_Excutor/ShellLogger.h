@@ -10,6 +10,8 @@ private:
     Logger() = default;
     static Logger* instance;
     static std::mutex mtx;
+    const  unsigned int ALIGN_SPACE = 45;
+    static constexpr unsigned int MESSAGE_BUFFER_MAX = 1024;
     std::string GetTimestamp();
     void splitFunctionSignature(const std::string& fullFunc, std::string& className, std::string& functionName);
 
