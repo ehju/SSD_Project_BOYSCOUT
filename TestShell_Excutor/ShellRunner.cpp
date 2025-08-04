@@ -41,7 +41,11 @@ int ShellRunner::runCommand(const string cmd) {
 	else {
 		result = runShellCommand(cmdInfo);
 	}
+#ifdef _DEBUG
 	return type;
+#else
+	return (int)result;
+#endif
 }
 bool ShellRunner::runShellCommand(CommandInfo cmdInfo) {
 	Logger::getInstance()->print(__FUNCTION__, "called");
