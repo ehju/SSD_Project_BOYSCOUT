@@ -61,9 +61,9 @@
 write <LBA> <VALUE>: LBA = 0 ~ 99 , VALUE = 0x00000000 ~ 0xFFFFFFFF(10 Digit) // Write Value @LBA 
 read <LBA>              : LBA = 0 ~ 99 // Read @LBA
 
-erase <LBA> <SIZE>      : LBA = 0 ~ 99 , SIZE = (+/-Decimal) // Erase Value @LBA ~@LBA+SIZE
+erase <LBA> <SIZE>      : LBA = 0 ~ 99 , SIZE = (+/-Decimal) // Erase Value @LBA ~ @LBA+SIZE
 
-erase_range <START_LBA> <END_LBA>: LBA = 0~99 // Erase @ STARTLBA~ENDLBA
+erase_range <START_LBA> <END_LBA>: LBA = 0 ~ 99 // Erase @ STARTLBA ~ ENDLBA
 
 fullwrite <VALUE>       : VALUE = 0x00000000 ~ 0xFFFFFFFF(10 Digit) // Write Value @ALL LBA
 
