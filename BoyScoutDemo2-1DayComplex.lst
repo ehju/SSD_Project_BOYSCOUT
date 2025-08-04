@@ -1,7 +1,3 @@
-read 0
-read 99
-read 999
-read -1
 fullwrite 0xFFFFFFFF
 write 99 0x99999999
 write 88 0x88888888

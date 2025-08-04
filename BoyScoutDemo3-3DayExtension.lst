@@ -1,7 +1,8 @@
 fullwrite 0xFFFFFFFF
-erase 0 100
+erase 99 -100
 fullread
 flush
 fullwrite 0x12345678
-erase_range 50 99
+erase_range 30 59
+erase_range 70 99
 fullread
