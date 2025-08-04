@@ -7,7 +7,7 @@
 
 void Logger::print(const char* fullfunctionName, const char* fmt, ...)
 {
-    char message[1024];
+    char message[MESSAGE_BUFFER_MAX];
     va_list args;
     va_start(args, fmt);
     vsnprintf(message, sizeof(message), fmt, args);
@@ -15,7 +15,7 @@ void Logger::print(const char* fullfunctionName, const char* fmt, ...)
     std::string className, functionName;
     splitFunctionSignature(fullfunctionName, className, functionName);
     std::ostringstream oss;
-    oss << GetTimestamp() << " " << std::left << std::setw(45) << (className + "." + functionName + "( )")
+    oss << GetTimestamp() << " " << std::left << std::setw(ALIGN_SPACE) << (className + "." + functionName + "( )")
      << " : " << message;
     std::string outputLine = oss.str();
 

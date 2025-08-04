@@ -5,7 +5,6 @@
 #include <sstream>	
 class ShellFileUtil {
 public:
-    static void deletePrevOutputFile();
     static void writeOutputFile(std::string& writeString);
     static void renameLogFile();
 
